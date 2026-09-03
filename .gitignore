@@ -1,0 +1,10 @@
+# Temporales del sistema operativo
+Thumbs.db
+.DS_Store
+
+# Temporales de LibreOffice / OpenOffice
+.~lock.*.odt#
+.~lock.*.pdf#
+
+# Temporales y archivos de compilación de Typst
+*.core
