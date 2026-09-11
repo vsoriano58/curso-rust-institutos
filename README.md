@@ -1,6 +1,6 @@
-# 📘 Curso de Rust para Institutos (14 años - 1º/2º ESO)
+# 📘 Curso de Rust para Institutos (15-16 años, 3º/4º ESO)
 
-¡Te damos la bienvenida al repositorio oficial del proyecto! Este es un esfuerzo educativo diseñado específicamente para introducir a adolescentes de entre 14 y 15 años en el fascinante mundo de la programación, utilizando **Rust** como lenguaje vehicular.
+¡Te damos la bienvenida al repositorio oficial del proyecto! Este es un esfuerzo educativo diseñado específicamente para introducir a adolescentes de entre 15 y 16 años en el fascinante mundo de la programación, utilizando **Rust** como lenguaje vehicular.
 
 El objetivo principal de este material no es formar ingenieros de inmediato, sino **romper la barrera del miedo** y enseñar lógica algorítmica básica de una forma interactiva, visual y divertida, utilizando la terminal como un lienzo.
 
@@ -15,7 +15,7 @@ Para eliminar cualquier fricción inicial, el curso está diseñado para realiza
 
 ## 📂 Estructura del Repositorio
 
-* **`imagenes/`**: Directorio centralizado que contiene todos los recursos visuales del curso. Los alumnos podrán llamarlas directamente desde la Rust Playground mediante URLs cortas para realizar ejercicios de procesamiento de imágenes.
+* **`imagenes/`**: Directorio centralizado que contiene todos los recursos visuales del curso.
 * **`cuadernos/`**: Contiene los cuadernos didácticos en formato fuente de Typst y sus versiones listas en PDF para imprimir o distribuir.
 * **`codigo/`**: Los ejemplos de código fuente limpios (`.rs`) de cada cuaderno para que sirvan de consulta o respaldo.
 

@@ -5,7 +5,7 @@
 // Los podremos utilizar desde todos los ficheros que hagan
 // #include "config.typ"
 
-#let edad_alumno = "16 años"
+#let edad_alumno = "15-16 años"
 #let curso_academico = "2026/2027"
 #let autor_proyecto = "Halcón68"
 
