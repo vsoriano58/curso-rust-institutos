@@ -1,0 +1,3 @@
+#import "config.typ": *
+
+= 📄 Anexo
