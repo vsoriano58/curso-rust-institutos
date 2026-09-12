@@ -21,6 +21,7 @@ Si usas *Linux*, juegas con ventaja: Rust se siente en casa en este sistema oper
 
 - *Lista de programas a instalar:* 
  - *Herramientas de construcción* (build-essential): Rust necesita un *enlazador* (linker) para unir el código compilado.
+ - *curl*: Programa auxiliar para instalar Rust.
  - *Rustup & Cargo:* El motor oficial y el gestor de paquetes de Rust.
  - *Visual Studio Code (VS Code):* Nuestro editor de texto profesional.
 
@@ -29,10 +30,16 @@ Si usas *Linux*, juegas con ventaja: Rust se siente en casa en este sistema oper
 *Paso 1: Instalar los cimientos.* Abre tu terminal y escribe el comando para instalar las herramientas base (en Ubuntu/Debian):
 
 ```bash
-sudo apt update && sudo apt install build-essential git -y
+sudo apt update && sudo apt install build-essential -y
 ```
 
-*Paso 2: Invocar a Rust.* Copia y pega este comando oficial en la terminal para descargar e instalar Rust automáticamente:
+*Paso 2: Instalar curl.* Abre tu terminal y ejecuta el siguiente comando:
+
+```bash
+sudo apt install curl -y
+```
+
+*Paso 3: Instalar Rust.* Copia y pega este comando oficial en la terminal para descargar e instalar Rust automáticamente:
 
 ```bash
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
@@ -40,28 +47,37 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
 Cuando te pregunte en la pantalla, pulsa la tecla 1 y luego ENTER para elegir la instalación por defecto.
 
-*Paso 3: Activar el motor.* Cierra la terminal y vuélvela a abrir, o escribe este comando para que tu sistema sepa dónde está Rust:
+*Paso 4: Activar el motor.* Cierra la terminal y vuélvela a abrir, o escribe este comando para que tu sistema sepa dónde está Rust:
 
 ```bash
 source "$HOME/.cargo/env"
 ```
 
-*Paso 4: El editor visual.* Instala Visual Studio Code desde la tienda de software de tu distribución o desde su web oficial.
+*Paso 5: El editor visual.* Instala Visual Studio Code desde la tienda de software de tu distribución o desde su web oficial.
 
 == 🪟 Instalación en WINDOWS
 Windows requiere un par de pasos extra porque, por defecto, no viene preparado de fábrica para compilar lenguajes de alto rendimiento como Rust.
 
 - Versiones soportadas: Windows 10 y Windows 11 (de 64 bits).
 - Lista de programas a instalar:
- - *Herramientas de C++ de Visual Studio (MSVC)*: Los cimientos que exige Rust en Windows.
+ - *Herramientas de C++ de Visual Studio (MSVC)*: Los cimientos que exige Rust en Windows.Hay que instalarlas en primer lugar.
  - *Rustup & Cargo* (Desde el instalador oficial de Rust para Windows).
  - *Visual Studio Code*. (Nuestro editor profesional)
 
 🚀 *Instrucciones de instalación paso a paso en Windows:*
 
-- *Paso 1: Los cimientos (¡Crucial!)*. Ve a la web oficial de Microsoft y descarga las Herramientas de compilación de Visual Studio (*Visual Studio Build Tools*). Al abrir el instalador, asegúrate de marcar la casilla que dice *Desarrollo para el escritorio con C++* y dale a instalar. (Aviso: tardará unos minutos porque pesa bastante, ¡paciencia!)
+- *Paso 1: Los cimientos (¡Crucial!)*. Para que Rust funcione en Windows, necesita las *herramientas de compilación de Microsoft C++*. No te preocupes, no hace falta que instales todo el programa pesado de Visual Studio, solo utilizaremos una versión ligera.
 
-- *Paso 2: El instalador de Rust*. Ve a la web oficial *rustup.rs*, pulsa sobre el enlace *display all supported installers.* y descarga el archivo ejecutable *rustup-init.exe*. Haz doble clic en él. Se abrirá una pantalla negra de consola. Pulsa la tecla 1 y luego ENTER. ¡Rust ya está en tu sistema!
++ Entra en la página oficial de #link("https://visualstudio.microsoft.com/es/downloads/")[Descargas de Visual Studio].
++ No le des al botón de descargar la versión Community que sale arriba del todo.
++ Baja por la página web hasta encontrar una sección desplegable llamada *Herramientas para Visual Studio* (o *Tools for Visual Studio*). 
++ Despliégala y encontrarás en una subsección titulada *Herramientas de compilación para Visual Studio 2026* con un botón a la derecha para descargar. Haz clic en *Descargar*.
++ Al abrir el archivo descargado se iniciará el asistente. En la ventana de selección de componentes, asegúrate de marcar la casilla *Desarrollo para el escritorio con C++* en la esquina superior izquierda.
++ Pulsa en Instalar. (Aviso: tardará unos minutos porque, aunque es una versión reducida, sigue pesando bastante. ¡Paciencia!) 
+
+- *Paso 2: El instalador de Rust*. Ve a la web oficial #link("https://rustup.rs/")[rustup.rs], pulsa sobre el enlace *display all supported installers.* y descarga el archivo ejecutable *rustup-init.exe*. Haz doble clic en él. Se abrirá una pantalla negra de consola. Pulsa la tecla 1 y luego ENTER. ¡Rust ya está en tu sistema!
+
+Para que se reconozca la instalación, cierra la terminal que has estado utilizando y vuelve a abrir otra terminal.
 
 - *Paso 3: El editor visual*. Descarga e instala *Visual Studio Code* desde su #link("https://code.visualstudio.com/Download?_exp_download=fb315fc982")[página oficial.]
 
@@ -70,7 +86,9 @@ Windows requiere un par de pasos extra porque, por defecto, no viene preparado d
 ```bash
 xcode-select --install
 ```
-Te aparecerá una ventana emergente en tu Mac. Dale a "Instalar" y acepta los términos.
+Si no están instaladas, te aparecerá una ventana emergente en tu Mac. Dale a *Instalar* y acepta los términos.
+
+Si ya estan instaladas no tienes que hacer nada.
 
 - *Paso 2: Descargar Rust.* En esa misma terminal, pega el comando universal de instalación:
 
