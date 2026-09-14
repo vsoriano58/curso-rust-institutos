@@ -204,7 +204,7 @@ fn main() {
 ```
 Comenta la línea *let referencia_mut_2 = &mut mi_coche;* con dos barras `//` al principio y vuelve a ejecutar el programa. El error ha desaparecido.
 
-== Consumo (destrucción) de una variable cuando se pasa como parámtero 
+== Consumo (destrucción) de una variable cuando se pasa como argumento 
 
 En los dos casos anteriores en los que que hemos pasado referencias de una variable a una función, en el primer caso mutable y en el segundo inmutable, hemos comprobado que la variable original sigue estando activa y podemos imprimirla después de la llamada a la función.
 

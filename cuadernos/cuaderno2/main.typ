@@ -83,7 +83,7 @@
   #v(1cm)
   
   #text(size: 28pt, weight: "bold", fill: rgb("#1f2328"))[
-    Cuaderno 1 de Rust
+    Cuaderno 2 de Rust
   ]
   
   #v(0.5em)
@@ -148,3 +148,6 @@
 #include "02_divide_y_venceras.typ"
 #include "03_reglas_de_convivencia.typ"
 #include "04_colecciones_de_datos.typ"
+#include "05_mapa_de_memoria.typ"
+#include "06_strings_a_fondo.typ"
+#include "07_proyecto_agenda_contactos.typ"
