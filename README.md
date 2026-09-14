@@ -1,6 +1,14 @@
-# 📘 Curso de Rust para Institutos (15-16 años, 3º/4º ESO)
+# 🦀 Curso de Rust para Institutos (15-16 años, 3º/4º ESO)
 
-¡Te damos la bienvenida al repositorio oficial del proyecto! Este es un esfuerzo educativo diseñado específicamente para introducir a adolescentes de entre 15 y 16 años en el fascinante mundo de la programación, utilizando **Rust** como lenguaje vehicular.
+![En Construcción](https://shields.io)
+
+¡Te damos la bienvenida al repositorio oficial del proyecto!
+
+Contiene el material didáctico de Rust adaptado para alumnos de 16 y 17 años. 
+
+⚠️ **Nota:** Este proyecto se encuentra actualmente **en construcción**. Estamos redactando y puliendo los cuadernos activamente, por lo que el código y las explicaciones pueden cambiar en los próximos días.
+
+Este es un esfuerzo educativo diseñado específicamente para introducir a adolescentes de entre 15 y 16 años en el fascinante mundo de la programación, utilizando **Rust** como lenguaje vehicular.
 
 El objetivo principal de este material no es formar ingenieros de inmediato, sino **romper la barrera del miedo** y enseñar lógica algorítmica básica de una forma interactiva, visual y divertida, utilizando la terminal como un lienzo.
 
