@@ -1,6 +1,6 @@
 # 🦀 Curso de Rust para Institutos (15-16 años, 3º/4º ESO)
 
-![En Construcción](https://shields.io)
+![En Construcción](https://img.shields.io/badge/Estado-En_Construcción-orange?style=for-the-badge&logo=rust)
 
 ¡Te damos la bienvenida al repositorio oficial del proyecto!
 
