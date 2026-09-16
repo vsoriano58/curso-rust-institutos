@@ -153,4 +153,4 @@
 #include "05_tipos_datos_y_operadores.typ"
 #include "06_instalar_entorno_profesional.typ"
 #include "07_tratamiento_de_imagenes.typ"
-#include "08_anexo.typ"
+

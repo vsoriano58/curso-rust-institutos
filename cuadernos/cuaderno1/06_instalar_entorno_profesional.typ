@@ -1,6 +1,7 @@
 #import "config.typ": *
 
 = 🔖 Subiendo de nivel: Instalación de un Entorno de Desarrollo Profesional
+
 *Objetivo:* Trabajo con imágenes
 
 Si has llegado hasta aquí, ya has jugado con Rust en la Playground, has corregido errores en rojo y has creado tus primeros minijuegos. 
@@ -23,7 +24,7 @@ Si usas *Linux*, juegas con ventaja: Rust se siente en casa en este sistema oper
  - *Herramientas de construcción* (build-essential): Rust necesita un *enlazador* (linker) para unir el código compilado.
  - *curl*: Programa auxiliar para instalar Rust.
  - *Rustup & Cargo:* El motor oficial y el gestor de paquetes de Rust.
- - *Visual Studio Code (VS Code):* Nuestro editor de texto profesional.
+ - *Visual Studio Code (VS Code):* Nuestro editor de código profesional.
 
 🚀 *Instrucciones de instalación paso a paso en Linux:*
 
@@ -60,7 +61,7 @@ Windows requiere un par de pasos extra porque, por defecto, no viene preparado d
 
 - Versiones soportadas: Windows 10 y Windows 11 (de 64 bits).
 - Lista de programas a instalar:
- - *Herramientas de C++ de Visual Studio (MSVC)*: Los cimientos que exige Rust en Windows.Hay que instalarlas en primer lugar.
+ - *Herramientas de C++ de Visual Studio (MSVC)*: Los cimientos que exige Rust en Windows. Hay que instalarlas en primer lugar.
  - *Rustup & Cargo* (Desde el instalador oficial de Rust para Windows).
  - *Visual Studio Code*. (Nuestro editor profesional)
 
@@ -71,7 +72,7 @@ Windows requiere un par de pasos extra porque, por defecto, no viene preparado d
 + Entra en la página oficial de #link("https://visualstudio.microsoft.com/es/downloads/")[Descargas de Visual Studio].
 + No le des al botón de descargar la versión Community que sale arriba del todo.
 + Baja por la página web hasta encontrar una sección desplegable llamada *Herramientas para Visual Studio* (o *Tools for Visual Studio*). 
-+ Despliégala y encontrarás en una subsección titulada *Herramientas de compilación para Visual Studio 2026* con un botón a la derecha para descargar. Haz clic en *Descargar*.
++ Despliégala y encontrarás una subsección titulada *Herramientas de compilación para Visual Studio 2026* con un botón a la derecha para descargar. Haz clic en *Descargar*.
 + Al abrir el archivo descargado se iniciará el asistente. En la ventana de selección de componentes, asegúrate de marcar la casilla *Desarrollo para el escritorio con C++* en la esquina superior izquierda.
 + Pulsa en Instalar. (Aviso: tardará unos minutos porque, aunque es una versión reducida, sigue pesando bastante. ¡Paciencia!) 
 

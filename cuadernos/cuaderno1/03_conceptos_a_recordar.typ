@@ -6,13 +6,15 @@ En este apartado vamos a incluir algunos conceptos sobre Rust de la máxima impo
 == La información que maneja un programa
 Los programas informáticos se caracterizan por manejar información. Esta información pueden obtenerla de muchas formas, por ejemplo: puede estar incrustada en el mismo programa o, facilitada por el usuario a través del ratón o el teclado, mediante una conexión a una cámara web, mediante la lectura de un código de barras, mediante la lectura de ficheros que recibe desde Internet o desde otras vías; existen muchas otras formas mediante las cuales un programa puede recibir información. 
 
-En base a las fuentes de información citadas anteriormente, podríamos clasificar la información que puede recibir y por tanto manejar un programa en muchas categorías pero, vamos a simplificar este proceso y a distinguir solamente tres categorías de información: 
+En base a las fuentes de información citadas anteriormente, podríamos clasificar la información que puede recibir ---y por tanto manejar--- un programa en muchas categorías pero, vamos a simplificar este proceso y a distinguir solamente tres categorías de información: 
 
 - Numérica (representada por números enteros y decimales) 
+
 - Texto (representado por una agrupación de letras o caracteres)
+
 - Booleanos, que solo tienen dos valores (verdadero y falso)
 
-Lo primero a reslatar es que mientras en matemáticas el conjunto de los números es infinito, veremos luego que en informática no lo es y tiene valores máximos y mínimos que pueden alcanzar. 
+Lo primero a reslatar es que mientras en matemáticas el conjunto de los números es infinito, en informática no lo es y tiene valores máximos y mínimos que pueden alcanzar. 
 
 Un texto puede contener numerosos caracteres. Considérense los caracteres que contiene un libro cuyo contenido puede ser manejado íntegramente por un programa informático.
 
@@ -21,17 +23,17 @@ Sin embargo, el conjunto de los booleanos solo tiene dos valores, *true* (verdad
 === Tipos de datos reales
 En el apartdo anterior hablamos de forma muy general de *números*, *textos* y *booleanos*. Sin embargo, para programar de verdad en Rust, debemos entender que el ordenador solo entiende de interruptores eléctricos (*unos* y *ceros*).
 
-*Nota*: Más adelante en el tema, en el apartado _5.1.- Tipos de datos en Rust_ desarrollaremos con mayor rigor el concepto que introducimos en este apartado. Lo hacemos así para que puedas entender los ejemplos de programas que vamos a estudiar sin adentrarnos todavía en una justificación teórica que es algo compleja y que dejamos para más tarde, cuando ya hayas utilizado estos conceptos desde la práctica con los ejemplos.
+#nota("Más adelante en el tema, en el apartado 5.1.- Tipos de datos en Rust, desarrollaremos con mayor rigor el concepto que introducimos en este apartado. Lo hacemos así para que puedas entender los ejemplos de programas que vamos a estudiar en el siguiente tema* sin adentrarnos todavía en una justificación teórica que es algo compleja y que dejamos para más tarde, cuando ya hayas utilizado estos conceptos desde la práctica con los ejemplos.")
 
-Para que esos unos y ceros se conviertan en una *edad*, en tu *nombre* o en el *precio* de un videojuego, Rust necesita saber el `Tipo de Dato`. Un tipo de dato es, simplemente, la plantilla que le dice al ordenador cómo traducir esos unos y ceros de la memoria RAM.
+Para que esos unos y ceros se conviertan en una *edad*, en tu *nombre* o en el *precio* de un videojuego, Rust necesita saber el *Tipo de Dato*. Un tipo de dato es, simplemente, la plantilla que le dice al ordenador cómo traducir esos unos y ceros de la memoria RAM para poder entenderlos.
 
 Aunque existen muchos tipos, por ahora solo necesitas dominar de momento estos cuatro tipos sagrados:
 
-- *Enteros (i32)*: Sirven para contar cosas completas que no se pueden partir. Tu edad, el año actual o el número de vidas de un personaje. Rust los llama *i32* (un entero de 32 bits). En la memoria ocupan un espacio de tamaño fijo.
+- *Enteros (i32)*: Sirven para contar cosas completas que no se pueden partir. Tu edad, el año actual o el número de vidas de un personaje. Rust los llama *i32* (un entero de 32 bits). En la memoria ocupan por tanto un espacio de tamaño fijo.
 
-- *Decimales (f64)*: Sirven para medir cosas precisas. El precio de una golosina (1.50), la distancia en millas (5.34) o la temperatura (23.6). Rust los llama *f64* (número en coma flotante flotante de 64 bits). El ordenador los guarda usando una parte para el número y otra para saber dónde va el punto decimal. ¡Ojo! En programación usamos el punto ., nunca la coma , para los decimales.
+- *Decimales (f64)*: Sirven para medir cosas precisas. El precio de una golosina (1.50), la distancia en millas (5.34) o la temperatura (23.6). Rust los llama *f64* (número en coma flotante de 64 bits). El ordenador los guarda usando una parte para el número y otra para saber dónde va el punto decimal. ¡Ojo! En programación usamos el punto ., nunca la coma , para los decimales.
 
-- *Texto (&str y String)*: Son cadenas de letras, números y símbolos unidos, siempre encerrados entre comillas (como "Halcón68"). En la memoria, el ordenador los guarda como una lista de caracteres seguidos.
+- *Texto (&str y String)*: Son cadenas de letras, números y símbolos unidos, siempre encerrados entre comillas (como `"`Halcón68`"`). En la memoria, el ordenador los guarda como una lista de caracteres seguidos.
 
 - *Booleanos (bool)*: Es el tipo más sencillo del mundo. Solo tiene dos valores posibles: *true* (verdadero) o *false* (falso). En la memoria ocupan el mínimo espacio posible: un único interruptor encendido o apagado. Sirven para tomar decisiones (¿el juego ha terminado?, ¿el usuario es mayor de edad?).
 
@@ -48,36 +50,46 @@ println!("Hola {}, tienes {} años.", nombre, edad);
 ```
 Rust leerá esa línea y la imprimirá en la pantalla colocando el valor de `nombre` en el primer {} y el valor de `edad` en el segundo {}. Si cambias el orden de las variables al final, la frase cambiará por completo.
 
+Por ejemplo, si nombre vale `"`Juan`"` y edad vale 25, la orden anterior imprimiría por pantalla:
+
+```
+Hola Juan, tienes 25 años.
+```
+
 ===  El limitador de decimales {:.N}
 A los ordenadores se les da tan bien la precisión matemática que, si calculas una división o una conversión de kilómetros a millas, a veces te arrojan resultados como 8.59432210943. ¡Eso en una pantalla queda feísimo!
 
-Para solucionarlo, Rust te permite tunear el marcador {} añadiendo instrucciones dentro. La más utilizada es *{:.2}*.
+Para solucionarlo, Rust te permite tunear el marcador {} añadiendo instrucciones dentro. Una de las más utilizadas es *{:.2}*.
 
 - Los dos puntos : en el interior significan: "Atención, voy a darte una instrucción de formato".
 
 - El punto y el número dos .2 significan: "Corta el número decimal y muestra solo dos dígitos después del punto".
 
-- Se puede generalizar a N decimales donde N puede valer 2, 3, 4,… {:.N}.
+- Se puede generalizar a N decimales {:.N}, donde N puede valer 2, 3, 4, etc.
 
 Ejemplo:
 
-Si el *resultado* real es 5.14367, la siguiente línea,
+Si *resultado* vale 5.14367, la siguiente línea,
 
 ```rust
 println!("Distancia: {:.3} km", resultado); 
 ```
-mostraría: `Distancia: 5.143 km`
+mostraría:
+
+ `Distancia: 5.143 km`
 
 ==  El proceso de compilación de un programa
-Un poco más adelante te explicaremos de forma más detallada el funcionamiento de la *Playground de Rust*. Es básicamente una aplicación web que te permite escribir en el lado izquierdo tu programa Rust y, si no tienes errores, cuando le das al botón *[RUN]* ves en la parte derecha el resultado de ejecutar el programa. Si cometes errores en la escritura de tu programa la Playground no generará ningún resultado. Te marcará los mensajes de error en rojo y te dará normalmente pistas para subsanarlos. Es posible que no sigas las recomendaciones de lo que Rust considera un estilo perfecto.  En tal caso te entregará mensajes en color amarillo para avisarte pero también ejecutará el programa entregándote los resultados.
+Un poco más adelante te explicaremos de forma más detallada el funcionamiento de la *Playground de Rust*. Es básicamente una aplicación web que te permite escribir en el lado izquierdo tu programa Rust y, si no tienes errores, cuando le das al botón *[RUN]* ves en la parte derecha el resultado de ejecutar el programa. 
+
+Si cometes errores en la escritura de tu programa la Playground no generará ningún resultado. Te marcará los mensajes de error en rojo y te dará normalmente pistas para subsanarlos. Es posible que no sigas las recomendaciones de lo que Rust considera un estilo perfecto. En tal caso te entregará mensajes en color amarillo para avisarte pero en este caso si que ejecutará el programa entregándote los resultados.
 
 Vamos a utilizar por primera vez la Playground.
 
 1. Pulsa sobre el enlace: #link("https://play.rust-lang.org/?version=stable&mode=debug&edition=2024")[Rust Playground oficial]
 
-En general, el programa que nosotros escribimos se denomina programa fuente. Por ejemplo, el primero será simplemente imprimir un saludo por la pantalla. 
+En general, el programa que nosotros escribimos se denomina programa fuente. El primero será simplemente imprimir un saludo por la pantalla. 
 
-2. Copia el texto que tienes abajo y pégalo en la parte izquierda de la ventana de la Playground, borrando primero el contenido previo en caso de existir.
+2. Copia el texto que tienes abajo y pégalo en la parte izquierda de la ventana de la *Playground*, borrando primero el contenido previo en caso de existir.
 
 ```rust
 fn main() {
@@ -85,9 +97,10 @@ fn main() {
 }
 ```
 
-#nota("para borrar...")
+#nota("para borrar en la Playground, sigue los dos pasos que vienen a continuación")
 
-- Click con el botón derecho del ratón sobre el panel izquierdo de la pantalla > Seleccionar todo
+- Click con el botón derecho del ratón sobre el panel izquierdo de la pantalla y elige *Seleccionar todo* en el menú contextual.
+
 - Pulsa la Tecla Supr
 
 3. Pulsa con el ratón sobre el botón *[RUN]*
@@ -108,17 +121,17 @@ El resultado de tu programa es solamente la última línea:
 
 4. Explicación
 
-Si estuviéramos trabajando en un entorno de programación más complejo que la *Playground*, seguramente el código que hemos copiado y pegado se encontraría en un fichero llamado `main.rs`. *rs* es la extensión que utilizan los ficheros de Rust. Sin embargo, al trabajar con la Playground se simplifica este proceso y desaparece el concepto de fichero main.rs. 
+Si estuviéramos trabajando en un entorno de programación más complejo que la *Playground*, seguramente el código que hemos copiado y pegado se encontraría en un fichero llamado `main.rs`. *rs* es la extensión que utilizan los ficheros de Rust. Sin embargo, al trabajar con la Playground se simplifica este proceso y desaparece el concepto de fichero `main.rs`. 
 
-Nosotros trabajaremos sencillamente con el concepto de programa, identificado con el texto que escribimos en la parte izquierda Playground.
+Nosotros trabajaremos sencillamente con el concepto de programa, identificado con el texto que escribimos en la parte izquierda de la Playground.
 
-Dentro de nuestro programa, en la instrucción `fn main()`, la palabra `fn` sirve para definir una función (ya veremos qué es esto) y la instrucción  `println!("¡Bienvenido al curso de Rust!");` imprime el mensaje *¡Bienvenido al curso de Rust!* (sin las comillas) por la pantalla.
+Dentro de nuestro programa, en la instrucción *fn main()*, la palabra *fn* sirve para definir una función (ya veremos qué es esto) y la instrucción  *println!(`"`¡Bienvenido al curso de Rust!`"`);* imprime el mensaje *¡Bienvenido al curso de Rust!* (sin las comillas) por la pantalla.
 
-Este *programa* fuente está escrito en un lenguaje (`Rust`) que el ser humano puede entender. Sin embargo, el ordenador solo entiende de unos y ceros. Para que el ordenador pueda entender y procesar el programa, existe un proceso denominado compilación que convierte el programa fuente  en otro equivalente que solo contiene unos y ceros  y que el ordenador es capaz de entender.
+Este *programa* fuente está escrito en un lenguaje *Rust* que el ser humano puede entender. Sin embargo, el ordenador solo entiende de unos y ceros. Para que el ordenador pueda entender y procesar el programa, existe un proceso denominado compilación que convierte el programa fuente  en otro equivalente que solo contiene unos y ceros  y que el ordenador es capaz de entender.
 
 Podemos llamar a este fichero *ejecutable* aunque no sea totalmente exacto en todos los casos.
 
-Podríamos resumirlo en una frase diciendo que `compilar un programa fuente lo convierte en un programa ejecutable`. Esta traducción la realiza un programa denominado *compilador* y es el que genera los mensajes de error cuando nos equivocamos al escribir el programa fuente. El programa ejecutable, como su nombre indica, puede ser ejecutado por nuestro sistema operativo, el sistema bajo el cual se ha compilado, de una forma prácticamente idéntica en Linux, MacOS o Windows. 
+Podríamos resumirlo en una frase diciendo que "compilar un programa fuente lo convierte en un programa ejecutable". Esta traducción la realiza un programa denominado *compilador* y es el que genera los mensajes de error cuando nos equivocamos al escribir el programa fuente. El programa ejecutable, como su nombre indica, puede ser ejecutado por nuestro sistema operativo, el sistema bajo el cual se ha compilado, de una forma prácticamente idéntica en Linux, MacOS o Windows. 
 
 El programa fuente, el que entiende el humano, es idéntico en las tres plataformas anteriores pero al compilar, cada plataforma genera un código ejecutable que solo ella es capaz de entender.
 
@@ -130,8 +143,10 @@ Reconocemos que es un poco aventurado explicar qué es una variable en programac
 En clase de física, por ejemplo, decimos:
 
 - v = 50.5 (Velocidad en Km/h)
+
 - t = 2 (Tiempo en horas)
-- e = Espacio recorrido (en Km)
+
+- e: Espacio recorrido (en Km)
 
 Para calcular el espacio, aplicas la fórmula:
 
@@ -139,12 +154,15 @@ $ e = v * t = 50.5 * 2 = 101 K m $
 
 En física usas esas letras para guardar números. En informática hacemos lo mismo, pero con una gran diferencia: el ordenador necesita guardar esos valores dentro de su memoria RAM y necesita saber qué tipo de información va a meter dentro.
 
-Imagína que la memoria del ordenador es un almacén gigante lleno de `cajas de cristal` para almacenar `variables`. Para usar una caja, necesitas hacer dos cosas:
+Imagína que la memoria del ordenador es un almacén gigante lleno de *cajas de cristal* para almacenar *variables*. Para usar una caja, necesitas hacer dos cosas:
 
 + Ponerle una etiqueta con un nombre (para encontrarla rápido)
+
 + Decirle al ordenador qué tipo de objeto vas a guardar dentro (un número entero, un número con decimales, un texto...), porque cada tipo de dato necesita una caja de tamaño diferente.
 
-Mira cómo escribiríamos este mismo problema de física en `Rust`. Copia este código en tu Playground y pulsa *[RUN]*:
+Mira cómo escribiríamos el problema de física anterior en `Rust`. 
+
+Copia este código en tu Playground y pulsa *[RUN]*:
 
 ```rust
 fn main() {
@@ -154,23 +172,23 @@ fn main() {
     println!("Espacio recorrido = {} Km", e);
 }
 ```
-Con *fn* definimos la función *main()* que es el punto de entrada al programa, por donde empieza a ejecutarse. Lo que hay entre las llaves {} es el código de la función main(), lo que se ejecutará al pulsar [RUN].
+Con *fn* definimos la función *main()* que es el punto de entrada al programa, por donde empieza a ejecutarse. Lo que hay entre las llaves *{}* es el código de la función main(), lo que se ejecutará al pulsar *[RUN]*.
 
-- *¿Qué significa let?* Es la palabra que usamos en `Rust` para `fabricar` una `caja nueva` en la memoria. *let v = 50.5;* significa: "Créame una caja llamada v y guarda dentro el número decimal 50.5".
+- *¿Qué significa let?* Es la palabra que usamos en *Rust* para *fabricar* una *caja nueva* en la memoria. *let v = 50.5;* significa: "Créame una caja llamada *v* y guarda dentro el número decimal *50.5*".
 
-- *¿Por qué es genial Rust?* Te habrás fijado en que no le hemos dicho a Rust qué tipo de caja queríamos. Rust es un lenguaje inteligentísimo: ve que ponemos un 50.5 (con un punto decimal) y él solo deduce: "¡Ah! Esto es un número decimal, usaré una caja para decimales". Esto se llama inferencia de tipos. No siempre puede proceder así.
+- *¿Por qué es genial Rust?* Te habrás fijado en que no le hemos dicho a Rust qué tipo de caja queríamos. Rust es un lenguaje inteligentísimo: ve que ponemos un 50.5 (con un punto decimal) y él solo deduce: "¡Ah! Esto es un número decimal, usaré una caja para decimales". Esto se llama inferencia de tipos. No siempre puede proceder así. A veces el programador debe indicar el tipo de dato que va a meter en la caja.
 
-- *¿Qué pasa si nos equivocamos de caja?* Imagina que vas al Traductor de Google, escribes una frase en español pero le dices al programa que está en alemán para que la traduzca al inglés. La traducción será un desastre absoluto. Con el ordenador pasa igual: si intenta leer un texto como si fuera un número, o viceversa, se volverá loco. Por eso Rust es tan estricto con los tipos de datos.
+- *¿Qué pasa si nos equivocamos de caja?* Imagina que vas al Traductor de Google, escribes una frase en español pero le dices al programa que está en alemán y que la traduzca al inglés. La traducción será un desastre absoluto. Con el ordenador pasa igual: si intenta leer un texto como si fuera un número, o viceversa, se volverá loco. Por eso Rust es tan estricto con los tipos de datos.
 
 Veremos más adelante que no siempre Rust infiere los tipos de datos a utilizar, e incluso a veces, queremos elegir nosotros que utilice un tipo de datos concreto. En este caso se lo tendremos que indicar de una forma explícita y coherente
 
 === Variables inmutables
 Por defecto, en Rust, todas las cajas que creas con la palabra *let* son cajas fuertes de cristal. Puedes ver lo que hay dentro, puedes usar su valor para hacer operaciones (como multiplicar v x t), pero está completamente prohibido cambiar lo que hay dentro una vez que lo has guardado. Se llaman variables *inmutables*.
 
-Si después de escribir *let t = 2.0;* intentas poner en la línea de abajo *t = 3.0;* para decir que ha pasado una hora más, `el compilador de Rust detendrá el programa, se enfadará y te mostrará un error en letras rojas.` Rust hace esto para protegerte: si una variable no debería cambiar, se asegura de que nadie la modifique por error.
+Si después de escribir *let t = 2.0;* intentas poner en la línea de abajo *t = 3.0;* para decir que ha pasado una hora más, "el compilador de Rust detendrá el programa, se enfadará y te mostrará un error en letras rojas". Rust hace esto para protegerte: si una variable no debería cambiar, se asegura de que nadie la modifique por error.
 
 === Variables mutables
-¿Pero qué pasa si estamos programando un videojuego y queremos guardar la puntuación del jugador? La puntuación empieza en 0, pero cambiará cada vez que elimine a un enemigo. `¡Necesitamos una caja que nos permita cambiar su contenido!.`
+¿Pero qué pasa si estamos programando un videojuego y queremos guardar la puntuación del jugador? La puntuación empieza en 0, pero cambiará cada vez que elimine a un enemigo. "¡Necesitamos una caja que nos permita cambiar su contenido!".
 
 En Rust, para que una caja sea *modificable*, tenemos que añadir la palabra mágica *mut* (de mutable).
 
@@ -186,7 +204,7 @@ fn main() {
 }
 ```
 
-#nota("Todo lo que hay a la derecha de las dos barras // hasta el final de la línea es un comentario y el programa lo ignora.")
+#nota("Todo lo que hay a la derecha de las dos barras // incluidas hasta el final de la línea es un comentario y el programa lo ignora.")
 
 Al añadir la palabra *mut*, le estás diciendo a Rust: "Ojo, el contenido de esta caja va a estar cambiando a lo largo del programa, prepárate".
 
@@ -223,9 +241,9 @@ Es donde el ordenador te responde. Cuando la Playground termine de procesar tu r
 *3. Los botones de mando (La barra superior):*
 En la parte de arriba tienes los botones que activan los *superpoderes* de Rust. Aunque hay varias opciones, para ser un piloto experto solo necesitas dominar estos tres botones clave:
 
-- El botón *[RUN]* (Ejecutar): Es el botón de acción principal. Se visualiza cuando tienes una función main() en el panel izquierdo. Al pulsarlo, le ordenas a los servidores de Rust que cojan tu código fuente de la izquierda, lo compilen en milisegundos a unos y ceros y te muestren el resultado de ejecutar el programa inmediatamente en el panel de la derecha. Truco de programador: Puedes pulsar las teclas *Ctrl + Enter* en tu teclado para ejecutar la acción equivalente a pulsar el botón [RUN] sin usar el ratón.
+- El botón *[RUN]* (Ejecutar): Es el botón de acción principal. Se visualiza cuando tienes una función main() en el panel izquierdo. Al pulsarlo, le ordenas a los servidores de Rust que cojan tu código fuente de la izquierda, lo compilen en milisegundos a unos y ceros y te muestren el resultado de ejecutar inmediatamente el programa*en el panel de la derecha. Truco de programador: Puedes pulsar las teclas *Ctrl + Enter* en tu teclado para ejecutar la acción equivalente a pulsar el botón*[RUN]* sin usar el ratón.
 
-- El botón *[TOOLS]  > Rustfmt* (Poner el código bonito): Escribiendo rápido es normal que unas líneas queden más hacia dentro que otras, que olvides dar espacios después de los signos o que el código se vea desordenado. Al pulsar sobre *Rustfmt* desplegando el botón *[TOOLS]*, la herramienta utiliza un asistente llamado `Rustfmt` que reordena y limpia visualmente tu código de forma automática. ¡Magia! Tu código se verá limpio, profesional y elegante al instante. Acostúmbrate a pulsarlo a menudo; un buen programador es siempre ordenado.
+- El botón *[TOOLS]  > Rustfmt* (Poner el código bonito): Escribiendo rápido es normal que el código se vea desordenado. Al pulsar sobre *Rustfmt* desplegando el botón *[TOOLS]*, la herramienta utiliza un asistente llamado `Rustfmt` que reordena y limpia visualmente tu código de forma automática. ¡Magia! Tu código se verá limpio, profesional y elegante al instante. Acostúmbrate a pulsarlo a menudo; un buen programador es siempre ordenado.
 
 - El botón *[TOOLS] > Clippy* (Tu inspector de estilo): *Clippy* es un pequeño asistente virtual que analiza tu programa en busca de mejoras. No busca faltas de ortografía (de eso se encarga el compilador), sino que revisa si hay formas más inteligentes, modernas o eficientes de escribir lo mismo. Si pulsas Clippy desplegando el botón *[TOOLS]*, te dará sugerencias en color amarillo para que tu código sea "perfecto al estilo Rust".
 
@@ -248,7 +266,7 @@ En cuanto pulses el botón, verás que aparecen cuatro opciones en la pantalla. 
 
 - *Para entregar tus ejercicios:* Cuando el profesor te pida una tarea, no tendrás que enviarle pesados archivos por correo ni usar un pendrive. Simplemente tendrás que enviarle ese enlace. El profesor podrá abrir tu programa en su propio ordenador, pulsar [RUN], probar tu juego y ver en qué te has equivocado para ayudarte.
 
-_¡Nota importante!_ Si abres un enlace de SHARE antiguo, haces cambios en el código y quieres guardar la nueva versión, tendrás que volver a pulsar el botón [SHARE] para generar un enlace nuevo. El enlace viejo nunca se modifica; siempre se queda guardado como una foto fija en el tiempo.
+#nota("Si abres un enlace de SHARE antiguo, haces cambios en el código y quieres guardar la nueva versión, tendrás que volver a pulsar el botón [SHARE] para generar un enlace nuevo. El enlace viejo nunca se modifica; siempre se queda guardado como una foto fija en el tiempo.")
 
 === Activando superpoderes: ¿Qué es un crate?
 Imagínate que estás jugando a tu videojuego favorito y le instalas un mod o una expansión para tener superpoderes, coches nuevos o herramientas que el juego no traía de fábrica. En el mundo de la programación hacemos exactamente lo mismo.
@@ -269,7 +287,7 @@ Fichero: *generador_aleatorio.rs*
 
 ```rust
 // 1. Traemos el trait 'RngExt' para activar los métodos del generador
-// Y traemos el módulo raíz 'rand' para llamar a la función .rng()
+// Y traemos el módulo raíz 'rand' para llamar a la función rand::rng()
 use rand::RngExt; 
 
 fn main() {
@@ -283,7 +301,7 @@ fn main() {
 }
 ```
 
-Si pulsas el botón [RUN] varias veces seguidas, verás que la consola de la derecha te responde con un número diferente en cada intento. ¡Acabas de crear tu primer motor de azar para un videojuego!
+Si pulsas el botón *[RUN]* varias veces seguidas, verás que la consola de la derecha te responde con un número diferente en cada intento. ¡Acabas de crear tu primer motor de azar para un videojuego!
 
 *¿Qué ha pasado aquí?*
 
@@ -295,7 +313,7 @@ La primera línea, use *rand::RngExt;*, es la llave que necesitamos para trabaja
 
 Evidentemente no es suficiente con conseguir los poderes sino que luego hay que saber utilizarlos como se muestra para este caso en las líneas *let mut generador = rand::rng();* y *let numero_dado = generador.random_range(1..7);*.
 
-Si borráramos la línea *use rand::RngExt;* el compilador se volvería loco y nos daría un error en rojo diciendo que no entiende qué significa eso de *.random_range(1..7)*. Gracias a los crates y a la Playground, tu capacidad para crear programas divertidos se vuelve infinita con solo una línea de código. Obviamente, repetimos, los crates están documentados y tenemos que aprender a utilizar los que queramos incluir en nuestro programa.
+Si borráramos la línea *use rand::RngExt;* el compilador se volvería loco y nos daría un error en rojo diciendo que no entiende qué significa eso de *.random_range(1..7)*. Gracias a los *crates* y a la *Playground*, tu capacidad para crear programas divertidos se vuelve infinita con solo una línea de código. Obviamente, repetimos, los crates están documentados y tenemos que aprender a utilizar los que queramos incluir en nuestro programa.
 
 === Lanzar el dado sin utilizar crates
 El ejemplo que hemos hecho en el apartado anterior sirvió para transmitir el concepto de crate y para que veas cómo se utilizan. Solo al final del cuaderno volveremos a utilizar otro crate e indicaremos cómo hacerlo.
@@ -318,7 +336,7 @@ fn main() {
 === Aprendiendo a leer el "idioma" del compilador
 *Guía visual* para no asustarse con los mensajes en rojo (errores) y amarillo (consejos de estilo); aprendiendo a buscar la línea exacta donde está el fallo.
 
-Cuando pulsas el botón de RUN, la Playground *compila* primero el programa y a continuación, `si no han habido errores de compilación`, lo *ejecuta*.
+Cuando pulsas el botón de *RUN*, la Playground *compila* primero el programa y a continuación, `si no han habido errores de compilación`, lo *ejecuta*.
 
 El compilador no es un enemigo que juzga tu código; es un asistente automatizado con un detector de errores ultra-sensible. Cuando tu código no compila o muestra avisos, no significa que hayas "roto" la computadora. Simplemente significa que el compilador ha encontrado algo que no entiende o que podría hacerse mejor.
 
@@ -349,13 +367,13 @@ Lo primero que debes aprender a distinguir es la gravedad del mensaje. Los compi
   [NO. El programa funcionará, pero ignorarlo puede traer "bugs (errores)" ocultos.]
 )
 
-🔍 Tu plan de acción ante la pantalla roja
+🔍 *Tu plan de acción ante un error (mensaje en rojo)*
 
 Cuando te enfrentes a una lista enorme de errores, sigue este protocolo para mantener la calma:
 
 - *Paso 1: Ve siempre al primer error*. Un solo punto y coma olvidado al principio del archivo puede desencadenar 50 errores falsos en las líneas siguientes porque el compilador se desorienta. Arregla el primero de la lista y vuelve a compilar.
 
-- *Paso 2: Copia y pega en reversa*. Si no entiendes la descripción del error, no adivines. Copia el texto explicativo (ejemplo: `error: y1_r0 holds a non-trivially copyable type`) y búscalo en Google o StackOverflow. Alguien ya se equivocó en eso mismo antes que tú. Y siempre puedes preguntar a alguna IA por el error. Indícale que estás utilizando Rust, copia el primer error mándalo al chat.
+- *Paso 2: Copia y pega buscando ayuda*. Si no entiendes la descripción del error, no adivines. Copia el texto explicativo (ejemplo: `error: y1_r0 holds a non-trivially copyable type`) y búscalo en Google o StackOverflow. Alguien ya se equivocó en eso mismo antes que tú. Y siempre puedes preguntar a alguna *IA* por el error. Indícale que estás utilizando Rust, copia el primer error y mándalo al chat.
 
 === Tu copiloto digital: Cómo preguntar a la IA
 El compilador de Rust (*rustc*) es famoso por ser uno de los más descriptivos y serviciales del mundo. Sin embargo, cuando estás empezando, sus explicaciones detalladas pueden resultar abrumadoras. Es en ese momento cuando una `Inteligencia Artificial` (*IA*) puede convertirse en tu mejor tutor personal, siempre y cuando sepas cómo comunicarte con ella.
@@ -368,8 +386,11 @@ Cuando tu código falla en la Rust Playground, la terminal inferior te mostrará
 
 Sigue estos pasos para preparar tu consulta:
 
-- Copia el código completo de tu ventana de edición
-- Copia el mensaje de error íntegro de la consola inferior (incluyendo los bloques que dicen help: o note:, ya que Rust suele incluir ahí la solución exacta)
+- Copia el código completo de tu programa en la ventana de edición.
+
+- Copia el mensaje de error íntegro de la consola inferior (incluyendo los bloques que dicen help: o note:, ya que Rust suele incluir ahí la solución exacta).
+
+- Pega finalmente los contenidos anteriores en la ventana de chat con la IA como parte final de tu prompt (consulta, pregunta).
 
 🦾 *Fórmulas de Prompts: Cómo pedir explicaciones (y no solo respuestas).*
 
@@ -405,7 +426,7 @@ Cuando escribimos una receta de cocina, a veces añadimos notas al margen como "
 
 Un comentario es un fragmento de texto que escribimos dentro de nuestro programa para explicarnos a nosotros mismos (o a un compañero) qué hace el código. Lo maravilloso de los comentarios es que *el compilador los ignora* por completo. Al traducir nuestro programa a unos y ceros, el compilador hace como si esas líneas no existieran.
 
-En Rust, para escribir un comentario de una sola línea solo tenemos que poner dos barras inclinadas `//`. Todo lo que escribas a la derecha de esas dos barras se volverá de un color diferente en la pantalla y el ordenador no lo ejecutará.
+En Rust, para escribir un comentario de una sola línea solo tenemos que poner dos barras inclinadas `//`. Todo lo que escribas a la derecha de esas dos barras inclusive se volverá de un color diferente en la pantalla y el ordenador no lo ejecutará.
 
 ```rust
 fn main() {

@@ -4,13 +4,14 @@
 Has llegado a la última frontera del primer cuaderno. Hasta ahora, todos tus programas se ejecutaban en la Playground, que es una terminal de texto. En este capítulo vas a dar el salto al mundo visual: vamos a usar Rust para *abrir, leer y modificar* imágenes reales en tu disco duro.
 
 == Creando tu primer proyecto con Cargo
-En la Playground solo teníamos el contenido de un archivo volcado en su lado izquierdo. Ni siquiera teíamos un fichero físico. En el mundo profesional, un programa real se compone de varios archivos y herramientas. Para gestionarlos, Rust incluye un asistente en la terminal llamado *Cargo.* La instalación que hicimos de Rust en el apatado anterior nos proporciona todas las herramientas del asistente Cargo.
+En la Playground solo teníamos el contenido de un archivo volcado en su lado izquierdo. Ni siquiera teíamos un fichero físico. En el mundo profesional, un programa real se compone de varios archivos y herramientas. Para gestionarlos, Rust incluye un asistente en la terminal llamado Cargo. *La instalación que hicimos de Rust en el apatado anterior nos proporciona todas las herramientas del asistente Cargo.*
 
-Para organizar nuestros proyectos crearemos una carpeta raiz de los mismos con el nombre *proyectos-rust*. Podemos ubicarla en cualquier parte de nuestro disco duro.
+Para organizar nuestros proyectos crearemos una carpeta raiz de los mismos con el nombre *proyectos-rust*. Podemos ubicarla en cualquier parte de nuestro disco duro. Si has seguido los apartados anteriores de este cuaderno, seguramente ya tendrás creada esta carpeta.
 
 *Creación del proyecto*
 
 Abre la terminal de tu ordenador en la carpeta *proyectos-rust* y escribe la siguiente orden para crear tu primer proyecto Rust:
+
 ```bash
 cargo new tratamiento_imagenes
 ```
@@ -22,8 +23,8 @@ Cargo es muy estricto y no te permite crear proyectos cuyo nombre empiece por un
 
 🛠️ *Cómo abrir el proyecto en Visual Studio Code:*
 - Abre Visual Studio Code.
-- Ve al menú superior y selecciona Archivo -> Abrir carpeta (Open Folder).
-- Selecciona la carpeta *proyectos-rust* y dale a abrir. 
+- Ve al menú superior y selecciona *Archivo -> Abrir carpeta* (Open Folder).
+- Selecciona la carpeta *proyectos-rust* y dale a *Seleccionar* o *Abrir*. 
 
 En la barra lateral izquierda verás la carpeta `proyectos-rust` y en su interior  la del proyecto creado anteriormente *tratamiento_imagenes.* Desplegando esta carpeta verás la estructura del proyecto:
 
@@ -35,7 +36,7 @@ En la barra lateral izquierda verás la carpeta `proyectos-rust` y en su interio
 image = "0.24"
 ```
 == 🎛️ El cuadro de mandos de Cargo
-En primer lugar abre la terminal integrada de VS Code haciendo *click derecho* sobre la carpeta del proyecto y seleccionando *Open in integraded Ternminal.* (En español debe ser algo así como `abrir en la terminal integrada`)
+En primer lugar abre la terminal integrada de VS Code haciendo *click derecho* sobre la carpeta del proyecto y seleccionando *Open in integraded Ternminal.* (En español debe ser algo así como `Abrir en la terminal integrada`)
 
 Para trabajar de forma profesional, solo necesitas memorizar estos comandos que escribirás en la terminal integrada de VS Code cuando corresponda:
 
@@ -84,11 +85,11 @@ Algunos ejemplos para valores de un pixel:
   - *[255, 255, 255]* es Blanco (luces a tope).
 
 == Programa 1: Leyendo el color de un píxel
-Para este experimento, busca una imagen en internet (la famosa foto de prueba *lena.jpg* o cualquier otra; también tienes una carpeta de imágenes en el repositorio que te has descargado), renómbrala como *entrada.jpg* y guárdala dentro de la carpeta principal de tu proyecto (al lado de *Cargo.toml*).
+Para este experimento, busca una imagen en internet ---la famosa foto de prueba *lena.jpg* o cualquier otra; también tienes una carpeta de imágenes en el repositorio que te has descargado---, renómbrala como *entrada.jpg* y guárdala dentro de la carpeta principal de tu proyecto (al lado del fichero *Cargo.toml*).
 
-Estamos trabajando en el proyecto *tratamiento_imagenes* que creamos en el apartado 7.1.
+#nota("Estamos trabajando en el proyecto *tratamiento_imagenes* que creamos en el apartado 7.1.")
 
-💻  Escribe este código dentro de tu archivo *src/main.rs:*
+💻  Escribe este código dentro de tu archivo *src/main.rs* borrando si existía algo previamente:
 
 ```rust
 use image::GenericImageView; // Importamos la herramienta para mirar imágenes
@@ -131,9 +132,9 @@ Coloca el `ancho en pixeles de la imagen` en la variable *ancho* y el `alto en p
 ```rust
 let pixel = imagen.get_pixel(100, 100);
 ```
-Es bastante interesante. La parte que hay a la derecha del igual busca el pixel (100,100) de la imagen y copia sus 4 valores (3 valores de color y uno de transparencia). Los píxeles se cuentan partiendo de la posición (0, 0) en la esquina superior izquierda de la imagen y van aumentando cuando nos desplazamos a la rderecha y hacia abajo.
+Es bastante interesante. La parte que hay a la derecha del igual busca el pixel (100,100) de la imagen y copia sus 4 valores (3 valores de color y uno de transparencia). Los píxeles se cuentan partiendo de la posición (0, 0) en la esquina superior izquierda de la imagen y van aumentando cuando nos desplazamos a la derecha y hacia abajo.
 
-Esos cuatro valores forman un dato compuesto y se asignan en un solo nombre a la variable pixel, a la izquierda del igual.
+Esos cuatro valores forman un dato compuesto y se asignan en un solo nombre a la variable *pixel*, a la izquierda del igual.
 
 *4. La instrucción:*
 
@@ -142,7 +143,7 @@ println!("🎨 El píxel en (100,100) tiene los valores: RGBA -> {:?}", pixel);
 ```
 Muestra los cuatro valores de pixel. 
 
-Observa que hemos utilizado el marcadot *{:?}* para imprimir *pixel*. Esto es consecuencia de que pixel es una variable compuesta (4 valores) y con este marcador Rust sabe como imprimirla. El resultado de imprimir lo tienes en la línea de abajo que constituye la salida del programa:
+Observa que hemos utilizado el marcador *{:?}* para imprimir *pixel*. Esto es consecuencia de que pixel es una variable compuesta (4 valores) y con este marcador Rust sabe como imprimirla. El resultado de imprimir lo tienes en la línea de abajo que constituye la salida del programa:
 
 El píxel en (100,100) tiene los valores: RGBA -> Rgba([139, 71, 60, 255])
 
@@ -169,6 +170,8 @@ En el proyecto del apartado anterior, si hubiéramos procedido a modificar un so
 
 Vamos a seleccionar el píxel (100, 100) de la imagen lena.jpg y, usando la potencia de los bucles que aprendiste en el laboratorio, pintaremos un cuadrado rojo de 11x11 píxeles a su alrededor. Luego, guardaremos el resultado en un archivo nuevo llamado *lena_modificada.png*.
 
+#nota("Es posible que necesistes revisar el funcionamiento de los bucles for para entender los dos proyectos que siguen a continuación. En tal caso, revisa el apartado '4.4 El bucle for con rangos.'")
+
 💻  Escribe este código dentro de tu archivo *src/main.rs* borrando primero cualquier código preexistente:
 
 ```rust
@@ -182,7 +185,7 @@ fn main() {
 
     println!("🎨 Modificando la imagen... Dibujando zona de pruebas.");
 
-    // El color rojo en formato RGB se compone de: Máximo Rojo (255), Cero Verde (0), Cero Azul (0)
+    // El color rojo en formato RGB se compone de: Máximo Rojo (255), cero Verde (0) y cero Azul (0)
     let color_rojo = Rgb([255, 0, 0]);
 
     // 2. Usamos dos bucles anidados para recorrer un área de 11x11 píxeles
@@ -296,6 +299,7 @@ fn main() {
 ⚙️ *El análisis del detective: ¿Cómo escaneamos miles o millones de píxeles?*
 
 - El radar automático *imagen.dimensions()*: Gracias a la herramienta *GenericImageView*, no necesitamos adivinar el tamaño de la foto. Rust lee el archivo y nos devuelve dos números enteros: el *ancho* y el *alto*.
+
 - La lista de canales (*canales[0], canales[1], canales[2], canales[3]*): Un píxel guarda sus cuatro valores como si fuera una lista de elementos en un estante. En programación, siempre empezamos a contar desde el cero:
 
 ```bash
@@ -335,7 +339,10 @@ Imagina que estamos programando una utilidad para el instituto o un videojuego d
 Limpia tu archivo *main.rs* en VS Code y escribe este último programa de nivel avanzado:
 
 ```rust
-// 💡 la etiqueta #[derive(Debug)] le da al struct el "superpoder" de poer imprimirse en pantalla (es un dato compuesto)
+// 💡 la etiqueta #[derive(Debug)] le da al struct el "superpoder" 
+// de poder imprimirse en pantalla (es un dato compuesto)
+
+// Definimos la estructura
 #[derive(Debug)] 
 struct Persona {
     nombre: String,
@@ -346,7 +353,8 @@ struct Persona {
 fn main() {
     println!("🗂️  CREANDO FICHA DE PERSONA EN LA MEMORIA 🗂️\n");
 
-    // 1. Rellenamos la ficha creando un objeto con nuestra estructura personalizada
+    // 1. Rellenamos la ficha creando un objeto con nuestra estructura personalizada,
+    // la que hemos creado arriba
     let usuario = Persona {
         nombre: String::from("Halcón68"),
         edad: 14,
@@ -361,7 +369,8 @@ fn main() {
     println!("\n------------------------------------------------\n");
 
     // 3. Método 2: Imprimir la estructura COMPLETA de golpe
-    // ⚠️ ¡Ojo! Para imprimir un struct entero usamos el marcador especial {:?} y tenemos que haberle dado superpoderes antes: #[derive(Debug)]
+    // ⚠️ ¡Ojo! Para imprimir un struct entero usamos el marcador especial {:?} y
+    // tenemos que haberle dado superpoderes antes: #[derive(Debug)]
     println!("📸 Radiografía completa del objeto en memoria:\n {:?}", usuario);
 }
 ```
@@ -370,11 +379,13 @@ fn main() {
 
 Si buscas códigos de Rust en foros o tutoriales de internet, te vas a cruzar constantemente con líneas raras que llevan un signo de almohadilla y corchetes, como `#[derive(Debug)]`. Vamos a quitarles la máscara para que veas que no muerden:
 
-- *¿Qué es un struct?:* Piensa en él como el diseño en papel de una ficha de estudiante. No es un dato real todavía, es solo la plantilla que dice: "Cualquier Persona que creemos en esta estructura tendrá obligatoriamente un *nombre*, una *edad* y una *profesión*".
+- *¿Qué es un struct?:* Piensa en él como el diseño en papel de una ficha de estudiante. No es un dato real todavía, es solo la plantilla que dice: "Cualquier Persona que creemos con esta estructura tendrá obligatoriamente un *nombre*, una *edad* y una *profesión*". Estas tres variables se denominan campos y cuando diseñamos el *struct* especificamos de que tipo deben ser.
 
-- *El operador punto (usuario.nombre):* Para acceder a los campos guardados dentro de nuestra estructura, usamos un punto .. Es la forma de decirle a Rust: `Ve a la caja llamada usuario y sácame únicamente lo que haya en su cajón nombre`.
+A partir del *struct Persona* hemos creado una variable *usuario* que será de tipo *Persona*, pasando valores a los campos del struct con unos tipos que coinciden con los especificados en el struct Persona.
 
-- *Las directivas o "Superpoderes"* `#[derive(Debug)]`: Por defecto, Rust es tan estricto con la eficiencia que no sabe cómo imprimir una estructura completa en pantalla con un *println!()* normal. Si intentas poner solo *{}*, el compilador te dará un error rojo gigante. Al escribir #[derive(Debug)] justo encima del *struct*, le estamos inyectando un superpoder automático para que Rust aprenda a hacerle una `radiografía visual` a toda la estructura cuando usemos el marcador especial *{:?}* y así pueda imprimirlo.
+- *El operador punto (usuario.nombre):* Para acceder a los campos guardados dentro de nuestra estructura, usamos un punto .. Es la forma de decirle a Rust: `Ve a la caja llamada usuario y, por ejemplo, sácame únicamente lo que haya en su cajón nombre`.
+
+- *Las directivas o "Superpoderes"* `#[derive(Debug)]`: Por defecto, Rust es tan estricto con la eficiencia que no sabe cómo imprimir una estructura completa en pantalla con un *println!()* normal. Si intentas poner solo el marcador *{}*, el compilador te dará un error rojo gigante. Al escribir `#[derive(Debug)]` justo encima del *struct*, le estamos inyectando un superpoder automático para que Rust aprenda a hacerle una `radiografía visual` a toda la estructura cuando usemos el marcador especial *{:?}* y así pueda imprimirlo.
 
 🎮 *¡Haz la prueba técnica!*
 

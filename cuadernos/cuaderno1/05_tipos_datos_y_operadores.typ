@@ -6,7 +6,7 @@ En este tema hablaremos con más rigor sobre los tipos de datos en Rust e introd
 == Tipos de datos en Rust
 Hasta ahora, hemos visto que nuestros programas manejan tres tipos de información: Números, Texto y Booleanos (sí/no). En el mundo real esto es un poco más complejo, pero no quisimos mostrártelo antes para no complicarte la vida. ¡Queríamos que empezaras a jugar con los programas lo antes posible!
 
-Ya conoces algunos tipos como *i32* (enteros) o *f64* (decimales). Un entero i32 ocupa siempre en la memoria 32 bits y un decimal f64 ocupa siempre 64 bits. Veremos a continuación el concepto de bit. También has visto el texto en formato *&str*. Este último es una versión `recortada` de otro tipo llamado *String*. Ambos guardan texto, pero lo hacen de formas distintas y su tamaño en la memoria cambia según lo largo que sea el mensaje a diferencia de los anteriores que son de tamaño fijo.
+Ya conoces algunos tipos como *i32* (enteros) o *f64* (decimales). Un entero i32 ocupa siempre en la memoria 32 bits y un decimal f64 ocupa siempre 64 bits. Veremos a continuación el concepto de bit. También has visto el texto en formato *&str*. Este último es una versión *recortada* de otro tipo llamado *String*. Ambos guardan texto, pero lo hacen de formas distintas y su tamaño en la memoria cambia según lo largo que sea el mensaje a diferencia de los anteriores que son de tamaño fijo.
 
 Para entender por qué Rust es tan estricto con los tipos de datos, tenemos que hacer un viaje relámpago al interior de la memoria de tu ordenador.
 
@@ -34,9 +34,11 @@ Si intentaras leer esos 64 bits como si fuera un número entero i32, el ordenado
 
 Además, el ordenador usa trucos diferentes (códigos) para guardar números negativos o para convertir letras en números (asignando a cada letra un código numérico).
 
-Por eso, los tipos de datos son las etiquetas que le dicen a Rust cómo traducir los unos y ceros de la memoria para que tu programa no se vuelva loco.
+Por eso, los tipos de datos son las etiquetas que le dicen a Rust cómo traducir los unos y ceros de la memoria para que tu programa los entienda y no se vuelva loco.
 
 === 🤖 Tipos de datos por defecto
+Cuando asignamos un dato a una variable ---en este caso el dato se llama un literal---, aunque no indiquemos el tipo de dato Rust asigna a la variable un tipo que denominamos el tipo por defecto.
+
 *Números decimales*
 
 En los ejemplos hemos utilizado instrucciones como esta:
@@ -45,14 +47,14 @@ En los ejemplos hemos utilizado instrucciones como esta:
 let v = 50.5;
 ```
 
-Aquí definimos la variable inmutable *v* (con *let*) como un valor decimal pero no indicamos el tipo de dato de v. En Rust existen dos tipos de datos digitales, f32 y f64. Si no indicamos el tipo en la signación de un valor decimal a una variable como en la anterior instrucción, el compilador toma por defecto *f64*. Por tanto v será del tipo f64.
+Aquí definimos la variable inmutable *v* (con *let*) como un valor decimal pero no indicamos el tipo de dato de v. En Rust existen dos tipos de datos decimales, f32 y f64. Si no indicamos el tipo en la signación de un valor decimal a una variable como en la anterior instrucción, el compilador toma por defecto *f64*. Por tanto v será del tipo f64.
 
 Si queremos realmente que v sea de tipo f32 lo tenemos que indicar en la declaración y asignación. Por ejemplo:
 
 ```rust
 let v:f32 = 50.5;
 ```
-Aquí indicamos que v es de tipo f32.
+Arriba indicamos que v es de tipo f32.
 
 Una forma alternativa de expresar lo mismo es:
 
@@ -91,9 +93,9 @@ Son los tipos de datos más sencillos. Representan *un único valor atómico* (n
 - *Booleanos (Verdad o mentira):* Solo tienen dos estados posibles. ¡Como un interruptor!
  - *bool:* Sus únicos valores son true (verdadero) o false (falso). Es el motor de las decisiones en el código cuando se utiliza (if).
 
--*Caracteres (Una sola letra o símbolo):* Sirven para guardar una única letra, número suelto o... ¡incluso un emoji!
+- *Caracteres (Una sola letra o símbolo):* Sirven para guardar una única letra, número suelto o... ¡incluso un emoji!
 
-- *char:* Se escriben con comillas simples (por ejemplo: 'A', '7' o '🚀'). Ocupan 4 bytes porque usan Unicode, lo que les permite representar casi cualquier símbolo del mundo.
+ - *char:* Se escriben con comillas simples (por ejemplo: 'A', '7' o '🚀'). Ocupan 4 bytes porque usan Unicode, lo que les permite representar casi cualquier símbolo del mundo.
 
 ==== *Tipos Compuestos (Varios valores juntos)*
 Son tipos que permiten agrupar múltiples valores dentro de una sola *caja* o *variable*. Nos podremos referir a esos multiples valores a través del nombre único de la variable.
@@ -127,7 +129,7 @@ fn main() {
 
     // Flotantes: Números con decimales
     let puntuacion = 95.5; // f64 por defecto
-    let gravedad: f32 = 9.81; // Forzamos precisión simple
+    let gravedad: f32 = 9.81; // Forzamos precisión simple f32
 
     // Booleanos: ¡Verdadero o Falso!
     let partida_terminada = false;
@@ -146,10 +148,11 @@ fn main() {
     // Para sacar los datos de la tupla usamos un punto y su posición (empezando desde 0)
     let nombre_jugador = jugador.0;
     let puntos_jugador = jugador.1;
+    let jugador_esta_vivo = jugador.2;
 
     // Array: Una lista fija de elementos que TIENEN que ser del mismo tipo
     // Guardamos las puntuaciones de las últimas 4 partidas
-    let historial_puntos: [i32; 4] = [120, 98, 101, 63];
+    let historial_puntos: [i32; 4] = [120, 98, 101, 63]; // 4 valores de tipo i32
 
     // Para sacar un dato del array usamos corchetes [] y la posición (el primero es el 0)
     let primera_partida = historial_puntos[0]; 
@@ -175,16 +178,18 @@ Lo podemos ver en los siguientes ejemplos:
 
 ```rust
 let jugador: (&str, i32, bool) = ("Halcón", 2500, true);
+
 // Para sacar los datos de la tupla usamos un punto y su posición (empezando desde 0)
 let nombre_jugador = jugador.0;
 let puntos_jugador = jugador.1;
-let esta_vivo = jugador.2;
+let jugador_esta_vivo = jugador.2;
 ```
 
 *En el vector*
 
 ```rust
 let historial_puntos: [i32; 4] = [120, 98, 101, 63];
+
 // Para sacar un dato del array usamos corchetes [] y la posición (el primero es el 0)
 let primera_partida = historial_puntos[0]; 
 let segunda_partida = historial_puntos[1]; 
@@ -269,14 +274,14 @@ Sirven para comparar dos cosas. El resultado de estas operaciones siempre es un 
 Sirven para combinar varias preguntas a la vez. Imagina que para entrar a una mazmorra necesitas: tener el nivel 10 Y tener la llave dorada. ¡Aquí entran en juego los operadores lógicos!
 
 - *&& (Operador Y / AND):* Da true solo si todas las condiciones son verdaderas.
- - let entrar = (nivel >= 10) && tiene_llave; (Si una de las dos es falsa, no entras).
+ - let *entrar* = (nivel >= 10) *&&* tiene_llave; (Si una de las dos es false, entrar es false).
 
 - *|| (Operador O / OR):* Da true si al menos una de las condiciones es verdadera. (El signo | se obtiene con la tecla *Alt Gr + 1* en la mayoría de teclados).
- - let jugar = (tengo_consola) || (tengo_pc); (Con que tengas uno de los dos, ya puedes jugar).
+ - let jugar = (tengo_consola) *||* (tengo_pc); (Con que tengas uno de los dos, ya puedes jugar).
 
 - *! (Operador NO / NOT):* Invierte el resultado. Lo que era true lo vuelve false, y viceversa. Es el botón de "llevar la contraria".
  - let vivo = true;
- - let fantasma = !vivo; (fantasma pasará a valer false).
+ - let fantasma = *!*vivo; (fantasma pasará a valer false).
 
 💻 Un minireto
 

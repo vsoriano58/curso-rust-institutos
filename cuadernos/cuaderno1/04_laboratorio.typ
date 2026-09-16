@@ -1,13 +1,13 @@
 #import "config.typ": *
 
 = 🔖 Laboratorio
-Como vamos a trabajar en la `Rust Playground`, para probar un programa podrás copiarlo del cuaderno y pegarlo en la parte izquierda de la ventana de la Playground . No obstante, si te has descargado el repositorio también tienes allí los mismos códigos guardados en ficheros con el mismo nobre que se indica en el cuaderno. Puedes también copiar los códigos desde los ficheros y pegarlos en la playground.
+Como vamos a trabajar en la *Rust Playground*, para probar un programa podrás copiarlo del cuaderno y pegarlo en la parte izquierda de la ventana de la Playground. No obstante, si te has descargado el repositorio de los cuadernos también tienes allí los mismos códigos guardados en ficheros con el mismo nobre que se indica en el cuaderno. Puedes también copiar los códigos desde los ficheros y pegarlos en la playground.
 
 == Sección 1: Despegue
 A partir de esta sección empezaremos a programar y explicar distintos ejemplos para que consolides lo que has aprendido en teoría y te diviertas modificando y ejecutando los ejercicios que proponemos.
 
 === El programa hola mundo
-El siguiente programa debe presentar en la pantalla el texto: `¡Hola, Mundo desde la Playground!`
+El siguiente programa debe presentar en la pantalla el texto: *¡Hola, Mundo desde la Playground!*
 
 - Lee los comentarios y ejecuta el programa pulsando el botón *[RUN]* o *[CONTROL]  + [ENTER]* en tu Playground.
 
@@ -17,7 +17,8 @@ Fichero: *hola_mundo.rs*
 
 ```rust
 // Bienvenidos a vuestro primer programa en Rust.
-// Las dos barras '//' sirven para escribir notas que el ordenador ignora.
+// Las dos barras // sirven para escribir notas 
+// que el ordenador ignora.
 
 fn main() {
     // Todo programa en Rust empieza a ejecutarse dentro de estas llaves { }
@@ -30,14 +31,16 @@ fn main() {
 
 A simple vista parece poca cosa, pero aquí dentro se esconden las tres reglas sagradas de la estructura de Rust que debes memorizar:
 
-+ *La Llave de Entrada* al programa, *fn main():*
+1. *La Llave de Entrada* al programa, la función *fn main():*
 La palabra *fn* significa *función* (un bloque de código que hace una tarea). La palabra *main* significa *principal* en inglés. En Rust, todo, absolutamente todo lo que quieras que tu ordenador ejecute, debe vivir dentro de la función principal. Es la puerta de acceso a la memoria. Más tarde veremos que pueden tambíen existir funciones que se escriben fuera de la función main, arriba o abajo de la misma.
 
-+ *El Contenedor (Las llaves { }):* 
-Las llaves actúan como las paredes de una habitación. La llave de apertura { marca dónde empieza a trabajar el ordenador y la llave de cierre } marca el final del camino. Si dejas una habitación sin una de sus paredes o las dos, el programa se romperá.
+2. *El Contenedor (Las llaves { }):* 
+Las llaves actúan como las paredes de una habitación. La llave de apertura *{* marca dónde empieza a trabajar el ordenador y la llave de cierre *}* marca el final del camino. Si dejas una habitación sin una de sus paredes o las dos, el programa se romperá.
 
-+ *El Emisor de Píxeles (println!(“texto”)):* 
+3. *El Emisor de Píxeles, println!(`“`texto`”`):* 
 Esta orden (que se pronuncia print-line) toma el texto que escribas entre comillas y lo estampa en la pantalla negra de la derecha.
+
+*Veamos algunos detalles importantes:*
 
 *A) El punto y coma ; y los comentarios*
 
@@ -47,7 +50,7 @@ Si miras con atención el código anterior, notarás dos detalles cruciales: el 
 Cada vez que le das una instrucción de acción al ordenador, debes terminar la línea con un punto y coma. Piensa en él como el punto final de una frase en un libro. Si lo omites, el ordenador se quedará esperando y no sabrá dónde termina una orden y dónde empieza la siguiente. Solo algunas líneas muy concretas en los programas no se finalizan con punto y coma. Obsérvalo en los listados para que no te pase desapercibido.
 
 - *Los comentarios (`//`):* 
-Si en cualquier parte de tu pantalla escribes dos barras seguidas `//`, todo lo que escribas a continuación en esa misma línea se volverá de color gris. El ordenador ignorará por completo ese texto. 
+Si en cualquier parte de tu pantalla escribes dos barras seguidas `//`, todo lo que escribas a continuación en esa misma línea incluidas las dos barras se volverá de color gris. El ordenador ignorará por completo ese texto. 
 
 Sirve para que tú, como programador, dejes notas explicativas para ti mismo o para tus compañeros.
 
@@ -65,14 +68,14 @@ fn main() {
 }
 ```
 
-❌ Control de Daños:
+❌ *Control de Daños, ¿en qué consiste?:*
 
 Cuando un programa no funcione debido a un error en rojo del compilador, tu red de seguridad inmediata es comentar la línea que produce el error. El compilador te indicará el número de la línea. Añade `//` al principio de la instrucción que falla. Al hacerlo, la línea se volverá gris, el compilador la pasará de largo y te permitirá ejecutar el resto del programa (si es posible sin esa línea) para comprobar que lo demás está bien.
 
 === Qué hacer cuando obtenemos errores del compilador
 En el apartado anterior aprendiste la teoría del "control de daños", y ahora vamos a ponerla en práctica. Si intentas pulsar *[RUN]* en la Playground con el código de abajo tal cual está, verás que la pantalla se tiñe de rojo. El compilador se ha negado a compilar el programa. 
 
-Vamos a jugar a los detectives para entender qué está pasando aquí dentro analizando el programa anterior:
+Vamos a jugar a los detectives para entender qué está pasando aquí dentro analizando el programa:
 
 Fichero: *destripando_main.rs*
 
@@ -110,11 +113,11 @@ Al comentar la línea 6, el compilador por fin puede avanzar... ¡pero vuelve a 
 - *Misión:* Corrige la línea 9 cambiando print_pantalla! por println!. Quita también las barras `//` de la línea 6 y ponle el punto y coma ; que le faltaba al final de la línea. ¡Vuelve a compilar y disfruta de tu pantalla en verde!
 
 === Tipos e inferencia
-Va mos a trabajar con el código del fichero que indicamos un poco más abajo.
+Vamos a trabajar con el código del fichero que indicamos un poco más abajo.
 
 - La instrucción: *let edad: i32 = 14;* significa que declaramos la variable edad como entera de 32 bits y la inicializamos con el entero 14.
 
-- La instrucción *let nombre: &str = `"`Halcón68`"`;* significa que declaramos la variable `nombre` como entera y la inicializamos con el texto `"Halcón68"` sin las comillas.
+- La instrucción *let nombre: &str = `"`Halcón68`"`;* significa que declaramos la variable `nombre` como texto y la inicializamos con la cadena de texto `"Halcón68"` sin las comillas.
 
 Fichero: *tipos_e_inferencia.rs*
 
@@ -140,7 +143,7 @@ fn main() {
 }
 ```
 
-🖥️ Copia y pega el programa anterior en la Playground. Ejecuta el programa pusando sobre el botón *[RUN]*.  Se producirá el siguiente error en la playground:
+🖥️ Copia y pega el programa anterior en la Playground. Ejecuta el programa pulsando sobre el botón *[RUN]*.  Se producirá el siguiente error en la playground:
 
 ```
 --> src/main.rs:12:23
@@ -152,19 +155,19 @@ fn main() {
 
 ```
 
-Efectivamente. Declaraste la variable *puntos* como entera de 32 bits, *let puntos: i32 = "diez";*  pero le asignaste el texto “diez”. Rust es muy estricto con los tipos. Si declaras una variable de un tipo, en el ejemplo *i32*, luego no puedes asignar a es variable un valor de otro tipo, por ejemplo de tipo *Texto* como ocurre en el programa. Por eso el compilador generó el error.
+Efectivamente. Declaraste la variable *puntos* como entera de 32 bits, *let puntos: i32 = "diez";*  pero le asignaste el texto “diez”. Rust es muy estricto con los tipos. Si declaras una variable de un tipo, en el ejemplo *i32*, luego no puedes asignar a esa variable un valor de otro tipo, por ejemplo de tipo *Texto* como ocurre en el programa. Por eso el compilador generó el error.
 
-Comenta esa línea con dos `//` barras al principio y vuelve a ejecutar con [RUN] para obtener los resultados esperados. Escribe ( `//` let puntos: i32 = `"`diez`"`; ).
+Comenta esa línea con dos `//` barras al principio y vuelve a ejecutar con [RUN] para obtener los resultados esperados. Debes ver la línea así: ( `//` let puntos: i32 = `"`diez`"`; ).
 
 En la programación, guardar información es como organizar una mudanza: necesitas cajas de cartón. Rust es increíblemente ordenado y exige saber qué tipo de objeto va dentro de cada caja para que nada se rompa por el camino.
 
 Ejecuta nuevamente este código en tu Playground para ver cómo gestiona Rust sus "cajas" (a las que llamamos *variables*).
 
-A continuación te proponemos repetir de nuevo los pasos anteriores para que interiorices bien este proceso de detección y comprensión de errores y tengas alguna erramienta para poder (si es posible) anular el error y que el programa siga ejecutándose hacia abajo en el código.
+A continuación te proponemos *repetir de nuevo los pasos anteriores* para que interiorices bien este proceso de detección y comprensión de errores y tengas alguna herramienta para poder (cuando sea posible) anular el error y que el programa siga ejecutándose hacia abajo en el código.
 
 🕵️ *Experimento 1: El conflicto de las cajas*
 
-Si pulsas *[RUN]* tal como estaba el código al principio, la Playground se detendrá en la línea *let puntos: i32 = `"`diez`"`;* donde intentamos crear los puntos. El compilador te lanzará un error cristalino al principio con letras blancas en fondo rojo: mismatched types (tipos que no coinciden).
+Si pulsas *[RUN]* tal como estaba el código al principio, la Playground se detendrá en la línea *let puntos: i32 = `"`diez`"`;* donde intentamos crear los puntos. El compilador te lanzará un error cristalino al principio con letras blancas en fondo rojo: *mismatched types (tipos que no coinciden).*
 
 Le has dicho a Rust: Voy a crear una caja para números enteros *i32* pero luego has intentado meter dentro la palabra *diez* escrita con letras *&str*. Rust se niega en redondo a mezclar churras con merinas para evitar que el programa falle en el futuro.
 
@@ -176,14 +179,14 @@ Le has dicho a Rust: Voy a crear una caja para números enteros *i32* pero luego
 
 + *La Magia de la Inferencia:* Fíjate en las variables *nivel* y *lenguaje*. ¡No les hemos puesto los dos puntos : ni el tipo de datos! Rust tiene un cerebro digital tan potente que lee el valor de la derecha, ve un 1 y deduce él solo: "Vale, esto es un número entero, no hace falta que el programador me lo especifique", prepararé una caja i32 para enteros. Luego en esta caja no puedes meter un texto.
 
-+ A este superpoder de adivinar el tipo se le llama Inferencia de tipos.
++ A este superpoder de adivinar el tipo se le llama Inferencia de tipos y solo es posible cuando en una asignación con el operador *=*, el tipo de la parte derecha del igual es cococido y se le asigna a la parte izquierda del igual.
 
 === Mis primeras funciones
 Vamos a poner en práctica la teoría del "divide y vencerás". En este experimento, a continuación de esta explicación teórica, vamos a crear tres funciones propias fuera del main y vamos a darle órdenes personalizadas al ordenador. Es decir, le diremos al main que ejecute esas funciones
 
 #nota("Las funciones se escriben fuera del main y pueden estar tanto arriba como abajo del main.")
 
-En primer lugar vamos a describir desde un punto de vista más teórico tres conceptos clave:
+En primer lugar vamos a describir desde `un punto de vista más teórico` tres conceptos clave:
 
 + * Qué es una función* 
 + * Qué son los parámetros -y sus tipos ascoiados- de una función* 
@@ -200,7 +203,7 @@ fn main() {
     sumar_numeros(3, 4); // Pasamos los ingredientes correctos
 }
 ```
-#nota("La función sumar_numeros acepta dos numeros a y b, calcula la suma, la coloca en la variable resultado y finalmente imprime a, b y resultado.")
+#nota("La función sumar_numeros acepta dos numeros a y b, calcula la suma, la coloca en la variable resultado y finalmente imprime a, b y resultado en los huecos {}.")
 
 Lo primero que debemos observar es que la función, denominada *sumar_numeros*, se define fuera de la función *main* mediante este código:
 
@@ -213,7 +216,7 @@ fn sumar_numeros(a: i32, b: i32) {
 
 La primera línea utiliza *fn* para definir el nombre de la función: *sumar_numeros*, sus dos parámetros: *a* y *b* y los tipos de esos parámetros que son enteros *i32*.
 
-La potencia de las funciones se observa cuando se llaman desde la funcion *main* o desde cualquier otra función. En el ejemplo, nosotros llamamos a la funcion *sumar_numeros* en la única línea que tiene nuestra función main:
+La potencia de las funciones se observa cuando se llaman desde la funcion *main* o desde cualquier otra función. En el ejemplo, nosotros llamamos a la funcion *sumar_numeros* en la única línea que tiene nuestra función *main*:
 
 ```rust
 sumar_numeros(3, 4);
@@ -221,7 +224,7 @@ sumar_numeros(3, 4);
 
 ¿Qué pasa cuando se ejecuta la línea de arriba? Vayamos por partes:
 
-+ El programa *abandona la ejecución del main* en esa misma línea y *ejecuta* la funcion sumar_numeros.
++ El programa *abandona la ejecución del main* en esa misma línea y *ejecuta* la funcion *sumar_numeros*.
 
 + Para ello, copia en el parámetro *a* de la función el argumento *3* que le pasamos en la línea anterior (la llamada a la función) y en el parámetro *b* el argumento *4*.
 
@@ -243,7 +246,7 @@ Fichero: *mis_primeras_funciones.rs*
 
 ```rust
 // 1. Fabricamos nuestra primera función propia
-// Esta función no necesita datos, solo ejecuta una acción visual
+// Esta función no necesita parámetros, solo ejecuta una acción visual
 fn saludar_alumno() {
     println!("👋 ¡Hola, Alumno de Rust!");
     println!("🚀 Bienvenido a tu zona de entrenamiento.");
@@ -282,12 +285,13 @@ fn main() {
 
 ⚙️  *Experimento 1: El salto del ordenador*
 
-Si pulsas *[RUN]*, verás que el texto de salida en la pantalla aparece perfectamente ordenado. El ordenador *entra en el main*, imprime la bandera de salida, y al leer *saludar_alumno()*; detiene lo que está haciendo, "viaja" arriba a donde empieza la función, ejecuta los dos saludos y vuelve a *main* para seguir con la siguiente línea. La función saludar_alumno() no tiene parámetros por lo tanto, no recibe argumentos en la llamada.
+Si pulsas *[RUN]*, verás que el texto de salida en la pantalla aparece perfectamente ordenado. El ordenador *entra en el main*, imprime la bandera de salida, y al leer *saludar_alumno();* detiene lo que está haciendo, "viaja" arriba a donde empieza la función, ejecuta los dos saludos y vuelve a *main* para seguir con la siguiente línea. La función saludar_alumno() no tiene parámetros por lo tanto, no recibe argumentos en la llamada.
+
 - *Misión:* Intenta duplicar la línea *saludar_alumno();* en el main para que aparezca dos veces seguidas. Vuelve a pulsar [RUN]. Verás cómo el saludo se repite en pantalla sin necesidad de que hayas tenido que volver a teclear los dos println! originales. ¡Has ahorrado código!
 
 🧠 *Los "ingredientes" de una función*
 
-Fíjate en la función *duplicar_numero(numero: i32)*. Lo que hay dentro de sus paréntesis (numero: i32 ) es su ingrediente (en programación lo llamamos parámetro). Le estamos diciendo a Rust: "Para que esta función realice su trabajo, necesita que le den un número (argumento) entero (i32)". Al llamarla desde el main con *duplicar_numero(10);*, la función atrapa el 10 (el argumento), lo multiplica por 2 y nos muestra el resultado en la pantalla de forma limpia.
+Fíjate en la función *duplicar_numero(numero: i32)*. Lo que hay dentro de sus paréntesis (numero: i32 ) es su ingrediente (en programación lo llamamos parámetro). Le estamos diciendo a Rust: "Para que esta función realice su trabajo, necesita que le den un número (argumento) entero (i32)". Al llamarla desde el main con *duplicar_numero(10);*, la función atrapa el 10 (el argumento) y lo asigna al parámetro a, lo multiplica por 2 y nos muestra el resultado en la pantalla de forma limpia.
 
 ⚙️  *Experimento 2: El diccionario de la programación y el guardián de la puerta*
 
@@ -337,7 +341,7 @@ fn main() {
 
 Al pulsar *[RUN]*, la Playground se detendrá en seco en la línea donde intentas cambiar la puntuación a 20. El compilador te mostrará un *mensaje de error* que dice algo como: cannot assign twice to immutable variable (*no se puede asignar dos veces a una variable inmutable*).
 
-Para Rust, la palabra *Inmutable* significa "prohibido tocar tras su fabricación". Si tú creas una caja con un 10 dentro, ese valor se queda congelado para siempre.
+Para Rust, la palabra *Inmutable* significa "prohibido tocar tras su fabricación". Si tú creas con *let* una caja con un 10 dentro, ese valor se queda congelado para siempre.
 
 - *Misión:* Aplica el control de daños que ya conoces. Añade las dos barras `//` al principio de la línea que da error (puntuacion = 20;). Vuelve a pulsar *[RUN]* para comprobar que el programa compila en verde y muestra el mensaje inicial en la pantalla.
 
@@ -372,11 +376,11 @@ fn main() {
 
 ⚙️ *Experimento 1: La mutación exitosa y el límite de Rust*
 
-Si pulsas [RUN], verás que el programa consigue ejecutar las dos primeras órdenes de texto sin problemas. ¡Hemos logrado cambiar las vidas de 3 a 2 gracias a let *mut*!
+Si pulsas [RUN], verás que la Playground se tiñe de rojo al llegar a la línea donde pone *vidas = `"`cero`"`;*. El compilador te lanzará otra vez el error de mismatched types (tipos que no coinciden). Intentaste colocar el texto `"`cero`"`en la variable *vidas* que por inferencia de tipos es de tipo *i32*. La inferencia se produjo en la línea *let mut vidas = 3;*.
 
-Sin embargo, la Playground volverá a teñirse de rojo al llegar a la línea donde pone *vidas = `"`cero`"`;*. El compilador te lanzará otra vez el error de mismatched types (tipos que no coinciden).
+- *Misión:* Aplica tu técnica de control de daños. Comenta la línea donde intentas meter la palabra "cero" en la variable *vidas* escribiendo `//` al principio. Vuelve a pulsar *[RUN]* para ver el programa funcionar de principio a fin de forma impecable.
 
-- *Misión:* Aplica tu técnica de control de daños. Comenta la línea donde intentas meter la palabra "cero" escribiendo `//` al principio. Vuelve a pulsar [RUN] para ver el programa funcionar de principio a fin de forma impecable.
+Ahora el programa consigue ejecutar las dos primeras órdenes de texto sin problemas. ¡Hemos logrado cambiar las vidas de *3* a *2* gracias a *let mut*!
 
 🧠 *La lección clave: Permiso para cambiar, no para transformarse*
 
@@ -407,7 +411,9 @@ fn main() {
     println!("Nivel: {} | Puntos: {}", nivel_actual, puntuacion_total);
 
     // El jugador derrota a un enemigo: aumentamos la puntuación
-    puntuacion_total = puntuacion_total + points_por_enemigo; // ❌ <--- error, no funcionará
+
+    // ⬇️  ❌ --- error, no funcionará
+    puntuacion_total = puntuacion_total + points_por_enemigo;
     // (Nota: ¡Ojo con el inglés! La variable se llama 'puntos_por_enemigo')
 
     // Corrección del error (sustituye la línea erronea de arriba por esta):
@@ -421,19 +427,19 @@ fn main() {
 
 ⚙️ *Experimento 1: El error de traducción*
 
-Si pulsas [RUN], la Playground se detendrá en la línea del combate. El compilador te dirá: *cannot find value points_por_enemigo in this scope* (no se encuentra el valor en este ámbito).
+Si pulsas [RUN], la Playground se detendrá en la línea inferior al comentario con un cruz en rojo. El compilador te dirá: *cannot find value points_por_enemigo in this scope* (no se encuentra el valor en este ámbito).
 
-*¿Qué ha pasado?* Las variables mutables *puntuacion_total* y *nivel_actual* están perfectas, pero al hacer la suma hemos escrito *points_por_enemigo* (en inglés) en lugar de *puntos_por_enemigo* (en español). Para el ordenador, cambiar una sola letra es como hablarle en un idioma totalmente diferente.
+*¿Qué ha pasado?* La variable mutable *puntuacion_total* está bien escrita, pero al hacer la suma hemos escrito *points_por_enemigo* (en inglés) en lugar de *puntos_por_enemigo* (en español). Para el ordenador, cambiar una sola letra es como hablarle en un idioma totalmente diferente.
 
 - *Misión* (Arreglar en lugar de comentar): Esta vez no vamos a usar el control de daños de ocultar la línea con `//`. Vamos a arreglarla de verdad. Cambia la palabra *points_por_enemigo* por *puntos_por_enemigo*. Vuelve a pulsar *[RUN]* y observa cómo el juego calcula la puntuación y te sube de nivel con éxito.
 
 🧠 *La lección de diseño: ¿Cuándo usar mut?*
 
-Fíjate en la estrategia que hemos usado: *nombre_jugador* y *puntos_por_enemigo* no cambian durante la partida. Se quedan sin mut. Son seguros y eficientes. *puntuacion_total* y *nivel_actual* se están recalculando constantemente. Necesitan mut obligatoriamente.
+Fíjate en la estrategia que hemos usado: *nombre_jugador* y *puntos_por_enemigo* no cambian durante la partida. Se quedan *sin mut*. Son seguros y eficientes. *puntuacion_total* y *nivel_actual* se están recalculando constantemente. Necesitan *mut* obligatoriamente.
 
 A partir de ahora, cada vez que crees una variable, hazte la pregunta mágica: ¿Este dato va a cambiar a lo largo del programa? Si la respuesta es no, no le pongas mut.
 
-== Sección 3: Tomar decisiones en el código (if, else)
+== Sección 3: Tomar decisiones en el código (if, else if, else)
 Para que un programa sea inteligente y dinámico, debe ser capaz de tomar decisiones basadas en diferentes condiciones. Aquí es donde entran en juego las estructuras condicionales *if*, *else if* y *else*. Estas herramientas nos permiten evaluar si una condición es verdadera o falsa y, a partir de ahí, decidir qué bloques de código se deben ejecutar y cuáles se deben ignorar.
 
 Es importante destacar que estas estructuras son completamente modulares y adaptables a tus necesidades:
@@ -477,14 +483,112 @@ fn main() {
 
 💡*Explicación del código:*
 
-- *Sintaxis limpia:* A diferencia de otros lenguajes, en Rust las condiciones del if y else if no llevan paréntesis (es decir, escribimos *if puntuacion >= 50* en lugar de *if (puntuacion >= 50)*). Sin embargo, las llaves {} son siempre obligatorias, incluso si el bloque de código solo tiene una línea.
+- *Sintaxis limpia:* A diferencia de otros lenguajes, en Rust las condiciones del *if* y *else if* no llevan paréntesis (es decir, escribimos *if puntuacion >= 50* en lugar de *if (puntuacion >= 50)*). Sin embargo, las llaves *{}* son siempre obligatorias, incluso si el bloque de código solo tiene una línea como en los casos anteriores.
 
-- *Evaluación booleana estricta:* La condición que evalúa el if debe ser estrictamente un valor booleano (true o false). Rust no permite "valores de la verdad" implícitos (por ejemplo, no puedes usar un número entero directamente como condición).
+- *Evaluación booleana estricta:* La condición que evalúa el *if* debe ser estrictamente un valor booleano (*true* o *false*). Rust no permite "valores de verdad" implícitos (por ejemplo, no puedes usar un número entero directamente como condición).
 
-- *El flujo del programa:* En la primera parte, el programa comprueba si puntuacion es mayor o igual a 50. Como 85 lo es, imprimirá el mensaje de aprobado. En la segunda parte, irá evaluando en orden las condiciones de arriba a abajo. Al llegar a *else if puntuacion >= 80*, la condición se cumple (true), por lo que imprimirá *Muy bien: Tienes una B.* e ignorará el resto de opciones (else if >= 70 y else).
+- *El flujo del programa:* En la primera parte, el programa comprueba si *puntuacion es mayor o igual a 50*. Como 85 lo es, imprimirá el mensaje *¡Has aprobado el examen!*. En la segunda parte, irá evaluando en orden las condiciones de arriba a abajo. Al llegar a *else if puntuacion >= 80*, la condición se cumple (*true*), por lo que imprimirá *Muy bien: Tienes una B.* e ignorará el resto de opciones (else if >= 70 y else).
 
+== Sección 4: El bucle for con rangos
+Imagina que le pides a un ordenador que pinte una línea de 100 píxeles en la pantalla. No vas a escribir la instrucción de pintar un píxel 100 veces, ¿verdad? Para evitar esa repetición absurda existen los bucles.
 
-== Sección 4: Repetir tareas sin cansarse (bucles infinitos loop y while)
+En Rust, la herramienta más potente y limpia para repetir una tarea un número exacto de veces es el bucle for combinado con rangos:
+
+```rust
+for x in 0..N {
+    // El código que quieres repetir se escribe aquí
+}
+```
+*¿Cómo funciona exactamente?*
+
+- *0..N (El Rango):* Es una máquina de generar números consecutivos. Empieza en el primer número (0) y genera el siguiente en cada vuelta del bucle. El operador .. es exclusivo, lo que significa que llegará hasta el número anterior a N. Por ejemplo, 0..5 generará los números 0, 1, 2, 3 y 4 (un total de 5 vueltas).
+
+- *x (La Variable de Control):* Es una variable temporal que "atrapa" el número que toca en cada vuelta. En la primera vuelta x vale 0, en la segunda vale 1, y así sucesivamente.
+
+- *in:* Es la palabra clave que le dice al bucle de dónde tiene que sacar los valores (en este caso, de nuestro rango).
+
+*¿Para qué sirven en el mundo real?*
++ *Contar y repetir*: Hacer que una acción se ejecute exactamente N veces.
+
++ *Recorrer colecciones por su posición*: Si tienes una *lista* de datos (como un array), puedes usar *x* como el índice (la posición) para examinar o modificar lo que hay dentro de *lista[x]*.
+
++ *Movernos por coordenadas (Imágenes y Mapas)*: Como los píxeles de una imagen se organizan en filas y columnas numeradas (desde el píxel 0 hasta el ancho de la imagen), usamos estos bucles para decirle al programa: "Ve al píxel x, procesa su color, y pasa al siguiente".
+
+*Ejemplo unidimensional: lectura de un array*
+
+🖥️  Copia el siguiente programa y pégalo en la Playgroud.
+
+Fichero: *for_en_array.rs*
+
+```rust
+fn main() {
+    let numeros = [2, 4, 34, 98];
+
+    // numeros.len() es 4, así que el rango va de 0 a 3
+    for i in 0..numeros.len() {
+        println!("Índice: {}, Valor: {}", i, numeros[i]);
+    }
+}
+```
+
+- El array *numeros* definido tiene cuatro elementos, por tanto *numeros.len()* es igual a 4. Es la longitud del array.
+
+- El rango 0..numeros.len() genera los números 0, 1, 2, 3
+
+- En el bucle for, la i empezará por tomar el valor 0 en la primera vuelta, 1 en la segunda vuelta, 2 en la tercera vuelta y 3 en la cuarta vuelta.
+
+Por tanto, al ejecutar este programa obtendremos:
+
+```
+Índice: 0, Valor: 2
+Índice: 1, Valor: 4
+Índice: 2, Valor: 34
+Índice: 3, Valor: 98
+```
+
+Pulsa el botón *[RUN]* de tu Playground y comprueba el resultado.
+
+#nota("Para interpretar los resultados sustituye el valor de i en cada pasada del bucle.")
+
+*Ejemplo bidimensional: lectura de una matriz*
+
+🖥️  Copia el siguiente programa y pégalo en la Playgroud.
+
+Fichero: *for_en_matriz.rs*
+
+```rust
+fn main() {
+    // Matriz de 2 filas (alto) y 3 columnas (ancho)
+    let matriz = [
+        [2, 9, 32],
+        [65, 90,4]
+    ];
+
+    let alto = 2;
+    let ancho = 3;
+
+    // Bucle externo para recorrer las filas (2)
+    for fila in 0..alto {
+        // Bucle interno para recorrer las columnas (3)
+        for columna in 0..ancho {
+            print!("{} ", matriz[fila][columna]);
+        }
+        println!(); // Salto de línea al terminar cada fila
+    }
+}
+```
+
+Es similar al ejercicio anterior pero ahora tenemos un bucle externo que recorre las filas (fila toma los valores 0 y 1) y un bucle interno que para cada fila, recorre las columnas (columna toma los valores 0, 1 y 2).
+
+De esta forma se recorren y se leen los seis elementos de la matriz.
+
+*Resultado de ejecutar el programa *
+
+```
+2 9 32 
+65 90 4 
+```
+== Sección 5: Bucles infinitos loop y while: repetir tareas sin cansarse
 En esta sección veremos cómo podemos repetir un conjunto de instrucciones vinculado al cumplimiento o no de una condición.
 
 === El bucle loop
@@ -501,15 +605,18 @@ fn main() {
     println!("¡Iniciando el motor de repetición!");
 
     // La palabra 'loop' abre un bucle infinito. 
-    // Lo que esté dentro del loop se repetirá para siempre...
+    // Lo que esté dentro del loop se repetirá de principio a fin
+    // para siempre...
     loop {
         contador = contador + 1;
         println!("Vuelta número: {}", contador);
 
         // ❌ Si dejamos el código así, la Playground se colgará.
         // Necesitamos una condición de salida (un freno de mano).
+        // Es el contador de la línea de abajo.
         if contador == 5 {
-            break; // 💡 ¡La palabra 'break' rompe el bucle y nos saca de aquí!
+            break;      // 💡 ¡La palabra 'break' rompe el bucle, nos saca de aquí
+                        // y nos lleva a la siguiente instrucción después del loop
         }
     }
 
@@ -523,7 +630,7 @@ Si pulsas *[RUN]*, verás que el programa cuenta del 1 al 5 a la velocidad del r
 
 - *Misión (Simular un desastre controlado):* Vamos a ver qué pasa si saboteamos el freno de mano. Aplica el control de daños al revés: añade dos barras `//` al principio de la línea que tiene el break;. Vuelve a pulsar *[RUN]*.
 
-- *¿Qué pasa?* Verás que los números empiezan a subir sin parar en la pantalla. ¡El programa ha entrado en un bucle infinito! Pulsa la pestaña [Close] en la parte superior derecha de la Playground (al lado de la pestaña Share) para rescatar al ordenador.
+- *¿Qué pasa?* Verás que los números empiezan a subir sin parar en la pantalla. ¡El programa ha entrado en un bucle infinito! Pulsa la pestaña *[Close]* en la parte superior derecha de la Playground para rescatar al ordenador.
 
 - *Corrección:* Quita las barras `//` para devolver el break; a su sitio y que el programa vuelva a ser seguro.
 
@@ -531,14 +638,16 @@ Si pulsas *[RUN]*, verás que el programa cuenta del 1 al 5 a la velocidad del r
 
 Para que un bucle loop no se vuelva infinito, siempre necesitas tres cosas:
 
-+ Una variable mutable fuera del bucle (let mut contador = 0;) para llevar la cuenta.
-+ Una actualización dentro del bucle (contador = contador + 1;) para que las cosas avancen.
-+ Un interruptor de apagado (if ... break;) para saber cuándo hemos terminado el trabajo.
++ Una variable mutable fuera del bucle (*let mut contador = 0;*) para llevar la cuenta.
 
-=== Bucle while
-El bucle loop que vimos antes es muy potente, pero tener que escribir un *if* y un *break* dentro cada vez puede ser un poco pesado. Por suerte, Rust tiene un hermano más inteligente llamado *while* (que en inglés significa "mientras").
++ Una actualización dentro del bucle (*contador = contador + 1;*) para que las cosas avancen.
 
-El bucle *while* funciona con una condición: repite el código en su interior mientras esa condición sea verdad. En el momento en que deja de serlo, el bucle se frena solo automáticamente y el programa sigue en la siguiente instrucción al while.
++ Un interruptor de apagado (*if ... break;*) para saber cuándo hemos terminado el trabajo.
+
+=== El Bucle while
+El bucle loop que vimos antes es muy potente, pero tener que escribir un *if* y un *break* dentro del bucle cada vez, puede ser un poco pesado. Por suerte, Rust tiene un hermano más inteligente llamado *while* (que en inglés significa "mientras").
+
+El bucle *while* funciona mediante una condición: repite el código en su interior mientras esa condición ---que se evalúa en cada pasada del bucle---  sea verdad. En el momento en que deja de serlo, el bucle se frena solo automáticamente y el programa sigue en la siguiente instrucción al while.
 
 💻 Copia este código en tu Playground para ver cómo funciona un medidor de batería que se va descargando
 
@@ -577,7 +686,7 @@ Vamos a provocar un fallo de lógica muy común entre programadores novatos.
 
 - *Misión:* Comenta la línea donde restamos la energía añadiendo dos barras al principio: `// bateria = bateria - 25;`. Vuelve a pulsar *[RUN]*.
 
-- *¿Qué ocurre?* Como la batería nunca baja de 100, la condición bateria > 0 siempre es verdadera. El programa se queda atrapado en un bucle infinito mostrando el mismo mensaje en bucle. Pulsa sobre la pestaña *[Close]* en la parte superior derecha de la Playground (a la derecha de la pestaña Share) para rescatar al ordenador.
+- *¿Qué ocurre?* Como la batería nunca baja de 100, la condición bateria > 0 siempre es verdadera. El programa se queda atrapado en un bucle infinito mostrando el mismo mensaje en bucle. Pulsa sobre la pestaña *[Close]* en la parte superior derecha de la Playground para rescatar al ordenador.
 
 - *Corrección:* Borra las barras `//` para que el teléfono vuelva a gastar energía de forma normal.
 
@@ -585,7 +694,7 @@ Vamos a provocar un fallo de lógica muy común entre programadores novatos.
 
 - Usa loop cuando no sepas de antemano cuántas vueltas vas a dar y necesites comprobar cosas complejas dentro.
 
-- Usa while cuando tengas una condición matemática clara y directa (como un contador o un porcentaje) para controlar la duración del viaje.
+- Usa while cuando tengas una condición matemática clara y directa (como un contador o un porcentaje) para controlar la duración del bucle.
 
 == Sección 5: Proyectos clave
 Llegados a este punto, ya no eres un mero espectador; tienes en tu caja de herramientas los pilares de la programación en Rust: variables, inmutabilidad, tipos de datos, decisiones y bucles. Es hora de unir todas las piezas en proyectos reales.
@@ -600,7 +709,7 @@ Fichero: *conversor_de_unidades.rs*
 ```rust
 fn main() {
     // === CONFIGURACIÓN DEL USUARIO (Cambia estos valores para probar) ===
-    let millas_a_convertir = 5.0; // Usa números con punto decimal (f64)
+    let millas_a_convertir = 5.0;    // Usa números con punto decimal (f64)
     let celsius_a_convertir = 25.0;
     // ===================================================================
 
@@ -630,7 +739,7 @@ fn main() {
 
 ⚙️ *Experimento 1: Rompiendo las matemáticas de Rust*
 
-Si pulsas *[RUN]*, el programa calculará perfectamente las conversiones y te mostrará los resultados limpios en la pantalla derecha gracias a un truco visual: *{:.2}* le dice a Rust que solo muestre dos decimales para que no se llene la pantalla con infinitos números.
+Si pulsas *[RUN]*, el programa calculará perfectamente las conversiones y te mostrará los resultados limpios en la pantalla derecha gracias a un truco visual: *{:.2}* le dice a Rust que solo muestre dos decimales para que no se llene la pantalla con demasiados números.
 
 Ahora, hagamos una prueba de fuego con la seguridad de Rust. Quita las dos barras `//` de la última línea (let error_calculo = ...) y pulsa *[RUN]*.
 
@@ -652,7 +761,7 @@ En este último proyecto del laboratorio, vamos a construir un Generador de Hist
 Fichero: *generador_historias_aleatorias.rs*
 
 ```rust
-n main() {
+fn main() {
     // === CONFIGURACIÓN DE TU HISTORIA (¡Cambia estas palabras!) ===
     let protagonista = "Un robot con sombrero";
     let lugar = "la cocina de la abuela";
@@ -674,11 +783,13 @@ n main() {
 }
 ```
 
+#nota("Cuando se imprime la secuencia de caracteres \\n con la instrución println!, equivale a hacer un salto de línea y retorno de carro.")
+
 ⚙️ *Experimento 1: El tejedor de palabras*
 
 Si pulsas *[RUN]*, verás cómo Rust recoge ordenadamente el texto de cada una de tus variables y lo encaja exactamente en el orden en que has colocado los marcadores *{}* dentro de los println!.
 
-*Fíjate en un detalle:* hemos mezclado variables de texto (*&str*) con una variable de *número entero* (año). A diferencia de las matemáticas (donde vimos que no se pueden mezclar tipos), a la hora de imprimir en pantalla, Rust es muy amable y te permite colocar cualquier tipo de dato dentro de los corchetes {} porque sabe convertirlo todo a texto visual.
+*Fíjate en un detalle:* hemos mezclado variables de texto (*&str*) con una variable de *número entero* (año). A diferencia de las matemáticas (donde vimos que no se pueden mezclar tipos), a la hora de imprimir en pantalla, Rust es muy amable y te permite colocar cualquier tipo de dato dentro de las llaves {} porque sabe convertirlo todo a texto visual.
 
 🎮 *¡Hazlo tuyo!*
 
