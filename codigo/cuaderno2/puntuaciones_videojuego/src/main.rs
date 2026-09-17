@@ -8,7 +8,7 @@ fn calcular_media(puntuaciones: &Vec<i32>) -> f32 {
     
     let mut suma_total = 0;
     for puntos in puntuaciones {
-        suma_total += puntos; // Sumamos los puntos de cada partida
+        suma_total += *puntos; // Sumamos los puntos de cada partida
     }
     
     // Convertimos a f32 para poder calcular decimales en la división

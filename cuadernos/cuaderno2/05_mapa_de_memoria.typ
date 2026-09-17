@@ -1,6 +1,6 @@
 = 🗺️ El Mapa de la Memoria de tu Programa
 
-En el Cuaderno 1 *Descubriendo la Programación y Filtros Digitales* diferenciamos entre el *código fuente* (archivo que nosotros escribimos y es entendible por un humano) y el *código ejecutable* compuestos por unos y ceros, fruto del proceso de compilación pero que es el que entiende el ordenador.
+En el Cuaderno 1 *Descubriendo la Programación y Filtros Digitales* diferenciamos entre el *código fuente* (archivo que nosotros escribimos y es entendible por un humano) y el *código ejecutable* compuesto por unos y ceros, fruto del proceso de compilación y que es el que entiende el ordenador.
 
 Como casi todos conocemos Windows podemos decir que cuando arrancamos un programa haciendo doble clic sobre un icono del escritorio, estamos cargando en la memoria RAM del ordenador el ejecutable de ese programa. ¿Qué almacenamos en la RAM?
 
@@ -19,7 +19,7 @@ En esta zona se guardan las cosas que nacen con el programa y mueren con él. Po
 
 Imagina una pila de platos en un buffet de hotel. Cuando pones un plato nuevo, lo pones arriba del todo. Cuando coges un plato, coges también el de arriba. A esto los informáticos lo llaman estructura LIFO (Last In, First Out: el último que entra es el primero que sale).
 
-En el *Stack* se guardan las variables locales de tus funciones (los números enteros, booleanos, etc.). Es un área ultraordenada, limpia y ridículamente rápida. No pueden guardarse en el Stack aquellas variables cuyo tamaño es desconocido cuando se compila el programa.
+En el *Stack* se guardan las variables locales de tus funciones (los números enteros, booleanos, etc.). Es un área ultraordenada, limpia y muy rápida. No pueden guardarse en el Stack aquellas variables cuyo tamaño es desconocido cuando se compila el programa.
 
 *4. 🌳 El Heap (El Montón)*
 

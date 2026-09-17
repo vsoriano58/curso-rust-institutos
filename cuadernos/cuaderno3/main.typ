@@ -41,7 +41,7 @@
     if here().page() > 2 [
       #align(right)[
         #text(size: 9pt, fill: luma(120), font: "Liberation Sans")[
-          Cuaderno 2 de Rust (#edad_alumno) | Prototipo Editorial
+          Cuaderno 3 de Rust (#edad_alumno) | Prototipo Editorial
         ]
       ]
     ]
@@ -83,21 +83,19 @@
   #v(1cm)
   
   #text(size: 28pt, weight: "bold", fill: rgb("#1f2328"))[
-    Cuaderno 2 de Rust
+    Cuaderno 3 de Rust
   ]
   
   #v(0.5em)
   
   #text(size: 16pt, style: "italic", fill: luma(30%))[
-    Estructura, Memoria y Colecciones en Rust
+    Modelando el Mundo Real
   ]
-
-  
 
     #v(4em)
 
   #text(size: 16pt)[
-    Recomendado a partir de los #edad_alumno
+    Recomendado a partir de los #edad_alumno años
   ]
   
   #v(1.5cm)
@@ -145,10 +143,11 @@
 
 #include "config.typ"
 #include "01_introduccion.typ"
-#include "02_divide_y_venceras.typ"
-#include "03_reglas_de_convivencia.typ"
-#include "04_colecciones_de_datos.typ"
-#include "05_mapa_de_memoria.typ"
-#include "06_strings_a_fondo.typ"
-#include "07_proyecto_agenda_contactos.typ"
-#include "08_ejercicios_resueltos.typ"
+#include "02_estructuras_de_datos.typ"
+#include "03_metodos_y_bloques_impl.typ"
+#include "04_enumerados.typ"
+#include "05_coincidencia_de_patrones.typ"
+#include "06_organizacion_en_modulos.typ"
+#include "07_ejercicios_resueltos.typ"
+
+

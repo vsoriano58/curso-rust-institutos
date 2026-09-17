@@ -400,5 +400,3 @@ Verás cómo la terminal imprime primero los datos limpios uno por uno, y al fin
 ```rust
 Persona { nombre: "Halcón68", edad: 14, profesion: "Programador de Rust" }.
 ```
-
-#pagebreak()

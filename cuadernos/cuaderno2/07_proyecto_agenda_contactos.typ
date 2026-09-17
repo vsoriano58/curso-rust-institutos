@@ -12,17 +12,17 @@ En este proyecto del Cuaderno 2, juntaremos las piezas del puzle: Funciones, Vec
 
 Para que el código esté limpio y ordenado (como el de los programadores profesionales), organizaremos la información utilizando dos vectores:
 
-- *lista_nombres*: Un vector de tipo Vec<String> para almacenar los *nombres de pila*. La notación Vec<String> indica que todos los elementos del vector son de tipo String. Podemos definir, si queremos, vectores de cualquier tipo. Por ejemplo Vec<i32> sería un vector cuyos elementos son enteros de 32 bits.
+- *lista_nombres*: Un vector de tipo Vec`<String>` para almacenar los *nombres de pila*. La notación Vec`<String>` indica que todos los elementos del vector son de tipo String. Podemos definir, si queremos, vectores de cualquier tipo. Por ejemplo Vec`<i32>` sería un vector cuyos elementos son enteros de 32 bits.
 
-- *lista_telefonos*: Un vector de tipo Vec<String> para guardar sus números de teléfono. En este caso los números se guardarán como si fueran texto, es decir, no se podrá operar matemáticamente con ellos.
+- *lista_telefonos*: Un vector de tipo Vec`<String>` para guardar sus números de teléfono. En este caso los números se guardarán como si fueran texto, es decir, no se podrá operar matemáticamente con ellos.
 
 Nota: La posición 0 de ambos vectores corresponderá al primer contacto, la posición 1 al segundo, y así sucesivamente.
 
 Antes de empezar a analizar el programa en su totalidad, vamos a comentar la parte del mismo que se encarga de pedir datos al usuario.
 
-Para ello, vamos a crear ya el programa definitivo para este ejemplo y en plrimer lugar, ejecutaremos solamente un código reducido que pide al usuario que escriba algún dato y después de escribir y pulsar Return, el programa devuelve lo que ha escrito el usuario.
+Para ello, vamos a analizar en primer lugar un código reducido que pide al usuario que escriba algún dato y después de escribir y pulsar return, el programa devuelve lo que ha escrito el usuario incrustándolo en una frase. Este código reducido lo encontraremos prácticamente igual en el programa final.
 
-Abre un terminal integrado de Visual Studio Code en tu carpeta de proyectos de Rust y crea un nuevo proyecto con la orden:
+💻 Abre un terminal integrado de Visual Studio Code en tu carpeta de proyectos-rust y crea un nuevo proyecto con la orden:
 
 ```
 cargo new agenda_contactos
@@ -30,9 +30,11 @@ cargo new agenda_contactos
 
 Se creará el directorio *agenda_contactos* y dentro el fichero main.rs en el interior de la carpeta *src*.
 
-Copia el siguiente programa, que es solo una demo de como un programa solicita datos al usuario y los muestra y, pegalo en el fichero main.rs del proyecto que acabas de crear.
+Copia el siguiente programa, que es solo una demo de cómo un programa solicita datos al usuario y los muestra y, pégalo en el fichero main.rs del proyecto que acabas de crear.
 
-Ejecútalo con *cargo run* y cuando te pida que introduzcas una palabra, tecléala y termina pulsando *Return*. Observa la salida por la pantalla.
+Ejecútalo, desde una terminal integrada abierta en la carpeta del proyecto, con *cargo run* y cuando te pida que introduzcas una palabra, tecléala y termina pulsando *Return*. Observa la salida por la pantalla.
+
+Proyecto: *agenda_contactos*
 
 ```rust
 use std::io::{self, Write}; 
@@ -44,25 +46,26 @@ fn main() {
     // Fuerza a la terminal a mostrar el texto en pantalla
     io::stdout().flush().unwrap();
 
-    // Creamos un String mutable vacío
+    // Creamos un String mutable (variable algo) vacío
     let mut algo = String::new();
 
-    // Esperamos a que el usuario teclee Return
-    // después de escribir y colocamos lo que haya escrito
-    // en la variable algo
+    // Esperamos a que el usuario escriba una palabra
+    // y teclee Return.
+    // Después colocamos la palabra que haya escrito
+    // en la variable 'algo'
     io::stdin().read_line(&mut algo).unwrap();
 
-    // Limpiamos la variable algo de espacios al inicio
-    // y al final, y la convertimos en String. Antes era &str.
+    // Limpiamos la variable 'algo' de espacios al inicio
+    // y al final, y la convertimos en String.
     let algo = algo.trim().to_string();
     
     // Imprimimos lo que ha escrito el usuario
     println!("✅ Has escrito: {}", algo);
 }
 ```
-No es nuestro objetivo averiguar qué hace cada palabrita del anterior programa sino entender lo que hace cada línea porque en el proyecto final que vamos a desarrollar aparcerán bloques muy parecidos a este que hemos analizado. Lo que nos interesa de verdad es todo lo relacionado con los vectores.
+Comprender en detalle el programa anterior está de momento fuera de nuestro alcance. Pero no es nuestro objetivo averiguar qué hace cada palabrita del anterior programa, sino entender lo que hace cada línea porque en el proyecto final que vamos a desarrollar aparcerán bloques muy parecidos a este que hemos analizado. Lo que nos interesa de verdad del proyecto final es todo lo relacionado con los vectores.
 
-En el listado completo del programa que daremos al final, aparecen algunas funciones con un ecabezado similar pero no idéntico.
+En el listado completo del programa que daremos al final, aparecen algunas funciones con un ecabezado similar entre ellas pero no idéntico.
 
 - Veamos la función *mostrar_contactos*
 
@@ -75,7 +78,8 @@ fn mostrar_contactos(nombres: &Vec<String>, telefonos: &Vec<String>) {
         return;
     }
 
-    // Recorremos las posiciones usando un índice numérico desde 0 hasta el tamaño del vector
+    // Recorremos las posiciones usando un índice numérico 'i'
+    // desde 0 hasta el tamaño del vector 'nombres'
     for i in 0..nombres.len() {
         // Accedemos de forma segura a cada posición usando [i]
         println!("{}. 👤 Nombre: {} | 📞 Teléfono: {}", i + 1, nombres[i], telefonos[i]);
@@ -84,7 +88,7 @@ fn mostrar_contactos(nombres: &Vec<String>, telefonos: &Vec<String>) {
 }
 ```
 
-Esta función tiene dos parámetros que son ambos prestamos de vectores de String. El primer parámetro se denomina *nombres* y el segundo *telefonos*. Cuando llamemos a la función desde el main le pasaremos un prestamo *&* del vector *agenda_nombres* en la primera posición y un prestamo *&* del vector *agenda_telefonos* en la segunda posición,ambos definidos al principio del *main* con las siguientes instrucciones:
+La función *mostrar_contactos* tiene dos parámetros que son ambos prestamos de vectores de String. El primer parámetro se denomina *nombres* y el segundo *telefonos*. Cuando llamemos a la función desde el *main* le pasaremos un prestamo del vector *&agenda_nombres* en la primera posición y un prestamo del vector *&agenda_telefonos* en la segunda posición, ambos vectores definidos al principio del *main* con las siguientes instrucciones:
 
 ```rust
 let mut agenda_nombres: Vec<String> = Vec::new();
@@ -99,11 +103,13 @@ Donde observamos lo que acabamos de comentar.
 
 *¿Qué hace la función por dentro?*
 
-- Si el vector de *nombres* está vació, entonces *nombres.is_empty()* devuelve un valor *true*. El if se cumple y por tanto el programa muestra un mensaje y termina con un *return*.
+- Vamos a razonar con los nombres de los parámetros, *nombres* y *telefonos* pero ten en cuenta que las funciones operan con los argumentos que se le pasen a los parámetros, es decir, con agenda_nombres, agenda_telefonos.
 
-- Si el *if* no se cumple, pasamos a la instrucción *for*. Aquí tengamos en cuenta que *nombres.len()* nos da la cantidad de elementos que tiene el vector *nombres*. Es decir, si *nombres tiene 5 elementos* entonces *nombres.len() es igual a 5*.
+- Si el vector de *nombres* está vació, entonces *nombres.is_empty()* devuelve un valor *true*. El if se cumple y por tanto el programa muestra un mensaje y la función termina con un *return*. El programa seguirá en el main en la instrucción siguiente a la llamada a la función.
 
--  En el bucle *for i in 0..nombres.len()*, la variable *i* empieza por valer 0 y en cada pasada del bucle aumenta en uno su valor hasta valer nombres.len() que en el caso anterior hemos supuesto que vale 5. Entonces la varuiable i va tomando los valores 0, 1, 2, 3, 4 porque el último de los valores, el 5, está excluido del rango. Si quisiéramos que el rango hubiese llegado hasta el 5 tendríamos que haber secrito *for i in 0..=nombres.len()*.
+- Si el *if* no se cumple, pasamos a la instrucción *for*. Aquí, tengamos en cuenta que *nombres.len()* nos da la cantidad de elementos que tiene el vector *nombres*. Es decir, si *nombres tiene 5 elementos* entonces *nombres.len() es igual a 5*.
+
+-  En el bucle *for i in 0..nombres.len()*, la variable *i* empieza por valer 0 y en cada pasada del bucle aumenta en uno su valor hasta valer nombres.len() que en el caso anterior hemos supuesto que vale 5. Entonces la variable i va tomando los valores 0, 1, 2, 3, 4 porque el último de los valores, el 5, está excluido del rango. Si quisiéramos que el rango hubiese llegado hasta el 5 tendríamos que haber secrito *for i in 0..=nombres.len()*.
 
 Para cada valor de i, se ejecutan todas las instrucciones que hay dentro del for. En este caso solo hay una.
 
@@ -138,7 +144,7 @@ fn añadir_contacto(nombres: &mut Vec<String>, telefonos: &mut Vec<String>) {
     io::stdin().read_line(&mut nombre).unwrap();
     let nombre = nombre.trim().to_string();
 
-    // Pedimos el teléfonoy lo colocamos en la variable "telefono"
+    // Pedimos el teléfono y lo colocamos en la variable "telefono"
     print!("Introduce el teléfono: ");
     io::stdout().flush().unwrap();
     let mut telefono = String::new();
@@ -185,7 +191,7 @@ fn buscar_contacto(nombres: &Vec<String>, telefonos: &Vec<String>) {
       if nombres[i].to_lowercase() == busqueda.to_lowercase() {
           println!("🎉 ¡Encontrado! El teléfono de {} es: 📞 {}", nombres[i], telefonos[i]);
           encontrado = true;
-          break; // Salimos del bucle porque ya lo hemos encontrado
+          break; // Salimos del bucle for porque ya lo hemos encontrado
       }
   }
 
@@ -215,9 +221,10 @@ fn main() {
   loop {
       // Si el usuario no pulsa ninguna tecla, el programa
       // imprime en cada pasada del bucle las líneas println! de
-      // abajo y da la sensación de que nada sucede. Sin embargo,
-      // como veremos abajo el programa esta esperando a que
-      // el usuario pulse un texto seguido de la tecla Return
+      // abajo que constituyen el menú y da la sensación de que 
+      // nada sucede. Sin embargo, como veremos abajo el programa
+      // esta esperando a que el usuario pulse una tecla seguida 
+      // de un Return
 
 
       println!("\n🎯 ¿Qué deseas hacer hoy?");
@@ -238,7 +245,7 @@ fn main() {
       let opcion = opcion.trim();
 
       // Estructura match (como un if gigante)
-      // Selecciona la función que es va a jecutar
+      // Selecciona la función que es va a ejecutar
       // Segun la tecla pulsada por el usuario
       // Si pulsa "1" se ejecutará:
       //    mostrar_contactos(&agenda_nombres, &agenda_telefonos)
@@ -261,9 +268,12 @@ fn main() {
   }
 }
 ```
-📇 *Listado completo: Proyecto La Agenda de Contactos por Terminal*
 
-Una vez que hemos explicado todos los entresijos de este programa, llega el momento de presentar de presentar el listado completo del mismo, para que lo puedas pasar al fichero main.rs del proyecto *agenda_contactos* que creamos al principio.
+Una vez que hemos explicado todos los entresijos de este programa, llega el momento de presentar el listado completo del mismo, para que lo puedas pasar al fichero main.rs del proyecto *agenda_contactos* que creamos al principio.
+
+Cuando hayas copiado el listado completo que tienes abajo en el fichero main.rs, lanza una terminal integrada de Visual Studio Code en la carpeta del proyecto y ejecuta el programa mediante el comando *cargo run*. Interactúa con el programa para ver que todo funciona. Primero que nada tendrás que elegir la opción 2 para introducir algunos contactos.
+
+📇 *Listado completo: Proyecto La Agenda de Contactos por Terminal*
 
 ```rust
 use std::io::{self, Write}; // Necesario para poder leer lo que el usuario escribe en el teclado
@@ -388,6 +398,10 @@ Fíjate en las llamadas a las funciones dentro del *match* en la función *main*
 
 - Para añadir un contacto, enviamos como parámetro a la función correspondiente un prestamo mutable *&mut agenda_nombres*. Le prestamos la agenda a la función y le *damos permiso para que pueda de escribir* contactos nuevos.
 
-- Como en ambos pasamos un prestamo a la función, no la variable original *agenda_nombres*, esta no se consume en las llamadas a las funciones y sigue activa al final del main. Para demostrarlo, introduce algún contacto mediante la opción "2" y luego elige la opción "4" que *sale del bucle loop mediante un break y cae en la función main*, ejecutando la línea *println!("Imprimimos desde última línea: {:?}", agenda_nombres)* demostrando así que accede a la variable *agenda_nombres*.
+- Como en ambos casos pasamos un prestamo a la función, no la variable original *agenda_nombres*, esta no se consume en las llamadas a las funciones y sigue activa al final del main. Para demostrarlo, introduce algún contacto mediante la opción "2" y luego elige la opción "4" que *sale del bucle loop mediante un break y cae en la función main*, ejecutando la línea *println!("Imprimimos desde última línea: {:?}", agenda_nombres)* demostrando así que accede a la variable *agenda_nombres* y por tanto no ha sido destruida.
 
-- Si intentáramos añadir un contacto a la agenda utilizando la función correspondiente, mientras otra función la está leyendo en un segundo plano, ¡el compilador de Rust haría saltar las alarmas y daría un error para proteger la memoria!. Para ejecutar tareas en segundo plano hay que utilizar *threads*, que los veremos bastante más adelante.
+- Si intentáramos añadir un contacto a la agenda utilizando la función correspondiente, mientras otra función la estuviera leyendo en un segundo plano, ¡el compilador de Rust haría saltar las alarmas y daría un error para proteger la memoria!. 
+
+Para ejecutar tareas en segundo plano hay que utilizar *threads*, que los veremos bastante más adelante.
+
+#pagebreak()
