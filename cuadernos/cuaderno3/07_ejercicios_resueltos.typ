@@ -139,4 +139,4 @@ fn main() {
     }
 }
 ```
-*Explicación:* El atajo *if let* reduce enormemente las líneas de código cuando *solo nos interesa reaccionar ante una variante específica de un enumerado* (normalmente Some), relegando todas las demás opciones posibles a un *bloque else* general sin necesidad de escribir un match exhaustivo.
+*Explicación:* El atajo *if let* reduce enormemente las líneas de código cuando *solo nos interesa reaccionar ante una variante específica de un enumerado* (normalmente Some), relegando todas las demás opciones posibles a un *bloque else* general sin necesidad de escribir un match exhaustivo. Con *if let* no utilizamos el patrón por defecto `_` que queda sustituido por el bloque *else*.
