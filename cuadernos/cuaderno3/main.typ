@@ -95,7 +95,7 @@
     #v(4em)
 
   #text(size: 16pt)[
-    Recomendado a partir de los #edad_alumno años
+    Recomendado a partir de los #edad_alumno
   ]
   
   #v(1.5cm)

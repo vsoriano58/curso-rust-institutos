@@ -1,9 +1,9 @@
 #import "config.typ": *
 
 =  Estructuras de Datos (`struct`)
-Imagina que estás programando un videojuego y quieres guardar la información de un jugador. Hasta ahora ---como ya hemos mencionado en la introducción---, usando lo aprendido en el Cuaderno 2 tendrías que crear variables sueltas:
+#nota("En el apartado: 7.7. del Cuaderno 1, ''El struct Persona y los superpoderes automáticos'', mencionamos muy de pasada las estructuras (strct) como herramientas para organizar la información. En este cuaderno las estudiaremos a fondo.")
 
-#nota("En el apartado: 7.7. del Cuaderno 1, ''El struct Persona y los superpoderes automáticos'', mencionamos muy de pasada las estructuras (strct) como herramientas para organizar la información.")
+Imagina que estás programando un videojuego y quieres guardar la información de un jugador. Hasta ahora ---como ya hemos mencionado en la introducción---, usando lo aprendido en cuadernos anteriores  tendrías que crear variables sueltas:
 
 ```rust
 let jugador_nombre = String::from("Falcon_Retro");
@@ -15,7 +15,7 @@ Este enfoque tiene un problema grave: para el compilador de Rust, estas tres var
 == El plano arquitectónico: Definición de Struct clásicas
 Una estructura funciona exactamente como el plano de una casa. No es la casa en sí misma, sino el diseño que define qué elementos la compondrán.
 
-Para definirla, usamos la palabra clave struct, seguida del nombre en mayúscula (_*CamelCase*_) y abrimos llaves. Dentro, definimos los campos indicando su nombre y su tipo de dato.
+Para definirla, usamos la palabra clave *struct*, seguida del nombre en mayúscula (_*CamelCase*_) y abrimos llaves. Dentro, definimos los campos indicando su nombre y su tipo de dato.
 
 #nota("CamelCase se aplica a nombres compuestos. Por ejemplo, si el nombre de la estructura fueran dos palabras, como ''jugador lateral'', el nombre resultante de la estructura del jugador sería JugadorLateral. Se unen las palabras poniendo la inicial de cada una en mayúsculas.")
 
@@ -29,9 +29,11 @@ struct Personaje {
 }
 ```
 == Construyendo el objeto: Instanciación y acceso a campos
-Una vez que tenemos el plano (struct), podemos "construir" personajes reales en memoria. A este proceso lo llamamos instanciación. Para leer los datos de un campo específico, utilizamos el operador punto (.).
+Una vez que tenemos el plano (struct), podemos "construir o crear" personajes reales en memoria. A este proceso lo llamamos instanciación. Para leer los datos de un campo específico, utilizamos el operador punto (.).
 
 💻 Copia el siguiente código en la Playground y ejecútalo con [RUN]
+
+Fichero: *struct_personaje.rs*
 
 ```rust
 // Definimos el plano de lo que es un "Personaje" en nuestro código
@@ -56,10 +58,14 @@ fn main() {
     println!("Tu salud inicial es de {} puntos y eres nivel {}.", héroe.salud, héroe.nivel);
 }
 ```
+Comprueba en las instrucciones de salida *println!* cómo se sustituyen las propiedades de la variable *héroe* en los marcadores *{}*.
+
 ==  La mutabilidad en bloque: Modificar datos en una estructura
 ¿Qué pasa si nuestro personaje recibe un golpe y su salud baja? En Rust, la mutabilidad afecta a toda la estructura por igual. No puedes hacer que solo un campo sea mutable; toda la instancia debe declararse con *mut*.
 
 💻 Copia el siguiente código en la Playground y ejecútalo con [RUN]
+
+Fichero: *struct_personaje_mutable.rs*
 
 ```rust
 struct Personaje {
@@ -87,6 +93,8 @@ fn main() {
     println!("Tras el impacto, el {} tiene {} de vida y nivel {}.", enemigo.nombre, enemigo.salud, enemigo.nivel);
 }
 ```
+Comprueba el resultado de las instrucciones *println!* antes y después de modificar las propiedades de la variable *enemigo*.
+
 == 2.4. Estructuras alternativas: Tuple Structs y Unit Structs
 A veces no necesitas ponerle nombre a cada campo porque su significado es evidente, o simplemente necesitas un tipo sin datos para representar un concepto. Rust nos da dos herramientas secundarias muy útiles:
 
@@ -94,13 +102,19 @@ A veces no necesitas ponerle nombre a cada campo porque su significado es eviden
 
 + *Unit Structs:* Estructuras completamente vacías. Son útiles cuando más adelante veamos _Traits_ (rasgos/interfaces) donde un tipo necesita demostrar un comportamiento pero no requiere almacenar datos.
 
+#nota("Recuerda que una tupla es un tipo de dato compuesto formado por un conjunto de datos que pueden ser de distinto tipo, separados por comas y encerrados entre paréntesis.")
+
 💻 Copia el siguiente código en la Playground y ejecútalo con [RUN]
 
+Fichero: *tupla_struct.rs*
+
 ```rust
-// Una estructura de tupla para almacenar coordenadas 3D (X, Y, Z)
+// Una estructura de tupla para almacenar coordenadas en 3D (X, Y, Z)
+// Los campos no tienen nombre (se sobreentienden)
 struct Posicion3D(f32, f32, f32);
 
 // Una estructura unitaria para marcar un estado o evento
+// Veremos más adelante como utilizarla
 struct FinDelJuego;
 
 fn main() {
@@ -111,5 +125,6 @@ fn main() {
   println!("El jugador está en la altura Y: {}", origen.1);
 }
 ```
+Verifica el resultado de la instrucción *println!*.
 
 #pagebreak()

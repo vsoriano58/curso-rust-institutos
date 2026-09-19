@@ -1,12 +1,12 @@
 #import "config.typ": *
 
 = Añadiendo Superpoderes: Métodos y Bloques `impl`
-En el bloque anterior aprendimos a agrupar variables dentro de una estructura (struct). Sin embargo, hasta ahora, si queríamos modificar un personaje o calcular algo con sus datos, teníamos que programar funciones externas en el main.
+En el bloque anterior aprendimos a agrupar variables dentro de una estructura (struct). Sin embargo, hasta ahora, si queríamos modificar un personaje o calcular algo con sus datos, teníamos que programar funciones en el main, externas a la estructura.
 
-En Rust, podemos asociar funciones y comportamientos *directamente* a nuestras estructuras. Para ello utilizamos el bloque de implementación: *`impl`*.
+En Rust, podemos asociar funciones y métodos o comportamientos *directamente* a nuestras estructuras. Para ello utilizamos el bloque de implementación: *`impl`*. La diferencia entre funciones asociadas y métodos la veremos más adelante pero señalemos ahora que un método es una función especial.
 
 == ¿Qué es un bloque `impl`? Separando los datos del comportamiento
-A diferencia de otros lenguajes de programación donde los datos y las funciones se mezclan dentro de una "Clase", *Rust prefiere mantenerlos separados pero conectados*. En la *`struct`* defines qué datos tiene el objeto, y en el *`impl`* defines qué sabe hacer.
+A diferencia de otros lenguajes de programación donde los datos y las funciones se mezclan dentro de una "Clase", *Rust prefiere mantenerlos separados pero conectados*. En la *`struct`* defines qué datos tiene el objeto, y en el *`impl`* defines qué sabe hacer dicho objeto.
 
 ```rust
 // 1. El contenedor de datos (El plano)
@@ -18,26 +18,34 @@ struct NaveEspacial {
 
 // 2. El bloque de comportamiento (Los superpoderes)
 impl NaveEspacial {
-    // Aquí dentro programaremos todas las funciones 
+    // Aquí dentro programaremos todas las funciones
     // exclusivas de la NaveEspacial
 }
 ```
+Arriba podemos ver dos bloques de código. El bloque *struct* en el que se definen las propiedades de la estructura *NaveEspacial* y el bloque *impl* que todavía está vacio pero es donde programaremos *las funciones y los métodos* de la estructura *NaveEspacial*.
+
 == El espejo de la estructura: Comprendiendo `self`, `&self` y `&mut self`
-Para que una función dentro de un *impl* se considere un *método*, debe recibir como primer parámetro una palabra clave especial: *self*. self representa a la instancia exacta de la estructura que está ejecutando la acción.
+Para que una función dentro de un *impl* se considere un *método*, debe recibir como primer parámetro la palabra clave *self* o una de sus variantes como veremos luego. *self* representa el *objeto* o *instancia* de la estructura que está ejecutando el *método* o *acción*.
 
-#nota("Un método es una función que pertenece a una estructura y se aplica mediante un punto. Por ejemplo, si tenemos un objeto denominado halcon de una estructura denominada Pajaro y, esa estructura tiene un método denominado volar(), entonces podemos aplicar el método al objeto mediante la expresión 'halcon.volar()'. Aquí, la instancia es halcon y el método es volar(). halcon es self. Veremos a continuación cómo construimos un escenario similar a este.")
+Hemos visto que las estructuras (struc) sirven para crear objetos del tipo de la estructura. Cada objeto creado se denomina *instancia* y el proceso de creación se denomina *instanciación*.
 
-Los métodos operan sobre los datos del objeto struct. Dependiendo de lo que queramos hacer con los datos, utilizaremos tres variantes como primer parámetro en un método:
+Una vez que tenemos creado un objeto o instancia de la estructura, podremos ejecutar sus métodos con el operador punto (*`.`*).
+
+*Nota*. Supongamos que hemos creado un objeto o instancia denominado *halcon* de una estructura denominada *Pajaro* y que la estructura tiene un método denominado *volar()*. Bien, pues entonces podemos ejecutar el método *volar()* del objeto *halcon* mediante la expresión *halcon.volar()*. Aquí, la instancia u objeto es halcon y el método o acción es volar(). halcon es el *self* que veremos a continuación. En este apartado construiremos un escenario similar al descrito.
+
+Los métodos operan sobre los datos del objeto (struct). Dependiendo de lo que queramos hacer con los datos, utilizaremos una de las tres siguientes variantes como primer parámetro en un método:
 
 - *&self (Lectura):* Solo queremos leer los datos del objeto (por ejemplo, mostrar el estado en pantalla). Es la más común.
 
 - *&mut self (Modificación):* Necesitamos alterar los datos internos del objeto (por ejemplo, cuando la nave recibe un disparo o gasta munición).
 
-- *self (Consumo):* Toma el control total del objeto y lo destruye al terminar el método (se usa poco, por ejemplo, para transformar un objeto en otra cosa).
+- *self (Consumo):* El método toma el control total del objeto (la propiedad) y lo destruye al terminar el método (se usa poco, por ejemplo, para transformar un objeto en otra cosa).
 
 Veámoslo en acción con la nave:
 
 💻 Copia el siguiente código en la Playground y ejecútalo con [RUN]
+
+Fichero: *impl_metodos.rs*
 
 La explicación del programa está después del listado.
 
@@ -83,7 +91,9 @@ fn main() {
 
 *Explicación del programa*
 
-En primer lugar definimos nuestra estructura (struct) con tres campos:
+En primer lugar definimos nuestra estructura con tres campos.
+
+El bloque *struct*
 
 ```rust
 struct NaveEspacial {
@@ -92,14 +102,9 @@ struct NaveEspacial {
     municion: u32,
 }
 ```
-Los objetos que creemos con esta estructura van a tener unos métodos que tendremos que definir dentro el bloque:
+Los objetos que creemos con esta estructura tendrán los métodos definidos en el bloque impl.
 
-```rust
-impl NaveEspacial {
-  // Definición de los métodos de la estructura
-}
-``` 
-Coloquemos a continuación el mismo bloque pero ya con los métodos definidos:
+El bloque *impl*
 
 ```rust
 impl NaveEspacial {
@@ -126,19 +131,29 @@ Como podemos ver hemos definido dos métodos, cuyas cabeceras son:
 
 - fn recibir_disparo(&mut self, daño: u32)
 
-Supongamos que hemos creado un *objeto_nave_esp* de tipo NaveEspacial. Luego veremos como se crea en el main.
+Observa que en la función main se crea el objeto mutable *mi_caza* con la instrucción:
 
-La forma en que el objeto que hemos creado ejecuta los métodos anteriores es la siguiente:
+```rust
+let mut mi_caza = NaveEspacial {
+      nombre: String::from("Halcón Milenario"),
+      escudo: 100,
+      municion: 10,
+  };
+```
 
-1) objeto_nave_esp.reportar_estado()
+La forma en que el objeto que hemos creado ejecuta los métodos anteriores es la siguiente (ver en el main):
 
-Como vemos en la cabecera del método *fn reportar_estado(&self)*, recibe como primer y único parámetro un *prestamo* (o referencia) del *objeto mismo &self*. self representa el objeto que está llamando al método con el punto. Esto permite al método acceder a las propiedades del objeto en el interior del método, como *self.propiedad* (ejemplo self.nombre). Al haber recibido un prestamo &self, cuando el método termina de hacer su trabajo el objeto sigue activo, no se destruye.
+1) mi_caza.reportar_estado()
 
-2) fn recibir_disparo(&mut self, daño: u32)
+Como vemos en la cabecera del método *fn reportar_estado(&self)*, recibe como primer y único parámetro un *prestamo* (o referencia) *&self*. *self* representa el objeto que está llamando al método con el punto, es decir, *mi_caza*. Esto permite al método acceder a las propiedades del objeto en el interior del método con *self.propiedad* (ejemplo self.nombre). Al haber recibido un prestamo &self, cuando el método termina de hacer su trabajo el objeto sigue activo, no se destruye.
+
+2) mi_caza.recibir_disparo(40)
 
 Aquí la situación es analoga al caso anterior salvo que el método recibe dos parametros. El primer parámetro es *&mut self* y al igual que antes, el metodo podrá acceder a las propiedades del objeto mediante *self.propiedad* pero además de poder leerlas, la palabra *mut* en *&mut self* le permite tambien modificarlas.
 
 El segundo argumento *daño* opera igual que en una función normal. Se utiliza en el interior del método.
+
+#nota("Cuando se llaman los métodos de un struct con el operador punto, el primer parámetro ya sea &self, &mut self o self no es necesario colcarlo.")
 
 *El método main*
 En la función main se realiza toda la acción.
@@ -164,12 +179,13 @@ A veces queremos meter una función dentro de un `impl` que *no reciba self*. A 
 
 ```rust
 impl NaveEspacial {
-  // Constructor: No recibe self, porque su trabajo es CREAR el objeto desde cero
+  // Constructor: No recibe self, porque su trabajo es CREAR el
+  // objeto desde cero
   fn new(nombre_nave: &str) -> NaveEspacial {
       NaveEspacial {
           nombre: String::from(nombre_nave),
-          escudo: 100,      // Todas las naves empiezan con escudo a tope
-          municion: 50,     // Y munición cargada por defecto
+          escudo: 100,  // Todas las naves empiezan con escudo a tope
+          municion: 50, // Y munición cargada por defecto
       }
   }
 }
@@ -180,7 +196,7 @@ fn main() {
   nueva_nave.reportar_estado();
 }
 ```
-El siguiente objeto:
+El constructor *new* que hemos definido crea un objeto de tipo *NaveEspacial* con los valores indicados para sus propiedades. Siempre que se invoque este constructor creará el mismo objeto que vemos abajo.
 
 ```rust
  NaveEspacial {
@@ -189,9 +205,208 @@ El siguiente objeto:
     municion: 50,     // Y munición cargada por defecto
 }
 ```
-es la expresión que devuelve la función *new*, ya que está en su última línea y no lleva punto y coma al final.
+Este objeto es lo que devuelve la función *new*, ya que está en su última línea y no lleva punto y coma al final.
 
 == 🎮 Proyecto Práctico I: El simulador de inventario de una tienda de videojuegos
+Para cerrar este bloque, vamos a unificar las *`structs`*, los vectores (*`Vec`*) que aprendimos en el Cuaderno 2, y los bloques *`impl`* con constructores y métodos. Crearemos el motor de gestión para una tienda de videojuegos.
+
+💻 Copia el siguiente código en la Playground y ejecútalo con [RUN]
+
+Fichero: *tienda_videojuegos.rs*
+
+```rust
+// Definimos la estructura de un Videojuego individual
+struct Videojuego {
+    titulo: String,
+    precio: f64,
+    stock: u32,
+}
+
+impl Videojuego {
+    // Constructor de un juego
+    fn new(titulo: &str, precio: f64, stock: u32) -> Videojuego {
+        Videojuego {
+            titulo: String::from(titulo),
+            precio,
+            stock,
+        }
+    }
+}
+
+// Definimos la estructura de la Tienda, que albergará una 
+// lista de videojuegos
+struct Tienda {
+    nombre: String,
+    inventario: Vec<Videojuego>, // Usamos un vector dinámico de estructuras
+}
+
+impl Tienda {
+    // Constructor de la tienda
+    fn new(nombre: &str) -> Tienda {
+        Tienda {
+            nombre: String::from(nombre),
+            inventario: Vec::new(), // Empezamos con el inventario vacío
+        }
+    }
+
+    // Método para añadir un videojuego al inventario
+    fn agregar_juego(&mut self, juego: Videojuego) {
+        println!("📦 Añadiendo al almacén: {}", juego.titulo);
+        self.inventario.push(juego);
+    }
+
+    // Método de lectura para listar todos los productos en stock
+    fn mostrar_inventario(&self) {
+        println!("\n--- 🛒 INVENTARIO DE: {} ---", self.nombre.to_uppercase());
+        for juego in &self.inventario {
+            println!("• {} | Precio: {:.2}€ | Unidades: {}", juego.titulo, juego.precio, juego.stock);
+        }
+        println!("--------------------------------------\n");
+    }
+
+    // Método mutable para simular una venta
+    fn vender_juego(&mut self, titulo_juego: &str) {
+        let mut encontrado = false;
+
+        for juego in &mut self.inventario {
+            if juego.titulo == titulo_juego {
+                encontrado = true;
+                if juego.stock > 0 {
+                    juego.stock -= 1;
+                    println!("✅ ¡Venta realizada con éxito! Disfruta de: {}", juego.titulo);
+                } else {
+                    println!("❌ Lo sentimos, no queda stock de: {}", juego.titulo);
+                }
+                break; // Salimos del bucle al encontrar el juego
+            }
+        }
+
+        if !encontrado {
+            println!("🔍 El juego '{}' no se encuentra en nuestro catálogo.", titulo_juego);
+        }
+    }
+}
+
+fn main() {
+    // 1. Inauguramos nuestra tienda
+    let mut mi_tienda = Tienda::new("Pixel & Bits");
+
+    // 2. Creamos y añadimos stock de productos
+    let juego1 = Videojuego::new("Rust: Survival Evolved", 39.99, 3);
+    let juego2 = Videojuego::new("Cyberpunk 2077", 59.99, 1);
+    
+    mi_tienda.agregar_juego(juego1);
+    mi_tienda.agregar_juego(juego2);
+
+    // 3. Mostramos el estado inicial
+    mi_tienda.mostrar_inventario();
+
+    // 4. Simulamos compras por parte de los clientes
+    mi_tienda.vender_juego("Cyberpunk 2077"); // Quedará con stock 0
+    mi_tienda.vender_juego("Cyberpunk 2077"); // Debería dar error de falta de stock
+    mi_tienda.vender_juego("Minecraft");      // No existe en la tienda
+
+    // 5. Comprobamos cómo ha quedado el inventario final
+    mi_tienda.mostrar_inventario();
+}
+```
+```
+*La salida del programa*
+📦 Añadiendo al almacén: Rust: Survival Evolved
+📦 Añadiendo al almacén: Cyberpunk 2077
+
+--- 🛒 INVENTARIO DE: PIXEL & BITS ---
+• Rust: Survival Evolved | Precio: 39.99€ | Unidades: 3
+• Cyberpunk 2077 | Precio: 59.99€ | Unidades: 1
+--------------------------------------
+
+✅ ¡Venta realizada con éxito! Disfruta de: Cyberpunk 2077
+❌ Lo sentimos, no queda stock de: Cyberpunk 2077
+🔍 El juego 'Minecraft' no se encuentra en nuestro catálogo.
+
+--- 🛒 INVENTARIO DE: PIXEL & BITS ---
+• Rust: Survival Evolved | Precio: 39.99€ | Unidades: 3
+• Cyberpunk 2077 | Precio: 59.99€ | Unidades: 0
+--------------------------------------
+```
+
+*Explicación del programa*
+
+Vamos a escribir una especie de resumen del programa.
+
+1) Tenemos dos estructuras en nuestro programa: *Videojuego* y *Tienda*.
+
+- La estructura Videojuego tiene solo un constructor new en su bloque impl:
+ - fn new(titulo: &str, precio: f64, stock: u32) -> Videojuego 
+- La estructura Tienda tiene un constructor new y tres métodos:
+ - fn new(nombre: &str) -> Tienda 
+ - fn agregar_juego(&mut self, juego: Videojuego)
+ - fn mostrar_inventario(&self) {
+ - fn vender_juego(&mut self, titulo_juego: &str)
+
+Veamos el constructor new de la estructura Videojuego. Su código es el siguiente:
+
+```rust
+fn new(titulo: &str, precio: f64, stock: u32) -> Videojuego {
+        Videojuego {
+            titulo: String::from(titulo),
+            precio,
+            stock,
+        }
+    }
+```
+
+Teóricamente lo tendríamos que haber escrito así:
+
+```rust
+fn new(titulo: &str, precio: f64, stock: u32) -> Videojuego {
+        Videojuego {
+            titulo: String::from(titulo),
+            precio: precio,
+            stock: stock,
+        }
+    }
+```
+Pero como los parámetros *precio* y *stock* se llaman igual que las propiedades correspondientes del Videojuego, es suficiente con escribirlo una sola vez como hacemos arriba.
+
+Utilización de los métodos en el main.
+
+*Creación de un videojuego*.
+- El constructor a utilizar:
+  - fn new(titulo: &str, precio: f64, stock: u32) -> Videojuego 
+- La instrucción en el main:
+  - let juego1 = Videojuego::new("Rust: Survival Evolved", 39.99, 3);
+
+*Creación de la tienda*:
+- El constructor a utilizar:
+ - fn new(nombre: &str) -> Tienda
+- La instrucción en el main:
+ - let mut mi_tienda = Tienda::new(`"`Pixel & Bits`"`);
+
+*Agregar un juego a la tienda:*
+- El método a utilizar:
+ - fn agregar_juego(&mut self, juego: Videojuego)
+- La instrucción en el main:
+ - mi_tienda.agregar_juego(juego1);
+
+*Mostrar inventario de la tienda*
+- El método a utilizar:
+ - fn mostrar_inventario(&self) 
+- La instrucción en el main:
+ - mi_tienda.mostrar_inventario();
+
+*Vender un juego*
+- El método a utilizar:
+ - fn vender_juego(&mut self, titulo_juego: &str)
+- La instrucción en el main:
+ - mi_tienda.vender_juego(`"`Cyberpunk 2077`"`);
+
+Te queda un importante trabajo inspeccionando el interior de los métodos y observando:
+
+- Como devuelven los constructores *new* los respectivos objetos.
+- Como se utiliza el *operador punto* para acceder a las propiedades de un ojeto, por ejemplo *juego.titulo*.
+- Diferenciar entre métodos que solo leen las propiedades del objeto y reciben como argumento *&self* de los que también pueden modificar el objeto recibiendo *&mut self*.
+
 
 
 #pagebreak()

@@ -1,6 +1,6 @@
 = Ejercicios resueltos
 
-== Enuciados
+== ENUNCIADOS
 
 === Ejercicio 1: Expresiones vs. Sentencias
 
@@ -12,7 +12,7 @@
 
 === Ejercicio 3: Préstamos Mutables (&mut)
 
-Enunciado: Escribe una función llamada *duplicar_puntuacion* que reciba una referencia mutable a un número entero (*&mut i32*) e incremente su valor multiplicándolo por dos. Modifica el valor dentro de la función y muestra el resultado final desde el main.
+*Enunciado:* Escribe una función llamada *duplicar_puntuacion* que reciba una referencia mutable a un número entero (*&mut i32*) e incremente su valor multiplicándolo por dos. Modifica el valor dentro de la función y muestra el resultado final desde el main.
 
 === Ejercicio 4: Inicialización y Lectura de Arrays
 
@@ -28,7 +28,7 @@ Enunciado: Escribe una función llamada *duplicar_puntuacion* que reciba una ref
 
 #pagebreak()
 
-== Soluciones
+== SOLUCIONES
 === Ejercicio 1: Expresiones vs. Sentencias
 
 ```rust
