@@ -1,0 +1,7 @@
+sdtv_mode=18
+# 0 para NTSC
+# 1 para la versión japonesa de NTSC
+# 2 para PAL
+# 3 para la versión brasileña de PAL
+# 16 para NTSC progresivo
+# 18 para PAL progresivo
