@@ -154,6 +154,8 @@ fn main() {
 
 *Explicación:* A diferencia de los arrays, los vectores (Vec) pueden crecer o encogerse en tiempo de ejecución. El método *.push(*) añade elementos al final de la colección. En el bucle for, usamos *&puntuaciones* para recorrer los elementos mediante préstamos, evitando así que el bucle consuma (destruya) el vector.
 
+Como para recorrer el bucle for hemos utilizado *for valor in &puntuaciones*, valor es una referencia y para acceder a su contenido debemos utilizar el asterisco *`*`valor*. Sin embargo, dentro de la instrucción *println!()* se interpreta por defecto que si escribimos valor nos referimos a su contenido. Obviamente si colocamos el asterisco también funciona.
+
 Podemos conprobar al final que el vector *puntuaciones* sigue activo y lo podemos imprimir. Utilizamos el marcador *{:?}* porque el vector es un dato compuesto y no podemos imprimirlo con *{}*.
 
 === Ejercicio 6: Casting de tipos
