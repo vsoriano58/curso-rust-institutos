@@ -1,6 +1,8 @@
+#import "config.typ": *
+
 = 🗺️ El Mapa de la Memoria de tu Programa
 
-En el Cuaderno 1 *Descubriendo la Programación y Filtros Digitales* diferenciamos entre el *código fuente* (archivo que nosotros escribimos y es entendible por un humano) y el *código ejecutable* compuesto por unos y ceros, fruto del proceso de compilación y que es el que entiende el ordenador.
+En el Cuaderno 1 *"Descubriendo la Programación y Filtros Digitales"* diferenciamos entre el *código fuente* (archivo que nosotros escribimos y es entendible por un humano) y el *código ejecutable* compuesto por unos y ceros, fruto del proceso de compilación y que es el que entiende el ordenador.
 
 Como casi todos conocemos Windows podemos decir que cuando arrancamos un programa haciendo doble clic sobre un icono del escritorio, estamos cargando en la memoria RAM del ordenador el ejecutable de ese programa. ¿Qué almacenamos en la RAM?
 
@@ -29,7 +31,7 @@ Los *vectores*, que pueden aumentar y disminuir el número de elementos mientras
 
 Los *String* se almacenan en el Heap pero los *&str* se almacenan en el Segmento de Código, apartado 1.
 
-Cuando tenemos variables de tipos compuestos, por ejemplo un struct como vimos en el Cuaderno 1, generalmente los campos que son de tipos básicos (i32, 264, f32, bool,... ) se almacenan el el stack y si tienen, por ejemplo, campos de tipo String, estos se almacenan en el Heap. No obstante, el compilador es siempre libre de hacer optimizaciones y lo que hemos dicho es solo de caracter general.
+Cuando tenemos variables de tipos compuestos, por ejemplo un struct como vimos en el Cuaderno 1, generalmente los campos que son de tipos básicos (i32, i64, f32, bool,... ) se almacenan el el stack y si tienen, por ejemplo, campos de tipo String, estos se almacenan en el Heap. No obstante, el compilador es siempre libre de hacer optimizaciones y lo que hemos dicho es solo de caracter general.
 
 ⚔️ *El Gran Duelo: ¿Stack o Heap?*
 
@@ -79,9 +81,9 @@ Aquí está la clave de todo. Tu ordenador necesita saber cuánta memoria reserv
 
 - Datos de *tamaño dinámico* (Van al Heap): Imagina que creas un programa para que el usuario escriba su nombre por teclado. ¿Mide igual lo que escribe si se llama "Ana" que si se llama "Alejandro"? ¡No! Como el tamaño no se conoce en tiempo de compilación (se conocerá cuando se ejecute el programa y el usuario entre el dato), Rust no puede meterlo en el Stack. En su lugar, pide espacio en el Heap en tiempo de ejecución, guardando allí el texto dinámico (String), mientras que en el Stack solo se queda una pequeña ficha de propiedad indicando dónde está ese montón de texto.
 
-🕵️‍♂️ *El misterio de los &str y la Memoria de Sólo Lectura.*
+🕵️ *El misterio de los &str y la Memoria de Sólo Lectura.*
 
-¿Te acuerdas de que en el tema anterior dijimos que los &str eran como carteles tallados en piedra? ¡Ahora vas a entender por qué de verdad!
+¿En el siguiente apartado diremos que los *&str* son como carteles tallados en piedra? ¡Ésta es una primera justificación!
 
 Cuando escribes en tu código algo como:
 
@@ -98,8 +100,10 @@ Admitámoslo: hoy en día los ordenadores son tan potentes que devoran gigabytes
 
 Cuando entiendes que:
 
-- Una variable en el Stack es dueña de un espacio en el Heap.
-- Si esa variable desaparece (sale de su función), el plato del Stack se quita.
+- Una variable en el Stack puede ser dueña de un espacio en el Heap.
+- Si esa variable desaparece (sale de ámbito en su función), el plato del Stack se quita.
 - Al quitarse el plato, el espacio asignado en el Heap se limpia al instante...
 
 ... en ese preciso momento, los errores del compilador de Rust dejan de parecer un castigo y se convierten en tu mapa del tesoro. Dejas de pelear contra la "magia" y empiezas a diseñar software rápido, seguro y profesional.
+
+#pagebreak()

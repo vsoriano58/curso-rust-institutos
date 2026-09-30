@@ -65,4 +65,3 @@
 
 - 🧪 *Prueba de fuego:* Ejecuta el programa tres veces seguidas introduciendo textos diferentes. Al abrir el archivo diario.txt con cualquier editor de notas, deberías ver las tres frases guardadas perfectamente en tres líneas distintas.
 
-#pagebreak()

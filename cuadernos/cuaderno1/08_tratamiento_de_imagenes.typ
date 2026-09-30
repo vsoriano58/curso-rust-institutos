@@ -1,12 +1,12 @@
 #import "config.typ": *
 
 = 🎨  Tratamiento de imágenes con Rust
-Has llegado a la última frontera del primer cuaderno. Hasta ahora, todos tus programas se ejecutaban en la Playground, que es una terminal de texto. En este capítulo vas a dar el salto al mundo visual: vamos a usar Rust para *abrir, leer y modificar* imágenes reales en tu disco duro.
+Has llegado a la penúltima frontera del primer cuaderno. Hasta ahora, todos tus programas se ejecutaban en la Playground, que es una terminal de texto. En este capítulo vas a dar el salto al mundo visual: vamos a usar Rust para *abrir, leer y modificar* imágenes reales en tu disco duro.
 
 == Creando tu primer proyecto con Cargo
 En la Playground solo teníamos el contenido de un archivo volcado en su lado izquierdo. Ni siquiera teíamos un fichero físico. En el mundo profesional, un programa real se compone de varios archivos y herramientas. Para gestionarlos, Rust incluye un asistente en la terminal llamado Cargo. *La instalación que hicimos de Rust en el apatado anterior nos proporciona todas las herramientas del asistente Cargo.*
 
-Para organizar nuestros proyectos crearemos una carpeta raiz de los mismos con el nombre *proyectos-rust*. Podemos ubicarla en cualquier parte de nuestro disco duro. Si has seguido los apartados anteriores de este cuaderno, seguramente ya tendrás creada esta carpeta.
+Para organizar nuestros proyectos ya creamos una carpeta raiz de los mismos con el nombre *proyectos-rust*. Puede estar ubicada en cualquier parte de nuestro disco duro. Si has seguido los apartados anteriores de este cuaderno, seguramente ya tendrás creada esta carpeta.
 
 *Creación del proyecto*
 
@@ -19,7 +19,7 @@ La orden anterior creará la carpeta de proyecto *tratamiento_imagenes* dentro d
 
 ⚠️ *El truco de las carpetas:*
 
-Cargo es muy estricto y no te permite crear proyectos cuyo nombre empiece por un número (por ejemplo, `7_tratamiento_imagenes` daría error). El truco consiste en crear el proyecto tal y como hicimos arriba y, una vez creado, si lo deseas vas a tu gestor de archivos normal de Windows/Linux/Mac y renombras la carpeta añadiéndole el número delante. ¡Hecha la ley, hecha la trampa!
+Cargo es muy estricto y no te permite crear proyectos cuyo nombre empiece por un número (por ejemplo, `8_tratamiento_imagenes` daría error). El truco consiste en crear el proyecto tal y como hicimos arriba y, una vez creado, si lo deseas vas a tu gestor de archivos normal de Windows/Linux/Mac y renombras la carpeta añadiéndole el número delante. ¡Hecha la ley, hecha la trampa!
 
 🛠️ *Cómo abrir el proyecto en Visual Studio Code:*
 - Abre Visual Studio Code.
@@ -87,7 +87,7 @@ Algunos ejemplos para valores de un pixel:
 == Programa 1: Leyendo el color de un píxel
 Para este experimento, busca una imagen en internet ---la famosa foto de prueba *lena.jpg* o cualquier otra; también tienes una carpeta de imágenes en el repositorio que te has descargado---, renómbrala como *entrada.jpg* y guárdala dentro de la carpeta principal de tu proyecto (al lado del fichero *Cargo.toml*).
 
-#nota("Estamos trabajando en el proyecto *tratamiento_imagenes* que creamos en el apartado 7.1.")
+#nota[Estamos trabajando en el proyecto *tratamiento_imagenes* que creamos en el apartado 8.1.]
 
 💻  Escribe este código dentro de tu archivo *src/main.rs* borrando si existía algo previamente:
 
@@ -145,7 +145,9 @@ Muestra los cuatro valores de pixel.
 
 Observa que hemos utilizado el marcador *{:?}* para imprimir *pixel*. Esto es consecuencia de que pixel es una variable compuesta (4 valores) y con este marcador Rust sabe como imprimirla. El resultado de imprimir lo tienes en la línea de abajo que constituye la salida del programa:
 
+```
 El píxel en (100,100) tiene los valores: RGBA -> Rgba([139, 71, 60, 255])
+```
 
 🚀 *Ejecutar el programa*
 
@@ -160,7 +162,7 @@ Título del proyecto: *tratamiento_imagenes_2*
 
 Hay varias formas de obtener este segundo proyecto:
 
-+ *La aconsejada:* seguir los pasos indicados en el apartado *7.1 Creando tu primer proyecto con Cargo*
++ *La aconsejada:* seguir los pasos indicados en el apartado *8.1 Creando tu primer proyecto con Cargo*
 
 + Hacer un clon (copiar y pegar) la carpeta de tu primer proyecto *tratamiento_imagenes* y cambiar el título de la carpeta a *tratamiento_imagenes_2*. 
 
@@ -168,9 +170,9 @@ Luego, en cualquiera de los dos casos, tendrás que editar el fichero *src/main.
 
 En el proyecto del apartado anterior, si hubiéramos procedido a modificar un solo píxel en la foto digital de alta resolución, sería como cambiar un granito de arena en la playa: el ojo humano no se va a dar cuenta. Para comprobar que realmente tenemos el poder de *hackear* la imagen, vamos a hacer un experimento más visible.
 
-Vamos a seleccionar el píxel (100, 100) de la imagen lena.jpg y, usando la potencia de los bucles que aprendiste en el laboratorio, pintaremos un cuadrado rojo de 11x11 píxeles a su alrededor. Luego, guardaremos el resultado en un archivo nuevo llamado *lena_modificada.png*.
+Vamos a seleccionar el píxel (100, 100) de la imagen *lena.jpg* (la tienes en la carpeta imagenes del repositorio) y, usando la potencia de los bucles que aprendiste en el laboratorio, pintaremos un cuadrado rojo de 11x11 píxeles a su alrededor. Luego, guardaremos el resultado en un archivo nuevo llamado *lena_modificada.png*.
 
-#nota("Es posible que necesistes revisar el funcionamiento de los bucles for para entender los dos proyectos que siguen a continuación. En tal caso, revisa el apartado '4.4 El bucle for con rangos.'")
+#nota("Es posible que necesistes revisar el funcionamiento de los bucles for para entender los dos proyectos que siguen a continuación. En tal caso, revisa el apartado '5.4 El bucle for con rangos.'")
 
 💻  Escribe este código dentro de tu archivo *src/main.rs* borrando primero cualquier código preexistente:
 
@@ -185,7 +187,9 @@ fn main() {
 
     println!("🎨 Modificando la imagen... Dibujando zona de pruebas.");
 
-    // El color rojo en formato RGB se compone de: Máximo Rojo (255), cero Verde (0) y cero Azul (0)
+    // El color rojo en formato RGB se compone de: 
+    // Máximo Rojo (255), cero Verde (0) y cero Azul (0)
+    // la variable color_rojo no la utilizamos
     let color_rojo = Rgb([255, 0, 0]);
 
     // 2. Usamos dos bucles anidados para recorrer un área de 11x11 píxeles
@@ -329,74 +333,4 @@ cargo run
   ],
 )
 
-== El struct Persona y los "superpoderes" automáticos
-A lo largo de este viaje has aprendido que en Rust existen cajas fijas para guardar números enteros (i32), números decimales (f64) o cadenas de texto (&str). Pero, ¿qué pasa si queremos crear nuestra propia *caja personalizada*?
-
-Imagina que estamos programando una utilidad para el instituto o un videojuego de rol, y necesitamos guardar los datos de los usuarios. En lugar de tener tres variables sueltas por el código para el *nombre*, la *edad* y la *profesion*, Rust nos permite inventar nuestro propio tipo de dato usando la palabra mágica *struct* (abreviatura de estructura).
-
-💻  *Escribe este código dentro de tu archivo src/main.rs:*
-
-Limpia tu archivo *main.rs* en VS Code y escribe este último programa de nivel avanzado:
-
-```rust
-// 💡 la etiqueta #[derive(Debug)] le da al struct el "superpoder" 
-// de poder imprimirse en pantalla (es un dato compuesto)
-
-// Definimos la estructura
-#[derive(Debug)] 
-struct Persona {
-    nombre: String,
-    edad: i32,
-    profesion: String,
-}
-
-fn main() {
-    println!("🗂️  CREANDO FICHA DE PERSONA EN LA MEMORIA 🗂️\n");
-
-    // 1. Rellenamos la ficha creando un objeto con nuestra estructura personalizada,
-    // la que hemos creado arriba
-    let usuario = Persona {
-        nombre: String::from("Halcón68"),
-        edad: 14,
-        profesion: String::from("Programador de Rust"),
-    };
-
-    // 2. Método 1: Leer e imprimir los campos uno por uno (usando el punto '.')
-    println!("👤 Nombre del usuario: {}", usuario.nombre);
-    println!("🎂 Edad actual: {} años", usuario.edad);
-    println!("💼 Profesión: {}", usuario.profesion);
-    
-    println!("\n------------------------------------------------\n");
-
-    // 3. Método 2: Imprimir la estructura COMPLETA de golpe
-    // ⚠️ ¡Ojo! Para imprimir un struct entero usamos el marcador especial {:?} y
-    // tenemos que haberle dado superpoderes antes: #[derive(Debug)]
-    println!("📸 Radiografía completa del objeto en memoria:\n {:?}", usuario);
-}
-```
-
-⚙️ *El análisis del detective: Perdiendo el miedo a internet*
-
-Si buscas códigos de Rust en foros o tutoriales de internet, te vas a cruzar constantemente con líneas raras que llevan un signo de almohadilla y corchetes, como `#[derive(Debug)]`. Vamos a quitarles la máscara para que veas que no muerden:
-
-- *¿Qué es un struct?:* Piensa en él como el diseño en papel de una ficha de estudiante. No es un dato real todavía, es solo la plantilla que dice: "Cualquier Persona que creemos con esta estructura tendrá obligatoriamente un *nombre*, una *edad* y una *profesión*". Estas tres variables se denominan campos y cuando diseñamos el *struct* especificamos de que tipo deben ser.
-
-A partir del *struct Persona* hemos creado una variable *usuario* que será de tipo *Persona*, pasando valores a los campos del struct con unos tipos que coinciden con los especificados en el struct Persona.
-
-- *El operador punto (usuario.nombre):* Para acceder a los campos guardados dentro de nuestra estructura, usamos un punto .. Es la forma de decirle a Rust: `Ve a la caja llamada usuario y, por ejemplo, sácame únicamente lo que haya en su cajón nombre`.
-
-- *Las directivas o "Superpoderes"* `#[derive(Debug)]`: Por defecto, Rust es tan estricto con la eficiencia que no sabe cómo imprimir una estructura completa en pantalla con un *println!()* normal. Si intentas poner solo el marcador *{}*, el compilador te dará un error rojo gigante. Al escribir `#[derive(Debug)]` justo encima del *struct*, le estamos inyectando un superpoder automático para que Rust aprenda a hacerle una `radiografía visual` a toda la estructura cuando usemos el marcador especial *{:?}* y así pueda imprimirlo.
-
-🎮 *¡Haz la prueba técnica!*
-
-Abre una terminal integrada para tu proyecto y ejecútalo con  el comando que ya te sabes de memoria:
-
-```bash
-cargo run
-```
-
-Verás cómo la terminal imprime primero los datos limpios uno por uno, y al final te muestra la radiografía exacta del objeto tal y como vive dentro de la memoria de tu ordenador: 
-
-```rust
-Persona { nombre: "Halcón68", edad: 14, profesion: "Programador de Rust" }.
-```
+#pagebreak()

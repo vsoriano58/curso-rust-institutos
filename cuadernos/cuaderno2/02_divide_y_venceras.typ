@@ -6,7 +6,7 @@ Hasta ahora, salvo en una breve alusión a las funciones en el Cuaderno 1, has e
 Imagina que estás programando un videojuego: no metes el código de calcular la física (gravedad, rebotes, etc), pintar los gráficos y reproducir el sonido en una sola bolsa gigante. Lo separas en tareas especializadas. Esas tareas son las funciones.
 
 == Entradas y Salidas: Parámetros y valores de retorno (→)
-Una función se comporta como una máquina de una ábrica: le introduces una materia prima (*parámetros*), realiza un proceso interno, y te devuelve un producto terminado (valor *de retorno*).
+Una función se comporta como una máquina de una fábrica: le introduces una materia prima (*parámetros*), realiza un proceso interno, y te devuelve un producto terminado (*valor de retorno*).
 
 En Rust, para que el compilador te proteja de errores, estás obligado a declarar de qué tipo es cada parámetro que entra y qué tipo de objeto va a salir.
 
@@ -24,7 +24,7 @@ fn main() {
     println!("Tienes {} años. ¡Estás en la flor de la vida!", mi_edad);
 }
 ```
-La función anterior recibe dos parámetros de tipo i32: el año actual y el año de nacimiento, calcula la edad y la devuelve también como i32 mediante la sentencia return.
+La función anterior recibe *dos parámetros* de tipo *i32*: el año actual y el año de nacimiento, *calcula la edad* y *la devuelve también como i32* mediante la sentencia *return*.
 
 Veamos como se ejecuta el programa entero. Empieza en la primera línea del main().
 
@@ -39,13 +39,13 @@ La llamada a la función en el main:
 ```rust
 let mi_edad = calcular_edad(2026, 2010); // Llamamos a la máquina
 ```
-En esta línea declaramos la variable *mi_edad* con let (inmutable) y le asignamos el valor de retorno de la función *calcular_edad*, pasándole al  parámetro *anio_actual* de la función el *argumento* 2026 y al parámetro *anio_nacimiento* el *argumento* 2010. Esta distinción entre parámetros cuando son variables que figuran en le definición de la función y argumentos cuando son valores que precisamente se pasan a los parámetros, la volveremos a comentar más adelante.
+En esta línea declaramos la variable *mi_edad* con let (inmutable) y le asignamos el valor de retorno de la función *`calcular_edad()`*, pasándole al  parámetro *anio_actual* de la función el *argumento* 2026 y al parámetro *anio_nacimiento* el *argumento* 2010. Esta distinción entre parámetros, cuando son variables que figuran en le definición de la función y argumentos, cuando son valores que precisamente se pasan a los parámetros, la volveremos a comentar más adelante.
 
-Después de la línea anterior, la ejecución del programa pasa a la primera línea de la función, que hace la resta 2026 - 2010 = 16 y vuelve al main() asignando este valor a mi_edad.
+Después de la línea anterior en el *main()*, la ejecución del programa pasa a la primera línea de la función, que hace la resta 2026 - 2010 = 16 y vuelve al main() asignando este valor a la variable *mi_edad* mediante el *return*.
 
 A continuación el main() imprime la línea:
 
-Tienes 16 años. ¡Estás en la flor de la vida!
+"Tienes 16 años. ¡Estás en la flor de la vida!"
 
 Y el programa termina.
 
@@ -65,7 +65,7 @@ fn main() {
     // El cálculo "5 + 3" es la expresión que devuelve el valor 8
     let resultado = 5 + 3; 
 
-    println!("El resultado de la expresión es: {}", resultado);
+    println!("El resultado de la expresión es: {}", resultado);     // 8
 }
 ```
 En Rust, si la última línea de una función no tiene punto y coma, actúa como un return automático para devolver el valor. Mira cómo podemos simplificar la función anterior al "estilo Rust profesional" sin escribir explícitamente return en la línea final que devuelve el resultado:
@@ -79,6 +79,8 @@ fn calcular_edad_pro(anio_actual: i32, anio_nacimiento: i32) -> i32 {
 ```
 💡 Consejo: Si por error le pones un punto y coma a esa última línea, el compilador se quejará diciendo que la función devuelve "nada" () en lugar de un i32 tal como decimos en la cabecera de la función al definirla. ¡Prueba a quitar ese punto y coma y verás la magia!
 
+"Nada" es un tipo de dato en Rust y el único elemento que pertenece a este tipo de dato es () que se llama unidad, o también nada. Cuando una función no devuelve un dato explícitamente mediante  ->, entonces devuelve nada (), la unidad. Por tanto una función siempre devuelve algo, explícita o implíctamente.
+
 #nota("Cuando una función no devuelve nada, el compilador lo indica mostrando que devuelve (). El paréntesis vacío equivale a nada.")
 
 == Proyecto Intermedio: Modularizando la Calculadora Científica
@@ -86,7 +88,7 @@ fn calcular_edad_pro(anio_actual: i32, anio_nacimiento: i32) -> i32 {
 
 Nuestra calculadora permitirá realizar operaciones básicas (suma, resta) y algunas funciones más avanzadas muy utilizadas en ciencia e ingeniería: el cálculo de potencias y el factorial de un número.
 
-Veremos además el significado de dos nuevas palabras de Rust: *mod* (que significa modulo) y *pub* (que significa publico). Esto nos va a permitir estructurar el programa en módulos o ficheros independientes; concretamente el módulo principal *main.rs* que utilizará el módulo *operaciones.rs* el cual contiene las funciones.
+Veremos además el significado de dos nuevas palabras de Rust: *mod* (que significa modulo) y *pub* (que significa publico). Esto nos va a permitir estructurar el programa en módulos o ficheros independientes; concretamente el módulo principal *main.rs* que utilizará el módulo *operaciones.rs* que contiene las funciones.
 
 La definición de las funciones dentro de *operaciones.rs* va precedida de la palabra *pub* lo que permite (al ser públicas) que se puedan llamar desde el archivo *main.rs* (u otros archivos) como si las hubiéramos escrito dentro del archivo main.rs. 
 
@@ -95,7 +97,7 @@ Por defecto, es decir, sino calificamos las funciones con *pub*, Rust las define
 A su vez, para poder utilizar las *funciones* del modulo *operaciones.rs* desde el módulo *main.rs*, debemos incluir en este último archivo la instruccion *mod operaciones;* para que main.rs reconozca este archivo.
 
 === Creación del proyecto: mi_calculadora
-En el Cuaderno 1 apartado 6 "🔖 Subiendo de nivel: Instalación de un Entorno de Desarrollo Profesional" se explica de forma detallada *cómo instalar Rust de forma profesional en tu ordenador y cómo crear un proyecto.*
+En el Cuaderno 1 apartado 7 "🔖 Subiendo de nivel: Instalación de un Entorno de Desarrollo Profesional" se explica de forma detallada *cómo instalar Rust de forma profesional en tu ordenador y cómo crear un proyecto.*
 
 Revisa esa parte del Cuaderno 1 si lo necesitas y crea el proyecto: *mi_calculadora*. Añade al directorio *src* el fichero *operaciones.rs*.
 
@@ -156,7 +158,7 @@ pub fn calcular_factorial(n: u64) -> u64 {
 
 La expresión *for i in 1..=n* es un bucle que se repite *n* veces. La primera vez i vale 1, la segunda vez i vale 2 y la enésima vez i vale n.
 
-#nota("Este tipo de bucles está explicado en el Cuaderno 1, aparatdo '4.4 El bucle for con rangos'. Si quieres refrescar la mamoria prueba simplemente a calcular_factorial(4) que debe darte 4x3x2x1 = 24")
+#nota("Este tipo de bucles está explicado en el Cuaderno 1, aparatdo '5.4 El bucle for con rangos'. Si quieres refrescar la memoria con los factoriales, prueba simplemente a calcular_factorial(4) que debe darte 4x3x2x1 = 24")
 
 *Archivo: src/main.rs*
 
@@ -202,9 +204,9 @@ fn main() {
 
 Para entender por qué este código funciona tan bien, analicemos sus tres pilares clave:
 
-- *El Sistema de Módulos (mod y pub)*: Por defecto, todo en Rust es privado (está oculto). Si en operaciones.rs hubiéramos escrito fn calcular_factorial sin el *pub* delante, main.rs no podría ver la función y el compilador daría un error. Al añadir pub, le damos permiso a otros archivos para usarla.
+- *El Sistema de Módulos (mod y pub)*: Por defecto, todo en Rust es privado (está oculto). Si en *operaciones.rs* hubiéramos escrito *fn calcular_factorial* sin el *pub* delante, *main.rs* no podría ver la función y el compilador daría un error. Al añadir pub, le damos permiso a otros archivos para usarla.
 
-- *El Método powi*: Rust es extremadamente estricto con los tipos de datos. En lugar de un método genérico para calcular potencias, usamos .powi(), que significa "_Power Integer_" (potencia entera). Permite elevar de forma súper eficiente un número con decimales (f64) a un exponente entero (i32).
+- *El Método powi*: Rust es extremadamente estricto con los tipos de datos. En lugar de un método genérico para calcular potencias, usamos *.powi()*, que significa "_Power Integer_" (potencia entera). Permite elevar de forma súper eficiente un número con decimales (f64) a un exponente entero (i32).
 
-- *Mutabilidad Controlada y Rangos Especiales*: En la función del factorial, declaramos *let mut resultado = 1;*. Como en Rust las variables son inmutables por defecto para evitar despistes, la palabra clave *mut* le avisa al compilador de que ese valor sí va a cambiar dentro del bucle. Además, el bucle usa el operador *1..=n* (rango inclusivo), lo que asegura que el propio número n se incluya en la multiplicación.
+- *Mutabilidad Controlada y Rangos Especiales*: En la función del factorial, declaramos *let mut resultado = 1;*. Como en Rust las variables son inmutables por defecto para evitar despistes, la palabra clave *mut* le avisa al compilador de que ese valor sí va a cambiar dentro del bucle. Además, el bucle usa el operador *1..=n* (rango inclusivo), lo que asegura que el propio número *n* se incluya en la multiplicación.
 #pagebreak()

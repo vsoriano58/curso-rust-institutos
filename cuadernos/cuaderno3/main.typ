@@ -147,7 +147,8 @@
 #include "03_metodos_y_bloques_impl.typ"
 #include "04_enumerados.typ"
 #include "05_coincidencia_de_patrones.typ"
-#include "06_organizacion_en_modulos.typ"
-#include "07_ejercicios_resueltos.typ"
+#include "06_control_de_errores.typ"
+#include "07_organizacion_en_modulos.typ"
+#include "08_ejercicios_resueltos.typ"
 
 

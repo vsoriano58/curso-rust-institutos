@@ -1,0 +1,6 @@
+[package]
+name = "a05_thread_join_aumatico"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]

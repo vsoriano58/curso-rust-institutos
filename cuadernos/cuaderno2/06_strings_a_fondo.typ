@@ -6,7 +6,7 @@ En este tema hablaremos de los *strings* que representan *texto* y distinguiremo
 
 Si vienes de programar en lenguajes como Python, JavaScript o Java, las palabras y los textos eran simples: creabas una variable *texto = `"`Hola`"`* y te olvidabas de problemas. Pero en Rust, cuando intentas hacer operaciones sencillas con palabras, de repente el compilador te empieza a hablar de dos cosas llamadas *String* y *&str*.
 
-¿Por qué Rust nos complica la vida con dos tipos de texto diferentes? La respuesta es, una vez más, el rendimiento y la seguridad de la memoria. Rust quiere que tu programa sea tan rápido como un videojuego de última generación, y para conseguirlo necesita tratar los textos fijos de una manera y los textos dinámicos (variables) de otra.
+¿Por qué Rust nos complica la vida con dos tipos de texto diferentes? La respuesta es, una vez más, el rendimiento y la seguridad de la memoria. Rust quiere que tu programa sea tan rápido como un videojuego de última generación, y para conseguirlo necesita tratar los textos fijos de una manera y los textos dinámicos (los que se pueden modificar) de otra.
 
 == El texto que no cambia (&str) vs. El texto dinámico (String)
 
@@ -59,7 +59,7 @@ fn main() {
 }
 
 ```
-Evidentemente, en el caso anterior texto_dinamico y texto_dinamico2 son iguales. En ambos casos el compilador puede inferir el tipo de la variable y podemos escribir:
+Evidentemente, en el caso anterior *texto_dinamico* y *texto_dinamico2* son iguales. En ambos casos el compilador puede inferir el tipo *String* de la variable y podemos escribir:
 
 ```rust
 let texto_dinamico = texto_piedra.to_string(); // ¡Convertido!
@@ -67,7 +67,7 @@ let texto_dinamico2 = String::from(texto_piedra);
 ```
 - *B) Pasar de Bloc de Notas (String) a Letrero de Piedra (&str)*
 
-¡Esto es gratis! Como un *String* es el dueño de todo el texto, si solo quieres prestar una parte o su totalidad para que alguien lo lea como un *&str*, basta con ponerle el símbolo de préstamo (&) delante:
+¡Esto es gratis! Como un *String* es el dueño de todo el texto, si solo quieres prestar una parte o su totalidad para que alguien lo lea como un *&str*, basta con ponerle el símbolo de préstamo (*&*) delante:
 
 ```rust
 let bloc_notas: String = String::from("Contenido importante");
@@ -78,9 +78,9 @@ let prestamo_lectura: &str = &bloc_notas;
 
 - *C) Modificar un String sobre la marcha*
 
-Para añadir letras a un bloc de notas mutable, tienes dos herramientas clave:
- + *push()*: Añade un único carácter (va entre comillas simples, ej: 'a').
- + *push_str()*: Añade una frase o palabra completa (va entre comillas dobles, ej: "hola").
+Para añadir letras o palabras a un bloc de notas mutable, tienes dos herramientas clave:
+ + *push()*: Añade un único carácter (va entre comillas simples, ej: `'`a`'`).
+ + *push_str()*: Añade una frase o palabra completa (va entre comillas dobles, ej: `"`hola`"`).
 
 *Ejemplo:*
 

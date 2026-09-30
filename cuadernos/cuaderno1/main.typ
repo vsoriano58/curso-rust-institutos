@@ -1,14 +1,39 @@
 #import "config.typ": *
 
-// ============================================================================
+// ================================================
 // 1. REGLAS ESTÉTICAS GLOBALES (Afectan a todo el libro)
-// ============================================================================
+// ================================================
 
-// Diseño estético de las cajitas de código
+// 1. CONFIGURACIÓN GENERAL DEL CUADERNO (Texto normal)
+#set text(font: "Liberation Sans", size: 11pt, lang: "es")
+
+// 2. CONFIGURACIÓN GENERAL DE CÓDIGO 
+// (Para comandos sueltos en el texto y bloques de código)
+#show raw: set text(font: "Liberation Mono", size: 9pt)
+
+// 3. DISEÑO EXCLUSIVO DE LOS BLOQUES DE CÓDIGO (Las cajitas grises)
 #show raw.where(block: true): it => block(
-  fill: rgb("#f4f5f7"), inset: 12pt, radius: 6pt,
-  width: 100%, stroke: 0.5pt + rgb("#e1e4e8"), it
+  fill: rgb("#f4f5f7"), 
+  inset: 12pt, 
+  radius: 6pt,
+  width: 100%, 
+  stroke: 0.5pt + rgb("#e1e4e8"),
+  it // <-- Aquí basta con poner 'it' a secas, porque
+     // la línea 2. ya le dio los puntos de forma global
 )
+
+// 4. JUSTIFICACIÓN DEL DOCUMENTO CON EXCEPCIONES
+// 4.1. Activamos la justificación para todo el documento
+#set par(justify: true)
+
+// 4.2. Apagamos la justificación en los elementos específicos que has pedido:
+#show heading: set par(justify: false)     // Títulos y subtítulos (=, ==, etc.)
+#show table.cell: set par(justify: false)  // Celdas de las tablas
+#show raw.where(block: true): set par(justify: false)
+#show list.item: set par(justify: false)   // Listas con viñetas (- )
+#show enum.item: set par(justify: false)   // Listas numeradas (1. )
+
+
 
 // REGLA NUEVA: Numeración automática de títulos (Capítulo 1, Subcapítulo 1.1, etc.)
 #set heading(numbering: "1.1.")
@@ -25,11 +50,6 @@
   #v(0.2em)
   #line(length: 100%, stroke: 1.5pt + rgb("#007acc"))
 ]
-
-
-// Tipografías
-#set text(font: "Liberation Sans", size: 11pt, lang: "es")
-#show raw: set text(font: "Liberation Mono", size: 10pt)
 
 // CONFIGURACIÓN DE PÁGINA DEFINITIVA: 
 // Oculta cabeceras y pies en la portada (folio 1) y en el índice (folio 2)
@@ -48,7 +68,7 @@
   },
   footer: context {
     // El número de página aparecerá a partir del folio físico 3 (donde empieza el contenido)
-    if here().page() > 2 [
+    if here().page() > 4 [
       #align(center)[
         #text(size: 10pt, fill: luma(100), font: "Liberation Sans")[
           — #counter(page).display() —
@@ -69,9 +89,11 @@
 // CONFIGURACIÓN para bloque ```text
 // =============================================
 
-// ===========================================================================
+
+
+// ==================================================
 // 2. DISEÑO SEGURO DE LA PORTADA (Página física 1)
-// ===========================================================================
+// ==================================================
 
 #align(center)[
   #v(2cm)
@@ -129,18 +151,18 @@
 // Salto de página de la portada al índice
 #pagebreak()
 
-// ============================================================================
+// ==================================================
 // 3. TABLA DE CONTENIDOS (Página física 2)
-// ============================================================================
+// ==================================================
 #set outline(title: "Índice General", indent: 1.5em)
 #outline()
 
 // Salto de página del índice al inicio del libro
 #pagebreak()
 
-// ============================================================================
+// =================================================
 // 4. INCLUSIÓN DE CONTENIDO (Página física 3 en adelante)
-// ============================================================================
+// =================================================
 
 // Actualizamos el contador a 1 justo aquí, para que la Parte 1 empiece marcando la página 1
 #counter(page).update(1)
@@ -149,8 +171,10 @@
 #include "01_introduccion.typ"
 #include "02_que_es_un_programa.typ"
 #include "03_conceptos_a_recordar.typ"
-#include "04_laboratorio.typ"
-#include "05_tipos_datos_y_operadores.typ"
-#include "06_instalar_entorno_profesional.typ"
-#include "07_tratamiento_de_imagenes.typ"
+#include "04_mandos_playground.typ"
+#include "05_laboratorio.typ"
+#include "06_tipos_datos_y_operadores.typ"
+#include "07_instalar_entorno_profesional.typ"
+#include "08_tratamiento_de_imagenes.typ"
+#include "09_conceptos_avanzados_rust.typ"
 

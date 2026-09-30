@@ -3,11 +3,14 @@
 = 🔖 Introducción y Objetivos del Cuaderno
 ¡Te damos la bienvenida al segundo volumen de *Cuadernos de Rust!* Si en el primer cuaderno diste tus primeros pasos escribiendo líneas de código secuenciales y entendiendo la sintaxis básica, ha llegado el momento de dar el salto hacia la madurez como programador en Rust.
 
-En este cuaderno vamos a dejar atrás los programas sencillos de un solo bloque para aprender a diseñar software de verdad: organizado, eficiente y seguro. Para lograrlo, dividiremos nuestro código en funciones avanzadas y construiremos herramientas más complejas, como una calculadora científica modular.
+En este cuaderno vamos a dejar atrás los programas sencillos de un solo bloque para aprender a diseñar software de verdad: organizado, eficiente y seguro. Para lograrlo, dividiremos nuestro código en funciones avanzadas y construiremos herramientas más complejas, como una *Agenda de Contactos por Terminal*.
 
-Sin embargo, el verdadero plato fuerte de este volumen es el superpoder que hace único a Rust: el Ownership (Sistema de Propiedad). A través de analogías del mundo real y sin tecnicismos innecesarios, entenderás por qué Rust prescinde de un *recolector de basura* para ser rápido y no permite que cometas errores graves de memoria. Aprenderás las reglas de convivencia del código: quién es el "dueño" de un dato, cuándo se "mueve" y cómo se "presta" de forma segura.
 
-Finalmente, descubriremos cómo almacenar grandes volúmenes de información utilizando *Arrays* y *Vectores*; entenderemos cómo se organiza la memoria de tu ordenador y desmitificaremos el trabajo con textos mediante el control total de los Strings. ¡Prepárate, porque al terminar este cuaderno habrás programado tu propia Agenda de Contactos funcional por terminal!
+Sin embargo, el verdadero plato fuerte de este volumen es el superpoder que hace único a Rust: el *Ownership* (Sistema de Propiedad). A través de analogías del mundo real y sin tecnicismos innecesarios, entenderás por qué Rust prescinde de un *recolector de basura* para ser rápido y no permite que cometas errores graves de memoria. Aprenderás las reglas de convivencia del código: quién es el *"dueño"* de un dato, cuándo se *"mueve"* y cómo se *"presta"* de forma segura.
+
+Finalmente, descubriremos cómo almacenar grandes volúmenes de información utilizando *Arrays* y *Vectores*; entenderemos cómo se organiza la memoria de tu ordenador y desmitificaremos el trabajo con textos mediante el control total de los *Strings*. ¡Prepárate, porque al terminar este cuaderno habrás programado tu propia Agenda de Contactos funcional por terminal!
+
+Muchos de los conceptos tratados en el Cuaderno 1 los volveremos a tratar en este cuaderno, conscientes de que algunos de ellos son bastante abstractos y esperando que esta reiteración con distintas palabras contribuya a una mejor comprensión.
 
 == Objetivos del Cuaderno
 Al finalizar este cuaderno, serás capaz de:

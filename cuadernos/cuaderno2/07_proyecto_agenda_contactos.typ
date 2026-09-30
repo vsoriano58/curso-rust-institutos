@@ -1,3 +1,5 @@
+#import "config.typ": *
+
 = 📇 Proyecto Final: La Agenda de Contactos por Terminal
 
 ¡Ha llegado el momento de la verdad! Vamos a construir una aplicación real desde cero: una *Agenda de Contactos interactiva* que se ejecuta en la terminal de tu ordenador. El programa mostrará *un menú en bucle* que permitirá al usuario *añadir* nuevos amigos, *listar* los contactos guardados y *buscar* un teléfono rápidamente por el nombre.
@@ -16,7 +18,7 @@ Para que el código esté limpio y ordenado (como el de los programadores profes
 
 - *lista_telefonos*: Un vector de tipo Vec`<String>` para guardar sus números de teléfono. En este caso los números se guardarán como si fueran texto, es decir, no se podrá operar matemáticamente con ellos.
 
-Nota: La posición 0 de ambos vectores corresponderá al primer contacto, la posición 1 al segundo, y así sucesivamente.
+#nota[La posición 0 de ambos vectores corresponderá al primer contacto, la posición 1 al segundo, y así sucesivamente.]
 
 Antes de empezar a analizar el programa en su totalidad, vamos a comentar la parte del mismo que se encarga de pedir datos al usuario.
 
@@ -28,13 +30,17 @@ Para ello, vamos a analizar en primer lugar un código reducido que pide al usua
 cargo new agenda_contactos
 ```
 
-Se creará el directorio *agenda_contactos* y dentro el fichero main.rs en el interior de la carpeta *src*.
+Se creará el directorio *agenda_contactos* y el fichero *main.rs* en el interior de la carpeta *src*.
 
-Copia el siguiente programa, que es solo una demo de cómo un programa solicita datos al usuario y los muestra y, pégalo en el fichero main.rs del proyecto que acabas de crear.
+Copia el siguiente programa, que es solo una demo de cómo un programa solicita datos al usuario y los muestra y, *pégalo en el fichero main.rs* del proyecto que acabas de crear.
 
-Ejecútalo, desde una terminal integrada abierta en la carpeta del proyecto, con *cargo run* y cuando te pida que introduzcas una palabra, tecléala y termina pulsando *Return*. Observa la salida por la pantalla.
+*Ejecútalo* desde una terminal integrada de *VS Code* abierta en la carpeta del proyecto, con *cargo run* y cuando te pida que introduzcas una palabra, tecléala y termina pulsando *Return*. Observa la salida por la pantalla.
+
+#nota[Una vez creado el proyecto *agenda_contactos* dentro del directorio *proyectos-rust*, para ejecutar el proyecto tienes que cambiar de directorio con *cd agenda_contactos* antes de ejecutar *cargo run*. Si lo prefieres, puedes hacer clic derecho sobre la carpeta *agenda_contactos* y en el menú contextual elegir: *Open in Integrated Terminal*. Te dará una nueva terminal abierta en el directorio del proyecto. En la parte de abajo del V S Code, a la derecha, tienes unos iconos que representan papeleras para poder borrar si se acumulan los terminales de V S Code.]
 
 Proyecto: *agenda_contactos*
+
+fichero: *src/mai.rs*
 
 ```rust
 use std::io::{self, Write}; 
@@ -63,11 +69,11 @@ fn main() {
     println!("✅ Has escrito: {}", algo);
 }
 ```
-Comprender en detalle el programa anterior está de momento fuera de nuestro alcance. Pero no es nuestro objetivo averiguar qué hace cada palabrita del anterior programa, sino entender lo que hace cada línea porque en el proyecto final que vamos a desarrollar aparcerán bloques muy parecidos a este que hemos analizado. Lo que nos interesa de verdad del proyecto final es todo lo relacionado con los vectores.
+Comprender en detalle el programa anterior está de momento fuera de nuestro alcance. Pero no es nuestro objetivo averiguar qué hace cada palabrita del programa, sino entender lo que hace en su conjunto: pedir al usuario que ingrese una palabra por el teclado y devolverle esa misma palabra insertada en una frase. Lo que nos interesa de verdad en el proyecto final que veremos a continuación es todo lo relacionado con los vectores.
 
-En el listado completo del programa que daremos al final, aparecen algunas funciones con un ecabezado similar entre ellas pero no idéntico.
+En el *listado completo* del programa que daremos al final, aparecen algunas funciones con un ecabezado similar entre ellas pero no idéntico.
 
-- Veamos la función *mostrar_contactos*
+- Veamos la función *`mostrar_contactos()`*
 
 ```rust
 fn mostrar_contactos(nombres: &Vec<String>, telefonos: &Vec<String>) {
@@ -99,17 +105,17 @@ La llamada a la función en el main tiene la forma:
 ```rust
 mostrar_contactos(&agenda_nombres, &agenda_telefonos);
 ```
-Donde observamos lo que acabamos de comentar.
+Como habíamos comentado.
 
 *¿Qué hace la función por dentro?*
 
-- Vamos a razonar con los nombres de los parámetros, *nombres* y *telefonos* pero ten en cuenta que las funciones operan con los argumentos que se le pasen a los parámetros, es decir, con agenda_nombres, agenda_telefonos.
+- Vamos a razonar con los nombres de los parámetros, *nombres* y *telefonos* pero ten en cuenta que las funciones operan con los argumentos que se le pasen a los parámetros, es decir, con *agenda_nombres*, *agenda_telefonos*.
 
 - Si el vector de *nombres* está vació, entonces *nombres.is_empty()* devuelve un valor *true*. El if se cumple y por tanto el programa muestra un mensaje y la función termina con un *return*. El programa seguirá en el main en la instrucción siguiente a la llamada a la función.
 
 - Si el *if* no se cumple, pasamos a la instrucción *for*. Aquí, tengamos en cuenta que *nombres.len()* nos da la cantidad de elementos que tiene el vector *nombres*. Es decir, si *nombres tiene 5 elementos* entonces *nombres.len() es igual a 5*.
 
--  En el bucle *for i in 0..nombres.len()*, la variable *i* empieza por valer 0 y en cada pasada del bucle aumenta en uno su valor hasta valer nombres.len() que en el caso anterior hemos supuesto que vale 5. Entonces la variable i va tomando los valores 0, 1, 2, 3, 4 porque el último de los valores, el 5, está excluido del rango. Si quisiéramos que el rango hubiese llegado hasta el 5 tendríamos que haber secrito *for i in 0..=nombres.len()*.
+-  En el bucle *for i in 0..nombres.len()*, la variable *i* empieza por valer 0 y en cada pasada del bucle aumenta en uno su valor hasta valer *nombres.len() - 1*. Entonces la variable i va tomando los valores 0, 1, 2, 3, 4 porque el último de los valores, el 5, está excluido del rango. Si quisiéramos que el rango hubiese llegado hasta el 5 tendríamos que haber escrito *for i in 0..=nombres.len()*.
 
 Para cada valor de i, se ejecutan todas las instrucciones que hay dentro del for. En este caso solo hay una.
 
@@ -131,13 +137,14 @@ println!("{}. 👤 Nombre: {} | 📞 Teléfono: {}", 4 + 1, nombres[4], telefono
 ```
 El resultado sería un listado con los nombres y telefonos de los contactos.
 
-- Analicemos ahora la función *añadir_contacto*
+- Analicemos ahora la función *`añadir_contacto()`*
 
 ```rust
 fn añadir_contacto(nombres: &mut Vec<String>, telefonos: &mut Vec<String>) {
     println!("\n--- 🆕 Añadir Nuevo Contacto ---");
     
     // Pedimos el nombre y lo colocamos en la variable "nombre"
+    // Es el bloque que hemos analizado al principio
     print!("Introduce el nombre: ");
     io::stdout().flush().unwrap(); 
     let mut nombre = String::new();
@@ -152,16 +159,28 @@ fn añadir_contacto(nombres: &mut Vec<String>, telefonos: &mut Vec<String>) {
     let telefono = telefono.trim().to_string();
 
     // Guardamos los datos en sus respectivos vectores
-    // Las datos se añaden a los que ya hayan
+    // Las datos se añaden a los que ya existan
     nombres.push(nombre);
     telefonos.push(telefono);
     
     println!("✅ ¡Contacto guardado con éxito!");
 }
 ```
-De esta forma actualizamos los dos vectores "nombres "y "telefonos" con los nuevos valores que hemos introducido por teclado.
+De esta forma actualizamos los dos vectores *nombres* y *telefonos* con los nuevos valores que hemos introducido por teclado.
 
-- Analicemos ahora la función *buscar_contacto*
+Ten en cuenta que tanto los vectores en el main (puedes verlo más abajo) como los parametros de la función añadir_contacto se defienen con *mut* para poder modificar los vectotres:
+
+```rust
+// En el main
+let mut agenda_nombres: Vec<String> = Vec::new();
+let mut agenda_telefonos: Vec<String> = Vec::new();
+
+// La cabecera de la función
+fn añadir_contacto(nombres: &mut Vec<String>, telefonos: &mut Vec<String>) {...}
+```
+
+- Analicemos ahora la función *buscar_contacto*.
+Sigue los comentarios en el programa.
 
 ```rust
 fn buscar_contacto(nombres: &Vec<String>, telefonos: &Vec<String>) {
@@ -387,7 +406,7 @@ fn main() {
   }
 
   // Instrucción para pruebas
-  println!("Imprimimos desde última línea: {:?}", agenda_nombres)
+  println!("Imprimimos desde la última línea: {:?}", agenda_nombres)
 }
 ```
 🧠 *Conclusiones sobre la forma de trabajar de Rust?*
@@ -398,7 +417,7 @@ Fíjate en las llamadas a las funciones dentro del *match* en la función *main*
 
 - Para añadir un contacto, enviamos como parámetro a la función correspondiente un prestamo mutable *&mut agenda_nombres*. Le prestamos la agenda a la función y le *damos permiso para que pueda de escribir* contactos nuevos.
 
-- Como en ambos casos pasamos un prestamo a la función, no la variable original *agenda_nombres*, esta no se consume en las llamadas a las funciones y sigue activa al final del main. Para demostrarlo, introduce algún contacto mediante la opción "2" y luego elige la opción "4" que *sale del bucle loop mediante un break y cae en la función main*, ejecutando la línea *println!("Imprimimos desde última línea: {:?}", agenda_nombres)* demostrando así que accede a la variable *agenda_nombres* y por tanto no ha sido destruida.
+- Como en ambos casos pasamos un prestamo a la función, no la variable original *agenda_nombres*, esta no se consume en las llamadas a las funciones y sigue activa al final del main. Para demostrarlo, introduce algún contacto mediante la opción "2" y luego elige la opción "4" que *sale del bucle loop mediante un break y cae en la función main*, ejecutando la línea *println!(`"`Imprimimos desde la última línea: {:?}`"`, agenda_nombres)* demostrando así que accede a la variable *agenda_nombres* y por tanto no ha sido destruida.
 
 - Si intentáramos añadir un contacto a la agenda utilizando la función correspondiente, mientras otra función la estuviera leyendo en un segundo plano, ¡el compilador de Rust haría saltar las alarmas y daría un error para proteger la memoria!. 
 

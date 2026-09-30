@@ -49,7 +49,7 @@ let v = 50.5;
 
 Aquí definimos la variable inmutable *v* (con *let*) como un valor decimal pero no indicamos el tipo de dato de v. En Rust existen dos tipos de datos decimales, f32 y f64. Si no indicamos el tipo en la signación de un valor decimal a una variable como en la anterior instrucción, el compilador toma por defecto *f64*. Por tanto v será del tipo f64.
 
-Si queremos realmente que v sea de tipo f32 lo tenemos que indicar en la declaración y asignación. Por ejemplo:
+Si queremos realmente que v sea de tipo f32 lo tenemos que indicar en la declaración o en la asignación. Por ejemplo:
 
 ```rust
 let v:f32 = 50.5;
@@ -69,8 +69,8 @@ Aquí estamos diciendo que la constante 50.5 hay que tomarla como f32 por lo que
 Con los enteros i32 e i64 ocurre algo similar. El tipo por defecto es i32 pero también existe i64. Entonces:
 
 ```rust
-let edad = 20;		  // edad es i32
-let edad: i32 = 20;	// edad es i32. Especificación de tipo redundante
+let edad = 20;		  // edad es i32. Por defecto, sin indicar nada
+let edad: i32 = 20;	// edad es i32. Reiterativo
 let edad = 20i64;	  // edad es i64
 let edad:i64 = 20;	// edad es i64
 ```
@@ -79,14 +79,14 @@ Los tipos de datos numéricos que definiremos a continuación tienen tipos por d
 === 🧱 Las dos familias de tipos en Rust
 Para organizar todos los tipos de datos, Rust los divide en dos grupos muy fáciles de entender: los *Escalares* y los *Compuestos*.
 
-==== *Tipos Escalares (Un solo valor)*
+==== Tipos Escalares (Un solo valor)
 Son los tipos de datos más sencillos. Representan *un único valor atómico* (no se pueden dividir en partes más pequeñas). Imagínalos como piezas individuales de Lego.
 - *Enteros (Números sin decimales):* Sirven para contar cosas enteras (como vidas en un videojuego o años). Rust te permite elegir el tamaño exacto que ocuparán en memoria:
- - Con signo (pueden ser negativos o positivos): i8, i16, i32 (el favorito por defecto), i64, i128.
- - Sin signo (solo positivos o cero): u8 (ideal para colores en informática, de 0 a 255), u16, u32, u64, u128.
+ - Con signo (pueden ser negativos o positivos, `"i"` de integer): i8, i16, i32 (el favorito por defecto), i64, i128.
+ - Sin signo (solo positivos o cero, `"`u"`` de unsigned): u8 (ideal para colores en informática, de 0 a 255), u16, u32, u64, u128.
  - Según el ordenador: isize y usize (su tamaño depende de si el procesador es de 32 o 64 bits).
 
-- *Flotantes (Números con decimales):* Para cuando necesitas precisión (como la salud de un jefe con 99.5% de vida o el precio de un juego).
+- Flotantes (Números con decimales): Para cuando necesitas precisión (como la salud de un jefe con 99.5% de vida o el precio de un juego).
  - f32 (precisión simple).
  - f64 (precisión doble, el que Rust usa por defecto).
 
@@ -95,22 +95,32 @@ Son los tipos de datos más sencillos. Representan *un único valor atómico* (n
 
 - *Caracteres (Una sola letra o símbolo):* Sirven para guardar una única letra, número suelto o... ¡incluso un emoji!
 
- - *char:* Se escriben con comillas simples (por ejemplo: 'A', '7' o '🚀'). Ocupan 4 bytes porque usan Unicode, lo que les permite representar casi cualquier símbolo del mundo.
+ - *char:* Se escriben con comillas simples (por ejemplo: `'A'`, `'7'` o `'🚀'`). Ocupan 4 bytes porque usan Unicode, lo que les permite representar casi cualquier símbolo del mundo.
 
-==== *Tipos Compuestos (Varios valores juntos)*
+==== Tipos Compuestos (Varios valores juntos)
 Son tipos que permiten agrupar múltiples valores dentro de una sola *caja* o *variable*. Nos podremos referir a esos multiples valores a través del nombre único de la variable.
 
 - *Tuplas (Tuples):* Son como una mochila donde puedes meter cosas de diferentes tipos, pero con un tamaño fijo: una vez que creas la tupla, no puede crecer ni encoger.
 
- - Ejemplo: Puedes guardar el nombre de un jugador (&str), su puntuación (i32) y si está vivo (bool) en una sola variable: ("Halcón", 2500, true). Se caracterizan por utilizar un paréntesis en su declaración y los distintos valores separados por comas.
+ - Ejemplo: Puedes guardar el nombre de un jugador (&str), su puntuación (i32) y si está vivo (bool) en una sola variable: 
+ 
+ ```rust
+let jugador = ("Halcón", 2500, true);
+ ```
+ Se caracterizan por utilizar un paréntesis en su declaración y los distintos valores separados por comas.
 
 - *Arrays / Arreglos (Matrices fijas):* Son como un cartón de huevos. Guardan una lista de elementos, pero con dos reglas estrictas: todos tienen que ser del mismo tipo y el tamaño una vez creado el array es fijo (no puede cambiar).
 
  - Ejemplo: Las notas de 5 exámenes de un alumno: [10, 8, 9, 7, 9]. Se caracterizan por utilizar corchetes en su declaración con la lista de elementos separados por comas.
 
+ ```rust
+let notas = [10, 8, 9, 7, 9];
+ ```
 Piensa un poco en esto: Si tuvieras que guardar el inventario de Minecraft de un jugador, ¿qué tipo usarías para la cantidad de bloques de piedra? ¿Y para el nombre del pico?
 
-=== 📄 Fichero: ejemplos_tipos.rs
+=== Ejemplo que utiliza diferentes tipos
+
+Después del listado tienes explicaciones para entender el programa.
 
 💻 Copia este código en tu Playground
 
@@ -179,7 +189,8 @@ Lo podemos ver en los siguientes ejemplos:
 ```rust
 let jugador: (&str, i32, bool) = ("Halcón", 2500, true);
 
-// Para sacar los datos de la tupla usamos un punto y su posición (empezando desde 0)
+// Para sacar los datos de la tupla usamos un punto y su posición
+// (empezando desde 0)
 let nombre_jugador = jugador.0;
 let puntos_jugador = jugador.1;
 let jugador_esta_vivo = jugador.2;
@@ -190,7 +201,8 @@ let jugador_esta_vivo = jugador.2;
 ```rust
 let historial_puntos: [i32; 4] = [120, 98, 101, 63];
 
-// Para sacar un dato del array usamos corchetes [] y la posición (el primero es el 0)
+// Para sacar un dato del array usamos corchetes [] y la posición 
+// (el primero es el 0)
 let primera_partida = historial_puntos[0]; 
 let segunda_partida = historial_puntos[1]; 
 // etc.
@@ -198,8 +210,53 @@ let segunda_partida = historial_puntos[1];
 
 🎨 *Comillas simples o dobles*
 
-Las comillas importan: Las letras sueltas (*char*) llevan comillas simples ('A'), mientras que los textos de más de una letra (*&str o String*) llevan comillas dobles ("Halcón"). Si mezclas las comillas, ¡el compilador te echará una bronca de campeonato!
+Las comillas importan: Las letras sueltas (*char*) llevan comillas simples (`'A'`), mientras que los textos de más de una letra (*&str o String*) llevan comillas dobles (`"`Halcón`"`). Si mezclas las comillas, ¡el compilador te echará una bronca de campeonato!
 
+===  Gestión de Texto: La Diferencia entre `&str` y `String`
+
+En Rust, el texto (las cadenas de caracteres) no se maneja de una sola forma. El lenguaje divide el texto en dos tipos principales según dónde se guarda la información y si se puede modificar o no. Estos dos tipos son *String* y *&str*.
+
+Para entenderlo de forma sencilla:
+
+- *&str (Cita de texto / String Slice):* Es como un cartel de "No tocar". Es texto de longitud fija que solo sirve para ser leído.
+
+- *String (Texto dinámico):* Es como una libreta donde puedes escribir, borrar y añadir más páginas. Es texto modificable que puede crecer o encogerse.
+
+* Tabla Comparativa Rápida*
+
+Características de una variable de tipo &str o String
+
+#set table(stroke: 0.5pt + rgb("#e1e4e8"))
+#table(columns: (1.5fr, 2fr, 2fr),fill: (x, y) => if y == 0 { rgb("#f4f5f7") } else { none },[Característica], [&str], [String],[¿Se puede modificar?], [No (Inmutable)], [Sí (Mutable)],[¿Dónde se guarda?], [En la memoria fija (Binario)], [En el montón (Heap)],[¿Tiene dueño?], [Es prestado (Referencia)], [Es propietario del texto],[Uso principal], [Lectura rápida y fija], [Crear y transformar texto])
+
+==== El tipo &str (Referencia de cadena)
+
+Es el tipo por defecto cuando escribes texto directamente entre comillas en tu código. Es muy rápido y eficiente porque el ordenador sabe exactamente cuánto mide desde el principio y que no va a cambiar.
+
+```rust
+fn main() {
+    // Esto es un &str por defecto
+    let saludo = "¡Hola, mundo!"; 
+    
+    // NO puedes añadirle caracteres (daría error):
+    // saludo.push_str(" ¿Cómo estás?"); 
+}
+```
+
+==== 2. El tipo String
+Este tipo se utiliza cuando no sabes qué va a escribir el usuario, o cuando necesitas pegar varios textos juntos para formar una frase dinámica (sobre la marcha).
+
+```rust
+fn main() {
+    // Creamos un String a partir de un texto fijo
+    let mut mensaje = String::from("Hola");
+    
+    // ¡Sí podemos modificarlo y añadirle más texto!
+    mensaje.push_str(" alumno de Rust");
+    
+    println!("{}", mensaje); // Imprime: Hola alumno de Rust
+}
+```
 == Los motores del cambio: Operadores en Rust
 Imagina que las variables son cajas donde guardas cosas (como tus monedas, tu nivel o tu inventario). Los operadores son las herramientas matemáticas y lógicas que te permiten hacer cosas con esas cajas: sumar puntos, comparar quién ha ganado o comprobar si tienes la llave correcta para abrir una puerta.
 
@@ -274,7 +331,7 @@ Sirven para comparar dos cosas. El resultado de estas operaciones siempre es un 
 Sirven para combinar varias preguntas a la vez. Imagina que para entrar a una mazmorra necesitas: tener el nivel 10 Y tener la llave dorada. ¡Aquí entran en juego los operadores lógicos!
 
 - *&& (Operador Y / AND):* Da true solo si todas las condiciones son verdaderas.
- - let *entrar* = (nivel >= 10) *&&* tiene_llave; (Si una de las dos es false, entrar es false).
+ - let *entrar* = (nivel >= 10) *&&* tiene_llave; (Si una de las dos es false, *entrar* es false).
 
 - *|| (Operador O / OR):* Da true si al menos una de las condiciones es verdadera. (El signo | se obtiene con la tecla *Alt Gr + 1* en la mayoría de teclados).
  - let jugar = (tengo_consola) *||* (tengo_pc); (Con que tengas uno de los dos, ya puedes jugar).

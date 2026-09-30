@@ -1,11 +1,11 @@
 #import "config.typ": *
 
-= 🤝 Las Reglas de Convivencia: Introducción Intuitiva al Ownership
-Llegamos al núcleo de lo que hace a Rust un lenguaje único en el mundo: el Ownership (Propiedad).
+= 🤝 Las Reglas de Convivencia: Una Introducción Intuitiva al Ownership
+Llegamos al núcleo de lo que hace a Rust un lenguaje único en el mundo: el Ownership (Propiedad) que ya estuvimos estudiando en el Cuaderno 1.
 
-Para entenderlo, imagina que cuando tu programa quiere guardar el valor de una variable, primero debe pedirle al sistema operativo un "hueco" o reserva de memoria RAM donde quepa ese valor.
+Para recordarlo de nuevo, imagina que cuando tu programa quiere guardar el valor de una variable, primero debe pedirle al sistema operativo un "hueco" o reserva de memoria RAM donde quepa ese valor.
 
-El problema es que, muchas veces, unas líneas más abajo en el código dejamos de usar esa variable, pero la reserva de memoria sigue activa. Si esto ocurre dentro de una función que se repite miles de veces, el programa irá acumulando memoria ocupada e inútil hasta que el ordenador se sature y falle. Este es el famoso _Memory Leak_ (fuga de memoria), y es solo uno de los muchos dolores de cabeza que existen.
+El problema es que, muchas veces, unas líneas más abajo en el código dejamos de usar esa variable, pero la reserva de memoria sigue activa. Si esto ocurre dentro de una función que se repite miles de veces, el programa irá acumulando memoria ocupada e inútil hasta que el ordenador se sature y falle. Este es el famoso _Memory Leak_ (fuga de memoria), y es solo uno de los muchos dolores de cabeza que existen con la gestión de memoria.
 
 ¿Cómo se soluciona esto? Liberando la memoria cuando ya no se usa. Cada lenguaje lo hace a su manera:
 
@@ -35,9 +35,11 @@ fn main() {
         let color = "rojo";
         println!("{color}" );
     } // <-- Final del ámbito de la variable color. "rojo" se destruye
+      // color deja de existir
     
     println!("{nombre}");
 }   // <-- Final del ámbito de la variable nombre. "Diego" se destruye
+    // nombre deja de existir
 
 
 ```
@@ -50,12 +52,12 @@ Cada dato en memoria tiene una variable que es su dueño (owner).
 
 Solo puede haber un dueño a la vez.
 
-En el listado del apartado anterior, el dueño del dato "Diego" es la *variable* nombre y el dueño del dato "rojo" es la *variable* color.
+En el listado del apartado anterior, *el dueño del dato `Diego` es la variable `nombre`* y *el dueño del dato `rojo` es la variable `color`*.
 
 Cuando la variable queda fuera de ámbito porque el programa ha llegado hasta el final de su ámbito, el dato que representa la variable se destruye automáticamente para no ocupar espacio en la memoria del ordenador.
 
 == El peligro de la copia vs. el movimiento (Move)
-En este apartado vamos a ver *como cambia el propietario de un dato* cuando hacemos una asignación de una variable a otra. Esto ocurre cuando se trata de datos complejos como textos dinámicos. Veremos como ejempo el caso de un String (Texto).
+En este apartado vamos a ver *como cambia el propietario de un dato* cuando hacemos una asignación de una variable a otra. Esto ocurre cuando se trata de datos complejos como textos dinámicos. Veremos como ejempo el caso de un String (texto).
 
 Existen al menos dos formas de definir un string:
 
@@ -66,9 +68,11 @@ let mi_string2 = String::from("Hola Mundo");
 ```
 Las dos variables definidas son de tipo *String* y representan la misma cadena de texto en ambos casos: *Hola Mundo*. 
 
-Veamos en el siguiente ejemplo como el dato, el String *Spiderman: Año Uno* cambia de dueño al hacer una asignación de variables.
+Veamos en el siguiente ejemplo como el String *Spiderman: Año Uno* cambia de dueño al hacer una asignación de variables.
 
-Con la terminal abierta en tu carpeta de proyectos de Rust, haz clic derecho sobre la carpeta y *crea una terminal integrada de Visual Studio Code*. Crea un proyecto de Cargo con el comando *cargo new movimiento*, sustituye el código del *main.rs* por el siguiente listado y ejecuta el programa mediante *cargo run*.
+*Creación del proyecto*
+
+Haz clic derecho sobre la carpeta *proyectos-rust* en VS Code y *crea una terminal integrada de VS Code*. Crea un proyecto de Cargo con el comando *cargo new movimiento*, sustituye el código del *main.rs* por el siguiente listado. Cámbiate al directorio del proyecto mediante *cd movimiento* y ejecuta el programa mediante *cargo run*.
 
 💻 Proyecto: *movimiento*
 
@@ -90,13 +94,13 @@ fn main() {
     println!("Mi amigo está leyendo: {}", comic_prestado); // Esto sí funciona
 }
 ```
-En el código anterior, al hacer la asignación *let comic_prestado = comic_original;*, el dueño del dato *Spiderman: Año Uno* se mueve de *comic_original* (que era su dueño original) a *comic_prestado* que es su nuevo y único dueño.
+En el código anterior, al hacer la asignación *let comic_prestado = comic_original;*, el dueño del dato *Spiderman: Año Uno* se mueve de *comic_original* (que era su dueño inicial) a *comic_prestado* que es su nuevo y único dueño.
 
-Además, la variable *comic_original* se destruye y deja de existir.
+Además, la variable *comic_original* se destruye en la asignación y deja de existir.
 
 Hemos dicho que esto solo ocurre cuando se trata de datos complejos como textos dinámicos, y hemos puesto como ejemplo un String para que puedas comprobarlo. 
 
-Descomenta el último println! e intenta compilar.
+Descomenta el penúltimo println! e intenta compilar.
 
 Sin embargo, esto no ocurre cuando se trata de los tipos básicos mencionados en el Cuaderno 1. Veamos un ejemplo:
 
@@ -121,7 +125,7 @@ La asignación *let mut b = a;* no consume en este caso la variable *a*, que no 
 
 Esto ocurre, como hemos mencionado, porque las variables *a* y *b* son de *tipo básico*, concretamente *i32*. Con los *String* ya vimos también que las asignaciones funcionan de manera diferente.
 
-Los tipos básicos son todos los descritos en el aparatdo *5.1.4.1 Tipos escalares* del Cuaderno 1.
+Los tipos básicos son todos los descritos en el aparatdo *6.1.4.1 Tipos escalares* del Cuaderno 1.
 
 == Compartir es vivir: Referencias (&) y "Préstamos" (Borrowing)
 Como ir perdiendo la propiedad de tus variables cada vez que las asignas a otra variable es un dolor de cabeza, Rust inventó las Referencias (&) también llamadas préstamos. En lugar de regalar el cómic y perder la propiedad, lo dejas prestado para que lo lean.
@@ -146,11 +150,12 @@ fn main() {
     // Pasamos el cómic con un "&" delante. ¡Es un préstamo!
     mostrar_info_comic(&mi_comic); 
     
-    // ¡Buenas noticias! Como solo lo prestamos para mirar, seguimos siendo los dueños.
+    // ¡Buenas noticias! Como solo lo prestamos para mirar, 
+    // seguimos siendo los dueños.
     println!("Lo guardo en mi estantería: {}", mi_comic); 
 }
 ```
-Cuando llamamos la función en el *main* con *mostrar_info_comic(&mi_comic);*, le pasamos un préstamo de *mi_comic* a la función para que lo pueda imprir pero como no le hemos pasado la variable completa *mi_comic*, sino solamente un préstamo; la variable *mi_comic* sigue activa después de la llamada a la función; no se ha consumido y podemos imprimirla. 
+Cuando llamamos la función en el *main* con *mostrar_info_comic(&mi_comic);*, le pasamos un préstamo de *mi_comic* a la función para que lo pueda imprir pero como no le hemos pasado la variable completa *mi_comic*, sino solamente un préstamo; la variable *mi_comic* sigue activa después de la llamada a la función; no se ha consumido y como vemos podemos imprimirla. 
 
 == Préstamos mutables (&mut): Solo puede quedar uno
 Ya hemos visto que con *&* podemos prestar un dato para que otros lo lean. Pero, ¿qué pasa si queremos prestar algo para que lo modifiquen? Imagina que le dejas tu cuaderno a un compañero para que corrija un ejercicio. Necesitas hacer un préstamo mutable, y en Rust esto se escribe con *&mut*.
@@ -220,7 +225,7 @@ Comenta la línea *let referencia_mut_2 = &mut mi_coche;* con dos barras `//` al
 
 == Consumo (destrucción) de una variable cuando se pasa como argumento 
 
-En los dos casos anteriores en los que que hemos pasado referencias (péstamos)de una variable a una función, en el primer caso inmutable y en el segundo mutable, hemos comprobado que la variable original sigue estando activa y podemos imprimirla después de la llamada a la función.
+En los dos casos anteriores en los que que hemos pasado referencias (préstamos) de una variable a una función, en el primer caso inmutable y en el segundo mutable, hemos comprobado que la variable original sigue estando activa y podemos imprimirla después de la llamada a la función.
 
 Vamos a ver a continuación con un ejemplo que si pasamos la variable original (no una referencia) a la función, después de la llamada a la función la variable original se ha consumido (se ha destruido, ya no es accesible.)
 
@@ -237,13 +242,13 @@ fn main() {
   let mut mi_coche = String::from("Seat Ibiza Blanco");
 
   pintar_coche(mi_coche);
-  println!("Resultado del taller: {}", mi_coche); //  ❌ ERROR:
+  println!("Resultado del taller: {}", mi_coche); //  ❌ ERROR, mi_coche ya no existe
     
   println!("Final del programa")
     
 }
 ```
-Al pulsar el botón de [RUN] obtendrás un mensaje de error del compilador porque después de pasar *mi_coche* a la *función pintar_coche*, operación *en la cuel se consume la variable mi_coche*, le pasamos luego otra vez la variable mi_coche que *ya no existe* a la función println!.
+Al pulsar el botón de [RUN] obtendrás un mensaje de error del compilador porque después de pasar *mi_coche* a la *función pintar_coche*, operación *en la cual se consume la variable mi_coche*, le pasamos luego otra vez la variable mi_coche que *ya no existe* a la función println!.
 
 Comenta la línea con dos barras al principio:
 

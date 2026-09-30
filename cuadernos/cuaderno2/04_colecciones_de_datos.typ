@@ -8,13 +8,13 @@ Para gestionar estas listas, Rust nos ofrece dos herramientas fundamentales: los
 == 🥊 Semejanzas y Diferencias: ¿Quién es quién?
 Antes de verlos en código, hagamos una comparativa rápida para saber en qué se parecen y en qué se diferencian:
 
-- Semejanzas: Ambos son colecciones *homogéneas*. Esto significa que todos los elementos de la lista tienen que ser obligatoriamente del mismo tipo de dato (todo números enteros, todo textos, etc.). No puedes mezclarlos. Además, en ambos casos el primer elemento de la lista está en la *posición 0*.
+- *Semejanzas:* Ambos son colecciones *homogéneas*. Esto significa que todos los elementos de la lista tienen que ser obligatoriamente del mismo tipo de dato (todo números enteros, todo textos, etc.). No puedes mezclarlos. Además, en ambos casos el primer elemento de la lista está en la *posición 0*.
 
-- Diferencias: La diferencia clave está *en el tamaño que ocupan durante el programa y en cómo se alojan en la memoria del ordenador*. 
+- *Diferencias:* La diferencia clave está *en el tamaño que ocupan* durante la ejecución del programa y en *cómo se alojan en la memoria del ordenador*.
+ 
+ - Un Array tiene un *tamaño fijo* que se decide al escribir el código y nunca puede cambiar. Se guarda en el *Stack* (una zona de la memoria ultra rápida). 
 
- - Un Array tiene un *tamaño fijo* que se decide al escribir el código y nunca puede cambiar. Se guarda en el Stack (una zona de la memoria ultra rápida). 
-
- - Un Vector tiene un *tamaño dinámico*: puede crecer o encogerse mientras el programa se ejecuta. Se guarda en el Heap (una zona de memoria más flexible).
+ - Un Vector tiene un *tamaño dinámico*: puede crecer o encogerse mientras el programa se ejecuta. Se guarda en el *Heap* (una zona de memoria más flexible).
 
 *¿Para qué sirve cada uno?*
 
@@ -26,7 +26,7 @@ Antes de verlos en código, hagamos una comparativa rápida para saber en qué s
 Estudiaremos en primer lugar los arrays porque que son más sencillos de manejar que los vectores. Debido a que una vez creados no pueden cambiar de tamaño, el compilador los almacena en el Stak y Rust los maneja de una forma ultrarápida.
 
 === Creación y métodos más importantes
-Para crear un array, encerramos los valores entre corchetes []. Rust nos permite declarar su tipo y su tamaño fijo con la sintaxis [tipo; tamaño]:
+Para crear un array, encerramos los valores entre corchetes []. Rust nos permite declarar su tipo y su tamaño fijo con la sintaxis *[tipo; tamaño]*.
 
 Veamos un par de ejemplos:
 
@@ -69,9 +69,30 @@ Longitud del array temperaturas: 4
 
 === Propiedad (Ownership) en los Arrays
 
-En Rust, los tipos de datos simples (como números enteros, decimales y booleanos) tienen el rasgo Copy. Esto significa que cuando creas un array de números, los datos se copian fácilmente. Si pasas el array a otra variable, ambas variables seguirán funcionando de forma independiente. El array original no se destruye ni se "mueve" en la asignación.
+En Rust, los tipos de datos simples (como números enteros, decimales y booleanos) tienen el trait Copy. Esto significa que cuando creas un array de números, los elementos se pueden copiar fácilmente. Si asignas el array a otra variable, ambas variables seguirán funcionando de forma independiente. El array original no se destruye ni se "mueve" en la asignación.
 
 Si los elemntos del array son de tipo String el funcionamiento es distinto.
+
+*¿Por qué esa diferencia?*
+
+Cuando un array contiene elementos de tipo String, el funcionamiento cambia por completo porque String no implementa el trait Copy, sino el trait Clone. Esto significa que sus datos se gestionan mediante la semántica de movimiento (move semantics) que ya hemos estudiado antes.
+
+A diferencia de los tipos simples que residen únicamente en la pila (stack), un String consta de dos partes: una parte fija en la pila (puntero, capacidad y longitud) y el texto real guardado en la memoria dinámica o montón (heap).
+
+En la parte fija almacenada en el Stack, el puntero indica la dirección de memoria inicial en donde se almacena el String, la capacidad el tamaño máximo que puede ocupar sin reconfigurarse en otra parte de la memoria y la longitud el tamaño real del String.
+
+Si asignas este array a otra variable, ocurre lo siguiente:
+
+*Transferencia de propiedad (Move)*
+
+Al asignar *array_b = array_a*, la propiedad (ownership) de todo el *array_a* y de cada uno de los String que contiene se mueve a la nueva variable.
+
+- El array original (*array_a*) queda invalidado. El compilador de Rust prohibirá terminantemente volver a usarlo. Si intentas leer *array_a* después de la asignación, el compilador generará un error de tipo «use of moved value».
+
+- No hay duplicación de datos en el heap. Rust realiza un copiado rápido de la información de la pila (los punteros), pero invalida el origen (array_a) para garantizar que no existan dos variables apuntando a la misma memoria en el heap (lo que provocaría un error de doble liberación de memoria al terminar el programa).
+
+
+
 
 === 💻 Ejemplo con Arrays
 
@@ -84,6 +105,15 @@ fn main() {
 
     println!("Has cursado {} trimestres.", notas_trimestre.len());
     println!("La nota del segundo trimestre fue: {}", notas_trimestre[1]);
+
+    // Recorremos el array
+    // Como los elementos son tipos simples, el array no se consume
+    // en el for, y podremos imprimirlo al terminar el bucle
+    for nota in notas_trimestre {
+        println!("{}", nota)
+    }
+
+    println!("Notas trimestrale: {:?}", notas_trimestre)
 }
 
 ```
@@ -94,7 +124,7 @@ Si intentas acceder a *notas_trimestre[4]* el compilador te lanzará un error po
 
 === Creación y métodos más importantes
 
-Los vectores se representan como *Vec<T>* (donde la T significa el tipo de dato de los elementos que guardará). La forma más común e intuitiva de crearlos es usando el "atajo" o macro *vec!*:
+Los vectores se representan como *Vec`<T>`* (donde la T significa el tipo de dato de los elementos que guardará). La forma más común e intuitiva de crearlos es usando el "atajo" o macro *vec!*:
 
 ```rust
 // Un vector mutable con 2 textos dinámicos
@@ -103,11 +133,11 @@ let mut mochila = vec![String::from("Linterna"), String::from("Cuerda")];
 ```
 Como los vectores pueden cambiar de tamaño, tienen métodos específicos muy potentes:
 
-- .push(valor): Añade un elemento al final de la lista.
-- .pop(): Quita el último elemento de la lista y te lo devuelve.
-- .insert(índice, elemento): Mete un elemento en la posición exacta (índice) que tú quieras, desplazando los demás.
-- .remove(índice): Borra el elemento de esa posición (índice).
-- [posicion]: Te permite leer qué hay en una posición concreta. (Recuerda: ¡En informática siempre empezamos a contar desde la posición 0!)
+- *.push(valor):* Añade un elemento al final de la lista.
+- *.pop():* Quita el último elemento de la lista y te lo devuelve.
+- *.insert(índice, elemento):* Mete un elemento en la posición exacta (índice) que tú quieras, desplazando los demás.
+- *.remove(índice):* Borra el elemento de esa posición (índice).
+- *[posicion]:* Te permite leer qué hay en una posición concreta. (Recuerda: ¡En informática siempre empezamos a contar desde la posición 0!)
 
 === Propiedad (Ownership) en los Vectores
 Aquí es donde Rust se pone serio. Un vector es dueño de los datos que contiene. Si tu vector guarda elementos complejos (como String), no puedes simplemente sacar un elemento asignándolo a otra variable, porque estarías intentando "mover" la propiedad de una parte interna del vector, y Rust no lo permite.
@@ -122,7 +152,8 @@ Vamos a simular el inventario de un jugador en un videojuego de rol (RPG):
 
 ```rust
 fn main() {
-    // 1. Inicializamos la mochila con dos ítems. Debe ser mutable (mut) para añadir cosas
+    // 1. Inicializamos la mochila con dos ítems. 
+    // Debe ser mutable (mut) para añadir cosas
     let mut inventario = vec![String::from("Poción de vida"), String::from("Escudo de madera")];
 
     // 2. El jugador encuentra un objeto y lo guarda
@@ -134,15 +165,22 @@ fn main() {
     println!("El primer objeto de tu inventario es: {}", primer_objeto);
 
     // 4. El jugador usa el último objeto que recogió (la espada)
-    // .pop() saca el elemento del vector, reduciendo su tamaño a 2.
-    inventario.pop(); 
+    // .pop() saca el último elemento del vector, reduciendo su tamaño a 2.
+    inventario.pop();
+
+    // Si quisiéramos leer ese último elemento extraido nos obligaría 
+    // utilizar el siguiente bloque. Lo estudiaremos más adelante:
+
+    // if let Some(ultimo_elemento) = inventario.pop(){
+    //      println!("Último elemento: {}", ultimo_elemento);
+    // }; 
 
     println!("Artículos restantes en la mochila: {:?}", inventario);
 }
 
 ```
 === Recorriendo el vector con bucles for
-Ya sabes guardar datos en un vector y cómo extraer elementos sueltos. Pero el verdadero potencial de las colecciones aparece cuando quieres procesar toda la lista de golpe: aplicar un filtro, calcular una media o imprimir un listado de alumnos.
+Ya sabes guardar datos en un vector y cómo extraer e insertar elementos sueltos. Pero el verdadero potencial de las colecciones aparece cuando quieres procesar toda la lista de golpe: aplicar un filtro, calcular una media o imprimir un listado de alumnos.
 
 Para hacer esto de forma automática, sin escribir código fila por fila, usamos el bucle *for* combinado con un préstamo (*&*). Al poner el & antes del vector, le estamos diciendo a Rust: "Déjame mirar uno a uno los elementos de la lista, pero no destruyas el vector al terminar".
 
@@ -160,7 +198,8 @@ fn main() {
 
   println!("--- CONTROL DE ASISTENCIA ---");
 
-  // "alumno" es una variable temporal que tomará el valor de cada elemento en cada vuelta
+  // "alumno" es una variable temporal que tomará el valor 
+  // de cada elemento en cada vuelta
   for alumno in &alumnos {
       println!("👤 Presente: {}", alumno);
   }
@@ -192,8 +231,7 @@ fn main() {
   println!("Notas con el punto extra: {:?}", notas);
 }
 ```
-
-No hemos estudiado todavía el concepto de referencia que va muy unido al de préstamo. En las estrucciones for que hemos visto antes: *for nota in &notas {...}* y *for nota in &mut notas {...}*, por haber utilizado el operador *&* de préstamo y *&mut* de préstamo mutable delante del array *notas*, la variable *nota* del for en cada iteración no contiene el valor de la nota sino la dirección de memoria (referencia) en donde se almacena la nota. Entonces, para llegar al contenido de la nota tenemos que utilizar el operador asterisco `*nota`.
+En las estrucciones for que hemos visto antes: *for nota in &notas {...}* y *for nota in &mut notas {...}*, por haber utilizado el operador *&* de préstamo inmutable y *&mut* de préstamo mutable delante del array *notas*, la variable *nota* del for en cada iteración no contiene el valor de la nota sino la dirección de memoria (referencia) en donde se almacena la nota. Entonces, para llegar al contenido de la nota tenemos que utilizar el operador asterisco `*nota`.
 
 === 🎮 Proyecto Intermedio: El Sistema de Puntuaciones de un Videojuego
 
@@ -205,42 +243,49 @@ Este proyecto te servirá para consolidar el uso de vectores, bucles, condiciona
 
 Debes implementar un código en Rust que cumpla con los siguientes requisitos:
 
-- Almacenar una lista dinámica con los puntos de las últimas partidas.
+- Almacenar en una lista dinámica (un vector) los puntos de las últimas partidas.
 - Añadir nuevas puntuaciones a la lista simulando que se acaban de jugar esas partidas.
 - Crear una función que calcule la puntuación media obtenida por el jugador.
 - Crear una función que busque la puntuación más alta (el récord de la máquina).
 
 ⚙️ *Explicaciones sobre el listado*
 
-Al final de este apartado te daremos el código completo del programa para que puedas crearte un proyecto con Cargo y ejecutarlo. 
+Al final de este apartado te daremos el código completo del programa para que puedas crear un proyecto con Cargo y ejecutarlo. 
 
-Antes de profundizar en el listado completo del programa, analicemos algunas funciones y fragmentos interesantes del mismo que nos ayudarán a comprender el programa completo. Sigue las explicaciones función a función que te damos aquí, pero no pierdas de vista su ubicación y funcionalidad en el programa completo que como hemos dicho se encuentra al final.
+Antes de profundizar en el listado completo del programa, analicemos algunas funciones y fragmentos interesantes del mismo que nos ayudarán a comprender el programa. Sigue las explicaciones función a función que te damos aa continuación, pero no pierdas de vista su ubicación y funcionalidad en el programa completo que como hemos dicho se encuentra al final.
 
-- Veamos la función *calcular_media*:
+- Veamos la función *`calcular_media()`*:
 
 ```rust
-// Función que recibe un préstamo & del vector 'puntuaciones' de solo lectura
-// y devuelve la media (f32)
+// Función que recibe un préstamo & del vector 'puntuaciones' 
+// (de solo lectura) y devuelve la media (f32)
 fn calcular_media(puntuaciones: &Vec<i32>) -> f32 {
     if puntuaciones.is_empty() {
-        return 0.0; // Si no hay partidas, la media es cero
+
+        // Si no hay partidas, la media es cero.
+        // La función devuelve 0.0 y termina con el return
+        return 0.0; 
     }
     
     let mut suma_total = 0;
     for puntos in puntuaciones {
-        suma_total += *puntos; // Sumamos los puntos de cada partida a suma_total
+
+        // Sumamos los puntos de cada partida a suma_total
+        // ¡Ojo con el * de puntos!
+        suma_total += *puntos; 
     }
     
-    // Convertimos a f32 para poder calcular decimales en la división
+    // Convertimos numerador y denominador a f32 
+    // para poder calcular decimales en la división
     suma_total as f32 / puntuaciones.len() as f32
 }
 ```
 
 Esta función recibe el argumento *puntuaciones* cuyo tipo debe ser &Vec<i32>, es decir, un préstamo inmutable de vector de elementos enteros. Al recibir un préstamo inmutable *&* solo podrá leer los elemtos del vector pero no modificarlos. No obstante, para calcular la media no necesita nada más. La función devuelve un f32.
 
-La primera consecuencia que queremos aclarar está precisamente en el bucle for. Fijémonos en la siguiente línea: *suma_total += `*`puntos;* Abajo explicamos el operador *+=* que es sencillo pero veamos el significado del asterisco delante de puntos. Cuando hacemos *for puntos in puntuaciones*, al ser puntuaciones un vector prestado (puntuaciones: &Vec<i32>), el for no nos devuelve en *puntos* el valor de la variable en cada iteración sino una referencia a la variable. Es decir, nos devuelve la dirección de memoria en donde está almacenada la variable puntos. Para obtener el valor de la variale puntos, tenemos que utilizar el operador de desreferencia, asterisco y, escribir *`*`puntos*.
+La primera aclaración que queremos hacer está precisamente en el bucle for. Fijémonos en la siguiente línea: *suma_total += `*`puntos;*. Más abajo explicamos el operador *+=* que es sencillo pero veamos el significado del asterisco delante de *puntos*. Cuando hacemos *for puntos in puntuaciones*, al ser *puntuaciones* un vector prestado (puntuaciones: &Vec<i32>), el for no nos devuelve en *puntos* el valor de la variable en cada iteración sino una referencia a la variable. Es decir, nos devuelve la dirección de memoria en donde está almacenada la variable puntos. Para obtener el valor de la variale puntos, tenemos que utilizar el operador de desreferencia, asterisco y, escribir *`*`puntos*.
 
-Empecemos ahora por el inicio de la función. Si el vector *puntuaciones* no tiene ningún valor, entonces *puntuaciones.is_empty()* devuelve true, el primer if se cumple y la *función termina* con el *return* devolviendo 0.0 (un f32) 
+Empecemos ahora por el inicio de la función. Si el vector *puntuaciones* no tiene ningún valor, entonces *puntuaciones.is_empty()* devuelve true, el primer *if* se cumple y la *función termina* con el *return* devolviendo 0.0 (un f32) 
 
 El siguiente bloque de la función calcula *la suma de todos los elementos del vector puntuaciones*; ya veremos cuando llamemos la función qué argumento le pasamos al parámetro puntuaciones. 
 
@@ -263,7 +308,7 @@ for puntos in puntuaciones {
 
 - Supongamos que el vector *puntuaciones* tiene tres valores: 200, 100 y 300.
 - Antes de entrar al bucle for le hemos dado a la variable *suma_total* el valor 0.
-- la priemra vez que la ejecución del programa entre en el for, `*`*puntos* valdrá 200 y entonces:
+- La *priemra vez* que la ejecución del programa entre en el for, `*`*puntos* valdrá 200 y entonces, según la ecuación anterior:
 
 suma_total = 0 + 200 = 200
 
@@ -281,14 +326,13 @@ Después del bucle for, la función calcula la *media de las puntuaciones* asign
 // Convertimos a f32 para poder calcular decimales en la división
 suma_total as f32 / puntuaciones.len() as f32
 ```
-
 Como *suma_total* es un entero y *puntuaciones.len()* el número de elementos que tiene el vector es otro entero, si los dividimos tal cual obtendremos otro entero, es decir, se desprecian los decimales al hacer la división. Sin embargo, hemos dicho en la cabecera de la función que tenemos que devolver un *f32*
 
-Las palabrsa *as f32* permiten convertir en ambos casos las variables al tipo f32 y así efectuamos la división y obtenemos un f32 que es lo que tenemos que devolver.
+Las palabras *as f32* permiten convertir en ambos casos las variables al tipo f32 y así efectuamos la división y obtenemos un f32 que es lo que tenemos que devolver.
 
 Finalmente, como la última linea no termina en punto y coma, el resultado de evaluarla que no es más que la media de las puntuaciones es lo que devuelve la función.
 
-- La función *obtener_record*:
+- La función *`obtener_record()`*:
 
 Esta función se puede entender con las explicaciones dadas en la función *calcular_media* y las anotaciones en el cuerpo de la misma como vemos a continuación:
 
@@ -305,9 +349,11 @@ fn obtener_record(puntuaciones: &Vec<i32>) -> i32 {
 
     // Si encontramos algún valor en puntuaciones que sea mayor
     // cambiaremos el valor anterior
+    // Recorremos todas las puntuaciones
     for puntos in puntuaciones {
         // El asterisco en *puntos es necesario para leer el valor de puntos
-        // porque el vector puntuaciones es un préstamo & (igual que en la función anterior)
+        // porque el vector puntuaciones es un préstamo & (igual que en la
+        // función anterior)
         if *puntos > maximo {
             // Si encontramos una mayor, actualizamos el récord
             maximo = *puntos; 
@@ -319,7 +365,7 @@ fn obtener_record(puntuaciones: &Vec<i32>) -> i32 {
 ```
 
 - La función *main*
-Aquí es donde realizamos, entre otras cosas, las llamadas a las funciones que hemos explicado antes. La vamos a explicar tambíen sobre el código comentado:
+Aquí es donde realizamos, entre otras cosas, las llamadas a las funciones que acabamos de explicar. Sigue los comentarios sobre el código:
 
 ```rust
 fn main() {
@@ -364,11 +410,13 @@ fn main() {
     }
     
     mis_partidas.push(nueva_partida);
+
+    // Imprimimos el estado actual
+    println!("🎮 Puntuaciones de la sesión: {:?}", mis_partidas);
 }
 ```
 
-
-*Listado completo del programa*
+- *Listado completo del programa*
 
 *El Sistema de Puntuaciones de un Videojuego*
 
@@ -381,22 +429,33 @@ Copia el código del listado que te damos a continuación en el fichero *src/mai
 
 Abre una terminal integrada en la carpeta *puntuaciones_videojuego* (el proyecto que acabas de crear) y ejecuta el programa mediante la orden *cargo run*.
 
+Proyecto: *puntuaciones_videojuego*
+
+Listado completo
+
+src/main.rs
 
 ```rust
-// Función que recibe un préstamo del vector (solo lectura) 
-// de elementos enteros de 32 bits y devuelve la media (f32)
-// que es un valor decimal de 32 bits
+// Función que recibe un préstamo & del vector 'puntuaciones' 
+// (de solo lectura) y devuelve la media (f32)
 fn calcular_media(puntuaciones: &Vec<i32>) -> f32 {
     if puntuaciones.is_empty() {
-        return 0.0; // Si no hay partidas, la media es cero
+
+        // Si no hay partidas, la media es cero.
+        // La función devuelve 0.0 y termina con el return
+        return 0.0; 
     }
     
     let mut suma_total = 0;
     for puntos in puntuaciones {
-        suma_total += *puntos; // Sumamos los puntos de cada partida
+
+        // Sumamos los puntos de cada partida a suma_total
+        // ¡Ojo con el * de puntos!
+        suma_total += *puntos; 
     }
     
-    // Convertimos a f32 para poder calcular decimales en la división
+    // Convertimos numerador y denominador a f32 
+    // para poder calcular decimales en la división
     suma_total as f32 / puntuaciones.len() as f32
 }
 
@@ -406,14 +465,17 @@ fn obtener_record(puntuaciones: &Vec<i32>) -> i32 {
         return 0;
     }
 
-    // Empezamos asumiendo que la primera es la mayor
+    // Empezamos asumiendo que la primera puntuación es la mayor
+    // Si no es así luego la iremos cambiando
     let mut maximo = puntuaciones[0]; 
 
     // Si encontramos algún valor en puntuaciones que sea mayor
     // cambiaremos el valor anterior
+    // Recorremos todas las puntuaciones
     for puntos in puntuaciones {
         // El asterisco en *puntos es necesario para leer el valor de puntos
-        // porque el vector puntuaciones es un préstamo &
+        // porque el vector puntuaciones es un préstamo & (igual que en la
+        // función anterior)
         if *puntos > maximo {
             // Si encontramos una mayor, actualizamos el récord
             maximo = *puntos; 
@@ -425,9 +487,13 @@ fn obtener_record(puntuaciones: &Vec<i32>) -> i32 {
 
 fn main() {
     // Creamos la tabla de puntuaciones vacía del jugador
+    // Vec::new() es un vector que no tiene elementos todavía
     let mut mis_partidas: Vec<i32> = Vec::new();
 
-    // Simulamos que el jugador termina 3 partidas en la máquina arcade
+    // Simulamos que el jugador termina 3 partidas en la máquina arcade.
+    // La instrucción:  mis_partidas.push(2500); introduce elvalor 2500
+    // en el vector mis_partidas. 
+    // Las siguientes instrucciones .push(valor) añaden elementos al vector.
     mis_partidas.push(2500);
     mis_partidas.push(4200);
     mis_partidas.push(1800);
@@ -436,7 +502,16 @@ fn main() {
     println!("🎮 Puntuaciones de la sesión: {:?}", mis_partidas);
     
     // Calculamos estadísticas llamando a nuestras funciones especializadas
-    let media = calcular_media(&mis_partidas);
+
+    // Ejecutamos la función calcular_media y le pasamos como argumento
+    // &mis_partidas, es decir, un préstamo del vector mis_partidas. Por tanto
+    // la función calculará y devolverá la media de los valores que hemos
+    // introducido antes en mis_partidas.
+    // Lo que devuele la función se coloca en la variable media
+    let media = calcular_media(&mis_partidas); 
+
+    // La función obtener_record
+    // calcula y devuelve el record de las puntuaciones 
     let record = obtener_record(&mis_partidas);
 
     println!("📊 Estadísticas del Jugador:");
@@ -452,6 +527,11 @@ fn main() {
     }
     
     mis_partidas.push(nueva_partida);
+
+    // Imprimimos el estado actual
+    println!("🎮 Puntuaciones de la sesión: {:?}", mis_partidas);
 }
 ```
+
+#pagebreak()
 

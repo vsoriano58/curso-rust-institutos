@@ -155,7 +155,7 @@ fn main() {
 
 ```
 
-Efectivamente. Declaraste la variable *puntos* como entera de 32 bits, *let puntos: i32 = "diez";*  pero le asignaste el texto “diez”. Rust es muy estricto con los tipos. Si declaras una variable de un tipo, en el ejemplo *i32*, luego no puedes asignar a esa variable un valor de otro tipo, por ejemplo de tipo *Texto* como ocurre en el programa. Por eso el compilador generó el error.
+Efectivamente. Declaraste la variable *puntos* como entera de 32 bits, *let puntos: i32 = `"`diez`"`;*  pero le asignaste el texto “diez”. Rust es muy estricto con los tipos. Si declaras una variable de un tipo, en el ejemplo *i32*, luego no puedes asignar a esa variable un valor de otro tipo, por ejemplo de tipo *Texto* como ocurre en el programa. Por eso el compilador generó el error.
 
 Comenta esa línea con dos `//` barras al principio y vuelve a ejecutar con [RUN] para obtener los resultados esperados. Debes ver la línea así: ( `//` let puntos: i32 = `"`diez`"`; ).
 

@@ -10,18 +10,22 @@ Para que no tengas que complicarte al comenzar instalando programas raros ni con
 == 📝Descripción de los capítulos
 Para que no te pierdas en esta aventura, hemos dividido este cuaderno en varias etapas diseñadas para ir ganando "superpoderes" como programador poco a poco:
 
-- *El Despegue (Capítulos 1 al 3)*: Aprenderemos cómo se comunica un programador con el ordenador, dónde guardamos la información y cómo usar la `Playground de Rust` desde el navegador sin instalar nada.
+- *El Despegue (Capítulos 1 al 4)*: Aprenderemos cómo se comunica un programador con el ordenador, dónde guardamos la información y cómo usar la `Playground de Rust` desde el navegador sin instalar nada.
 
-- *El Laboratorio de Pruebas (Capítulo 4)*: Nos remangaremos para experimentar con código real, aprenderemos a tomar decisiones con condiciones y a repetir tareas usando bucles en proyectos divertidos.
+- *El Laboratorio de Pruebas (Capítulo 5)*: Nos remangaremos para experimentar con código real, aprenderemos a tomar decisiones con condiciones y a repetir tareas usando bucles en proyectos divertidos.
 
-- *Profundizando en Rust (Capítulo 5)*: Viajaremos al interior de la memoria del ordenador para entender los tipos de datos y los operadores matemáticos y lógicos que hacen que la magia funcione.
+- *Profundizando en Rust (Capítulo 6)*: Viajaremos al interior de la memoria del ordenador para entender los tipos de datos y los operadores matemáticos y lógicos que hacen que la magia funcione.
 
-- *El Entorno Profesional (Capítulos 6 y 7)*: Dejaremos atrás el navegador de Internet para instalar *Rust* y *Visual Studio Code* en tu ordenador, como tienen en realidad los ingenieros de software. ¡Terminaremos el cuaderno creando programas capaces de leer y aplicar filtros visuales a fotos reales!
+- *El Entorno Profesional (Capítulo 7)*: Dejaremos atrás el navegador de Internet para instalar *Rust* y *Visual Studio Code* en tu ordenador, como tienen en realidad los ingenieros de software. 
+
+- *Tratamiento de imágenes (Capítulo 8)*: ¡Crearemos programas capaces de leer y aplicar filtros visuales a fotos reales!
+
+- *Conceptos avanzados en Rust (Capítulo 9)*: Analizaremos el concepto fundamental de *préstamo* y *propiedad* en Rust, y haremos además una introducción a los *struct* y los *trait*.
 
 == Qué es un repositorio y qué es Git
-Cuando los programadores trabajan en un proyecto (como un videojuego o este curso de Rust), escriben decenas de archivos con código. Para que no se vuelva un caos de carpetas y archivos, con nombres como _*proyecto_final_version3_definitiva_ESTA_SI.rs*_, utilizamos una herramienta mágica llamada *Git*.
+Cuando los programadores trabajan en un proyecto (como un videojuego o este curso de Rust), escriben decenas de archivos con código y/o texto. Para que no se vuelva un caos de carpetas y archivos, con nombres como: `proyecto_final_version3_definitiva_ESTA_SI.rs` utilizamos una herramienta mágica llamada *Git*.
 
-- *¿Qué es Git?*: Git es como una máquina del tiempo para tus archivos de código. Se encarga de vigilar tu proyecto y guardar "puntos de control" (como en los videojuegos). Si haces un cambio en tu código o el programa se rompe y no sabes qué ha pasado, puedes pulsar un botón y volver exactamente al momento en que todo funcionaba perfectamente. Sin embargo, nosotros no utilizaremos Git para realizar esta tarea, que se denomina *control de versiones*. Lo utilizaremos únicamente para descargarnos todo el material asociado al Cuaderno 1 desde Internet hasta una carpeta que elijamos en nuestro ordenador personal. 
+- *¿Qué es Git?*: Git es como una máquina del tiempo para tus archivos de código. Se encarga de vigilar tu proyecto y guardar "puntos de control" (como en los videojuegos). Si haces un cambio en tu código o el programa se rompe y no sabes qué ha pasado, puedes pulsar un botón y volver exactamente al momento en que todo funcionaba perfectamente. Sin embargo, nosotros no utilizaremos Git para realizar esta tarea, que se denomina *control de versiones*. Lo utilizaremos únicamente para descargarnos todo el material asociado al *Cuaderno 1* desde Internet, hasta una carpeta que elijamos en nuestro ordenador personal. 
 
 *Ejercicio:*
 
@@ -59,7 +63,7 @@ git --version
 Para comprobar que se ha instalado bien, escribe el comando `git --version`. Si sale un número de versión, ¡ya lo tienes!
 
 === ⬇️ Instalación de Git en Windows
-Para poner Git en Windows, seguiremos el método oficial:
+Para instalar Git en Windows, seguiremos el método oficial:
 
 + Entra en la página web oficial: `git-scm.com` y descarga el instalador para Windows.
 
@@ -78,13 +82,13 @@ Para comprobar que *Git* se ha instalado bien, escribe el comando `git --version
 == ⬇️ Descargar el material asociado a los cuadernos con Git
 Ahora que ya tienes la herramienta Git en tu ordenador, vas a utilizar tu primer comando de programación para traerte una copia exacta de toda nuestra caja fuerte del curso a tu equipo. A esto los programadores lo llamamos clonar un repositorio.
 
-Abre tu terminal -en la carpeta `proyectos-rust` que hemos creado antes o en cualquier otra- (o Git Bash si estás en Windows) y escribe la siguiente orden mágica:
+Abre tu terminal ---en la carpeta `proyectos-rust` que hemos creado antes o en cualquier otra--- (o Git Bash si estás en Windows) y escribe la siguiente orden mágica:
 
 ```bash
 git clone https://github.com/vsoriano58/curso-rust-institutos.git
 ```
 
-En la carpeta desde la que has lanzado el comando *git clone* (deberia ser: *proyectos-rust*), debe aparecerte una nueva carpeta con el nombre *curso-rust-institutos*. Contiene el material asociado a los Cuadernos de Rust.
+En la carpeta desde la que has lanzado el comando *git clone* ---deberia ser: *proyectos-rust*---, debe aparecerte una nueva carpeta con el nombre *curso-rust-institutos*. Contiene el material asociado a los Cuadernos de Rust. Este material se comparte a la vez que se actualiza por lo que si lo descargas en sucesivas ocasiones su contenido será distinto hasta que tengamos una versión definitiva.
 
 ==  📂 Estructura del Repositorio (curso-rust-institutos)
 (Esto lo completaremos al final)

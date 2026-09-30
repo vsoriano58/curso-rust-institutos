@@ -1,14 +1,39 @@
 #import "config.typ": *
 
-// ============================================================================
+// ================================================
 // 1. REGLAS ESTÉTICAS GLOBALES (Afectan a todo el libro)
-// ============================================================================
+// ================================================
 
-// Diseño estético de las cajitas de código
+// 1. CONFIGURACIÓN GENERAL DEL CUADERNO (Texto normal)
+#set text(font: "Liberation Sans", size: 11pt, lang: "es")
+
+// 2. CONFIGURACIÓN GENERAL DE CÓDIGO 
+// (Para comandos sueltos en el texto y bloques de código)
+#show raw: set text(font: "Liberation Mono", size: 9pt)
+
+// 3. DISEÑO EXCLUSIVO DE LOS BLOQUES DE CÓDIGO (Las cajitas grises)
 #show raw.where(block: true): it => block(
-  fill: rgb("#f4f5f7"), inset: 12pt, radius: 6pt,
-  width: 100%, stroke: 0.5pt + rgb("#e1e4e8"), it
+  fill: rgb("#f4f5f7"), 
+  inset: 12pt, 
+  radius: 6pt,
+  width: 100%, 
+  stroke: 0.5pt + rgb("#e1e4e8"),
+  it // <-- Aquí basta con poner 'it' a secas, porque
+     // la línea 2. ya le dio los puntos de forma global
 )
+
+// 4. JUSTIFICACIÓN DEL DOCUMENTO CON EXCEPCIONES
+// 4.1. Activamos la justificación para todo el documento
+#set par(justify: true)
+
+// 4.2. Apagamos la justificación en los elementos específicos que has pedido:
+#show heading: set par(justify: false)     // Títulos y subtítulos (=, ==, etc.)
+#show table.cell: set par(justify: false)  // Celdas de las tablas
+#show raw.where(block: true): set par(justify: false)
+#show list.item: set par(justify: false)   // Listas con viñetas (- )
+#show enum.item: set par(justify: false)   // Listas numeradas (1. )
+
+
 
 // REGLA NUEVA: Numeración automática de títulos (Capítulo 1, Subcapítulo 1.1, etc.)
 #set heading(numbering: "1.1.")
@@ -26,11 +51,6 @@
   #line(length: 100%, stroke: 1.5pt + rgb("#007acc"))
 ]
 
-
-// Tipografías
-#set text(font: "Liberation Sans", size: 11pt, lang: "es")
-#show raw: set text(font: "Liberation Mono", size: 10pt)
-
 // CONFIGURACIÓN DE PÁGINA DEFINITIVA: 
 // Oculta cabeceras y pies en la portada (folio 1) y en el índice (folio 2)
 #set page(
@@ -41,14 +61,14 @@
     if here().page() > 2 [
       #align(right)[
         #text(size: 9pt, fill: luma(120), font: "Liberation Sans")[
-          Cuaderno 2 de Rust (#edad_alumno) | Prototipo Editorial
+          Cuaderno 1 de Rust (#edad_alumno) | Prototipo Editorial
         ]
       ]
     ]
   },
   footer: context {
     // El número de página aparecerá a partir del folio físico 3 (donde empieza el contenido)
-    if here().page() > 2 [
+    if here().page() > 3 [
       #align(center)[
         #text(size: 10pt, fill: luma(100), font: "Liberation Sans")[
           — #counter(page).display() —
@@ -69,9 +89,11 @@
 // CONFIGURACIÓN para bloque ```text
 // =============================================
 
-// ===========================================================================
+
+
+// ==================================================
 // 2. DISEÑO SEGURO DE LA PORTADA (Página física 1)
-// ===========================================================================
+// ==================================================
 
 #align(center)[
   #v(2cm)

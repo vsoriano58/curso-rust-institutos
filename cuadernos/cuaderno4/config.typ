@@ -6,7 +6,7 @@
 // #include "config.typ"
 
 #let edad_alumno = "18-19 años"
-#let curso_academico = "2026/2027"
+#let curso_academico = "2029/2030"
 #let autor_proyecto = "Halcón68"
 
 // ==========================================
