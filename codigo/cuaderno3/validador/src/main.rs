@@ -13,15 +13,15 @@ fn main() {
     
     // Evaluamos el resultado usando el control de flujo match sobre el Option
     match intento_uno.procesar_seguridad() {
-        Option::Some(error) => println!("❌ Registro denegado: {}", error),
-        Option::None => println!("🎉 ¡Cuenta creada con éxito!"),
+        Some(error) => println!("❌ Registro denegado: {}", error),
+        None => println!("🎉 ¡Cuenta creada con éxito!"),
     }
 
     // Caso de prueba 2: Intento de registro correcto
     let intento_dos = validador::Registro::new("FalconRustaceo", "ClaveSegura2026");
     
     match intento_dos.procesar_seguridad() {
-        Option::Some(error) => println!("❌ Registro denegado: {}", error),
-        Option::None => println!("🎉 ¡Cuenta creada con éxito! El sistema está listo."),
+        Some(error) => println!("❌ Registro denegado: {}", error),
+        None => println!("🎉 ¡Cuenta creada con éxito! El sistema está listo."),
     }
 }

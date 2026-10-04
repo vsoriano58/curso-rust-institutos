@@ -4,7 +4,7 @@
 
 == ENUNCIADOS
 
-=== Ejercicio 1: Tu propia Struct y Función Asociada (Constructor)
+=== Ejercicio 1: Crea tu propia Struct y Función Asociada (Constructor)
 
 *Enunciado:*  Crea una estructura llamada *Dimensiones2D* que contenga los campos *ancho* y *alto* (ambos f32). Implementa un bloque *impl* que contenga una función asociada llamada cuadrado que reciba un solo parámetro (el lado) y devuelva una instancia de la estructura donde el ancho y el alto sean iguales. Pruébalo en el main.
 
@@ -12,9 +12,9 @@
 
 *Enunciado:* Define una estructura *Contador* que guarde un valor entero *u32*. Crea un *método mutable llamado incrementar* que sume 1 al valor interno, y otro método de lectura llamado *obtener_valor* que devuelva dicho número. Simula un par de incrementos en el main.
 
-=== Ejercicio 3: Enumerados con Datos Asociados
+=== Ejercicio 3: Enumeraciones con Datos Asociados
 
-*Enunciado:* Diseña un enumerado llamado *Dispositivo* que represente elementos de una red informática. Tendrá dos variantes: *Ordenador* (que guarda un String con el nombre de usuario) y *Router* (que guarda una tupla con 4 números u8 para simular su dirección IP). Instancia uno de cada tipo en el main.
+*Enunciado:* Diseña una enumeración llamada *Dispositivo* que represente elementos de una red informática. Tendrá dos variantes: *Ordenador* (que guarda un String con el nombre de usuario) y *Router* (que guarda una tupla con 4 números u8 para simular su dirección IP). Instancia uno de cada tipo en el main.
 
 === Ejercicio 4: Extrayendo Datos con `match`
 
@@ -26,7 +26,7 @@
 
 == SOLUCIONES
 
-=== Ejercicio 1: Tu propia Struct y Función Asociada
+=== Ejercicio 1: Crea tu propia Struct y Función Asociada
 ```rust
 struct Dimensiones2D {
     ancho: f32,
@@ -78,9 +78,9 @@ fn main() {
     println!("El valor del contador es: {}", mi_contador.obtener_valor());
 }
 ```
-*Explicación:* En Rust, si un método necesita alterar los datos que están dentro de la estructura, debe declararse explícitamente con *&mut self*. Además, cualquier variable (ej: mi_contador) que use dicho método en el main debe ser declarada obligatoriamente con la palabra clave *mut*.
+*Explicación:* En Rust, si un método necesita alterar los datos que están dentro de la estructura, debe declararse explícitamente con un parámetro *&mut self*. Además, cualquier variable (ej: mi_contador) que use dicho método en el main debe ser declarada obligatoriamente con la palabra clave *mut*.
 
-=== Ejercicio 3: Enumerados con Datos Asociados
+=== Ejercicio 3: Enumeraciones con Datos Asociados
 ```rust
 enum Dispositivo {
     Ordenador(String),
@@ -94,7 +94,7 @@ fn main() {
     println!("Dispositivos configurados en la memoria correctamente.");
 }
 ```
-*Explicación:* A diferencia de los enumerados clásicos de otros lenguajes, Rust nos permite adjuntar información heterogénea a cada variante. El tipo *Dispositivo* puede contener tanto *una cadena de texto* como *una tupla de cuatro bytes* según la variante que esté activa.
+*Explicación:* A diferencia de las enumeraciones clásicas de otros lenguajes, Rust nos permite adjuntar información heterogénea a cada variante. El tipo *Dispositivo* puede contener tanto *una cadena de texto* como *una tupla de cuatro bytes* según la variante que esté activa.
 
 === Ejercicio 4: Extrayendo Datos con `match`
 ```rust
@@ -127,16 +127,30 @@ fn main() {
 ===  Ejercicio 5: El patrón por defecto `_` e `if let` con `Option`
 ```rust
 fn main() {
-    // El jugador ha tenido mala suerte y no ha obtenido bonificador crítico
-    let daño_critico: Option<u32> = Option::None;
-
+    // 1. El jugador ha tenido mala suerte y no ha obtenido bonificador crítico
+    let daño_critico: Option<u32> = None;
+    
     // Usamos 'if let' para buscar únicamente el caso de éxito (Some)
-    if let Option::Some(bono) = daño_critico {
-        println!("🔥 ¡Golpe Crítico! Daño extra: +{}", bono);
+    if let Some(bono) = daño_critico {
+        println!("🔥¡Golpe Crítico! Daño extra: +{}", bono);
+    } else {
+        // El bloque else actúa como el patrón por defecto para capturar el None
+        println!("⚔️ Ataque normal. No se aplicaron multiplicadores.");
+    }
+    
+    // 2. El jugador tiene ahora buena suerte y obtiene bono crítico de 50
+    let daño_critico: Option<u32> = Some(50);
+    
+    // Usamos 'if let' para buscar únicamente el caso de éxito (Some)
+    if let Some(bono) = daño_critico {
+        println!("🔥¡Golpe Crítico! Daño extra: +{}", bono);
     } else {
         // El bloque else actúa como el patrón por defecto para capturar el None
         println!("⚔️ Ataque normal. No se aplicaron multiplicadores.");
     }
 }
+
 ```
-*Explicación:* El atajo *if let* reduce enormemente las líneas de código cuando *solo nos interesa reaccionar ante una variante específica de un enumerado* (normalmente Some), relegando todas las demás opciones posibles a un *bloque else* general sin necesidad de escribir un match exhaustivo. Con *if let* no utilizamos el patrón por defecto `_` que queda sustituido por el bloque *else*.
+*Explicación:* El atajo *if let* reduce enormemente las líneas de código cuando *solo nos interesa reaccionar ante una variante específica de una enumeración* (normalmente Some), relegando todas las demás opciones posibles a un *bloque else* general y opcional sin necesidad de escribir un match exhaustivo. Con *if let* no utilizamos el patrón por defecto `_` que queda sustituido por el bloque *else* si queremos utilizarlo.
+
+Nota también que hemos utilizado dos veces la definicion de variable *let daño_critico*. Esto se denomina en Rust *Shadowing* (sombreado) y te ahorra el  tener que inventar un nombre distinto para la variable. Muy pocos lenguajes permiten hacer este sombreado de variable.

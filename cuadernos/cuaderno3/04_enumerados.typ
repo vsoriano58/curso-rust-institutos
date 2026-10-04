@@ -1,16 +1,20 @@
 #import "config.typ": *
 
 = Enumerados (enum): La Joya de la Corona de Rust
-Hasta ahora hemos aprendido a usar estructuras (`struct`) para modelar objetos fijos: una nave espacial siempre tiene un nombre, un escudo y munición. Pero, ¿qué pasa si queremos representar un concepto que puede manifestarse de diferentes formas mutuamente excluyentes?
+Hasta ahora hemos aprendido a usar estructuras (`struct`) para modelar objetos: una nave espacial siempre tiene por lo menos un *nombre* (la identidad de la nave), un *escudo* (la capaidad de defensa o los puntos de vida) y *munición* (la cantidad de disparos disponibles). Pero, ¿qué pasa si queremos representar un concepto que puede manifestarse de diferentes formas *mutuamente excluyentes*?
 
-Por ejemplo, la poción de un videojuego puede ser de _Salud, Magia o Fuerza_. Un usuario puede iniciar sesión mediante _Email, Teléfono o Google_. Para resolver esto con total seguridad en los tipos, Rust utiliza los enumerados (*`enum`*).
+Por ejemplo, la poción de un videojuego puede ser de _Salud, Magia o Fuerza_. Un usuario puede iniciar sesión mediante _Email, Teléfono o Google_. Para resolver esto con total seguridad en los tipos, Rust utiliza los enumerados o enumeraciones (*`enum`*).
 
-== Más allá de las listas fijas: Enumerados tradicionales vs. Datos asociados
-En otros lenguajes de programación, un enumerado es simplemente una lista de etiquetas. En Rust, los enumerados son un "super-tipo" porque cada variante puede *almacenar sus propios datos con estructuras diferentes*.
+Una enumeración es una variable que puede adoptar un valor entre un conjunto finito de variantes. Además, en Rust, cada variante puede tener datos asociados como veremos a continuación.
+
+== Enumeraciones con datos asociados
+En otros lenguajes de programación, un enumerado o enumeración es simplemente una lista de etiquetas o variantes. En Rust, los enumerados son un "super-tipo" porque cada variante puede *almacenar sus propios datos con estructuras diferentes*.
 
 Imagina el sistema de hechizos de un videojuego RPG:
 
 #nota("Un juego RPG (Role-Playing Game) significa que es un juego de rol, donde controlas a un personaje o a un grupo mientras mejoran sus habilidades, suben de nivel y avanzan por una historia profunda")
+
+Abajo definimos la enumeración *Hechizo* con sus tres variantes: la variante *Curación* no tiene datos asociados, la variante *BolaFuego* puede contener un struct y la variable *Teletransporte* puede almacenar una tupla.
 
 ```rust
 // Un hechizo SOLO puede ser de una de las tres variantes
@@ -22,12 +26,20 @@ enum Hechizo {
     Curacion,                          
     BolaFuego { daño: u32, radio: f32 }, 
     Teletransporte(i32, i32),
+}
 ```
 Para instanciar una variante de un enumerado, utilizamos el nombre del enumerado seguido de los dos puntos dobles (::):
 
 ```rust
+enum Hechizo {
+    Curacion,                          
+    BolaFuego { daño: u32, radio: f32 }, 
+    Teletransporte(i32, i32),
+}
+
 fn main() {
     // Creamos tres variables que son del mismo tipo "Hechizo"
+    // pero cada una representa una variante de Hechizo
     let hechizo_basico = Hechizo::Curacion;
     
     let hechizo_ataque = Hechizo::BolaFuego {
@@ -41,7 +53,9 @@ fn main() {
 #nota("Las tres variables comparten el tipo Hechizo, pero cada una guarda la información exacta que necesita para funcionar.")
 
 == El tipo Option`<T>`: La solución definitiva al peligro del valor "Nulo"
-En la gran mayoría de lenguajes tradicionales (como Java, C++ o JavaScript) existe el concepto de valor *Nulo* (`null` o `nil`). ES el contenido de una variable que apunta al vacío (un lugar de la memoria en donde no existe información útil para el programa). Cuando intentas usar un valor nulo, provoca el error informático más famoso y temido del mundo: el *NullPointerException*, que hace que los programas se congelen y crasheen.
+¿Que debe devolver una función que busca en una base de datos el registro de una persona a partir de su DNI, si el DNI que se le pasa a la función para que busque no existe en la Base de datos?. Es algo que hay que tener en cuenta en el diseño del lenguaje de programación.
+
+En la gran mayoría de lenguajes tradicionales (como Java, C++ o JavaScript) existe el concepto de valor *Nulo* (`null` o `nil`). Es el contenido de una variable que apunta al vacío (un lugar de la memoria en donde no existe información útil para el programa). Cuando intentas usar un valor nulo, provoca el error informático más famoso y temido del mundo: el *NullPointerException*, que hace que los programas se congelen y crasheen.
 
 *En Rust no existe el valor Nulo*. ¡El creador del lenguaje lo eliminó por completo! En su lugar, Rust utiliza un enumerado nativo ultra inteligente llamado Option`<T>`.
 
@@ -54,9 +68,17 @@ enum Option<T> {
     None,         // Significa: "No hay ningún valor, está vacío"
 }
 ```
-Cuando una variable recibe un dato de tipo Option`<T>` ---Some(T) o None---, obliga al programador a gestionar explícitamente el caso en el que un dato no exista, haciendo imposible que el programa falle por sorpresa.
+Decir que *Option`<T>`* viene integrado en el leunguaje equivale a que podemos utilizar sus dos variantes sin definir en nuestro código la enumeración Option.
 
-*Ejemplo de la vida real: El inventario de armas*
+La *T* que aparece en Option*`<T>`* significa "dato genérico" es decir, cualquier tipo de dato. Nosotros manejaremos por ejemplo *Opion`<String>`* con sus dos variantes *Some(`String`)* y *None*. ¿Cómo interpretamos esto? Si una función devuelve un dato de tipo * Option`<String>`* entonces tiene que devolver o bien *Some(`String`)* o *None*. Tendremos que averiguar cual es la variante devuelta y en el caso de que sea *Some`<String>`* averiguar cuanto vale el *`String`* escondido en el *`Some`*.
+
+Como veremos, cuando una variable recibe un dato de tipo *Option`<T>`*, que solo puede ser Some(T) o None, obliga al programador a gestionar explícitamente el caso en el que un dato no exista, haciendo imposible que el programa falle por sorpresa.
+
+Existen multitud de recursos como *match*, *if let*, etc. para averiguar qué variante contiene la variable y si es Some, averiguar también el dato que esconde que suele ser el resultado.
+
+*Ejemplo con Option`<String>`: El inventario de armas*
+
+En este ejemplo definimos el struct *Personaje* con los campos *nombre* (un String) y *arma_equipada* del tipo *Option`<String>`*. arma_equipada la definimos de tipo *Option`<String>`* porque podría valer o bien *Some*(`"`nombre del arma`"`) o *None* en caso de que no lleve arma. En este ejemplo utilizaremos funciones que nos dicen si *arma_equipada* es la variante *Some* o la *None*, pero no everiguaremos el nombre del arma.
 
 Imagina un personaje que puede o no equipar un arma en su mano derecha.
 
@@ -67,7 +89,7 @@ Fichero: *option_arma.rs*
 ```rust
 struct Personaje {
     nombre: String,
-    // El arma es opcional: puede tener un String con su nombre,
+    // El arma es opcional: puede tener un String con el nombre del arma,
     // o no tener nada
     arma_equipada: Option<String>, 
 }
@@ -95,11 +117,11 @@ fn main() {
     }
 }
 ```
-¿Cómo extraemos de forma segura el texto `"`Espada Atlante`"` que está atrapado dentro de Some sin romper el código? 
+¿Cómo extraemos de forma segura el texto `"`Espada Atlante`"` que está atrapado dentro de Some? 
 
 == La instrucción match
 
-En el siguiente apartado nos detendremos para ver de forma detallada como utilizar la instrucción *match* para *desempaquetar* un *Option*, es decir, para averiguar lo que contiene, si es *Some* o es *None*. Ademas, en el caso de que Some avericguaremos que dato tiene dentro.
+En el siguiente apartado nos detendremos para ver de forma detallada como utilizar la instrucción *match* para *desempaquetar* un *Option*, es decir, para averiguar lo que contiene, si es *Some* o es *None*. Ademas, en el caso de que sea Some avericguaremos que dato tiene dentro.
 
 Sin embargo, en Rust, match es también una herramienta de control de flujo ultrapotente que funciona como un `"`if-else`"` tradicional con esteroides, y que además tiene la capacidad de "abrir" estructuras de datos como hemos comentado antes.
 
@@ -138,23 +160,23 @@ fn main() {
 }
 ```
 
-En el primer caso, como número es dos se imprime:
+El caso 1. es un caso sencillo de control de flujo con match.
 
-- `"`Es dos o tres`"`
+- Inicializamos la variable *numero* con un 2.
+- Luego el match pregunta. *match número* es lo mismo que decir *si numero vale...*
+ - si vale 1 => println!(`"`Es uno`"`)
+ - si vale 2 o 3 => println!(`"`Es dos o tres`"`)
+ - si vale `_` (cualquier otra cosa) => println!(`"`Es cualquier otro número`"`)
 
-En el segundo caso, la variable *dato* toma el valor del *argumento del Some* que en este caso es *1* e imprime:
+- Resultado: `"`*Es dos o tres*`"`
 
-- `"`El valor interno es: 1`"`
+En el caso 2. el match desempaqueta la variable opcional. Le estamos diciendo al match. Si la variante de opional es Some, extrae su valor en la variable dato e imprime: println!("El valor interno es: {}", dato). Si la variante es None, imprime: println!("No hay ningún valor")
+
+- Resultado: `"`El valor interno es: 1`"`
 
 #nota("Hemos podido utilizar la expresión Some(1) sin definir nada antes porque el enumerado Option<T> con sus dos variantes Some(T) y None están definidas ya en el sistema por Rust")
 
 En el siguiente tema seguimos hablando de match.
-
-
-
-
-
-
 
 
 

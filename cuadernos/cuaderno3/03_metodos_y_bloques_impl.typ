@@ -1,7 +1,7 @@
 #import "config.typ": *
 
 = Añadiendo Superpoderes: Métodos y Bloques `impl`
-En el bloque anterior aprendimos a agrupar variables dentro de una estructura (struct). Sin embargo, hasta ahora, si queríamos modificar un personaje o calcular algo con sus datos, teníamos que programar funciones en el main, externas a la estructura.
+En el apartado anterior aprendimos a agrupar variables dentro de una estructura (struct). Sin embargo, hasta ahora, si queríamos modificar un personaje o calcular algo con sus datos, teníamos que programar funciones en el main externas a la estructura.
 
 En Rust, podemos asociar funciones y métodos o comportamientos *directamente* a nuestras estructuras. Para ello utilizamos el bloque de implementación: *`impl`*. La diferencia entre funciones asociadas y métodos la veremos más adelante pero señalemos ahora que un método es una función especial.
 
@@ -31,7 +31,7 @@ Hemos visto que las estructuras (struc) sirven para crear objetos del tipo de la
 
 Una vez que tenemos creado un objeto o instancia de la estructura, podremos ejecutar sus métodos con el operador punto (*`.`*).
 
-*Nota*. Supongamos que hemos creado un objeto o instancia denominado *halcon* de una estructura denominada *Pajaro* y que la estructura tiene un método denominado *volar()*. Bien, pues entonces podemos ejecutar el método *volar()* del objeto *halcon* mediante la expresión *halcon.volar()*. Aquí, la instancia u objeto es halcon y el método o acción es volar(). halcon es el *self* que veremos a continuación. En este apartado construiremos un escenario similar al descrito.
+#nota[Supongamos que hemos creado un objeto o instancia denominado *halcon* de una estructura denominada *Pajaro* y que la estructura tiene un método denominado *volar()*. Bien, pues entonces podemos ejecutar el método *volar()* del objeto *halcon* mediante la expresión *`halcon.volar()`*. Aquí, la instancia u objeto es *`halcon`* y el método o acción es *`volar()`*. *halcon* es el *self* que veremos a continuación. En este apartado construiremos un escenario similar al descrito.]
 
 Los métodos operan sobre los datos del objeto (struct). Dependiendo de lo que queramos hacer con los datos, utilizaremos una de las tres siguientes variantes como primer parámetro en un método:
 
@@ -145,24 +145,27 @@ La forma en que el objeto que hemos creado ejecuta los métodos anteriores es la
 
 1) mi_caza.reportar_estado()
 
-Como vemos en la cabecera del método *fn reportar_estado(&self)*, recibe como primer y único parámetro un *prestamo* (o referencia) *&self*. *self* representa el objeto que está llamando al método con el punto, es decir, *mi_caza*. Esto permite al método acceder a las propiedades del objeto en el interior del método con *self.propiedad* (ejemplo self.nombre). Al haber recibido un prestamo &self, cuando el método termina de hacer su trabajo el objeto sigue activo, no se destruye.
+Como vemos en la cabecera del método *fn reportar_estado(&self)*, recibe como primer y único parámetro un *prestamo* (o referencia) *&self*. *self* representa el objeto que está llamando al método con el punto, es decir, *mi_caza*. Esto permite al método acceder a las propiedades del objeto en el interior del método (ejemplo *self.nombre*). Al haber recibido un prestamo &self, cuando el método termina de hacer su trabajo el objeto mi_caza sigue activo, no se destruye.
 
 2) mi_caza.recibir_disparo(40)
 
-Aquí la situación es analoga al caso anterior salvo que el método recibe dos parametros. El primer parámetro es *&mut self* y al igual que antes, el metodo podrá acceder a las propiedades del objeto mediante *self.propiedad* pero además de poder leerlas, la palabra *mut* en *&mut self* le permite tambien modificarlas.
+Aquí la situación es analoga al caso anterior salvo que el método recibe dos parametros. El primer parámetro es *&mut self* y al igual que antes, el metodo podrá acceder a las propiedades del objeto pero además de poder leerlas, la palabra *mut* en *&mut self* le permite también modificarlas.
 
 El segundo argumento *daño* opera igual que en una función normal. Se utiliza en el interior del método.
 
 #nota("Cuando se llaman los métodos de un struct con el operador punto, el primer parámetro ya sea &self, &mut self o self no es necesario colcarlo.")
 
-*El método main*
+*La función `main()`*
+
 En la función main se realiza toda la acción.
 
 Se crea el objeto *mi_caza* de la estructura *NaveEspacial* y se *ejecutan sus métodos*.
 
 ```rust
 fn main() {
-  // Es obligatorio usar 'mut' para poder llamar a métodos que usen &mut self
+  // Es obligatorio usar 'mut' en mi_caza para poder llamar
+  // a métodos que usen &mut self y modifiquen a mi_caza
+  // Instanciamos el objeto
   let mut mi_caza = NaveEspacial {
       nombre: String::from("Halcón Milenario"),
       escudo: 100,
@@ -175,7 +178,7 @@ fn main() {
 }
 ```
 == Funciones asociadas: Constructores personalizados (`new`)
-A veces queremos meter una función dentro de un `impl` que *no reciba self*. A esto se le llama *función asociada*. Como no tiene self, no actúa sobre un objeto ya creado, sino que suele usarse para *fabricar uno nuevo*. En Rust, la convención *para el constructor de un objeto es llamarlo `new`*.
+A veces queremos meter una función dentro de un bloque  `impl` que *no reciba self*. A esto se le llama *función asociada*. Como no tiene self, no actúa sobre un objeto ya creado, sino que suele usarse para *fabricar uno nuevo*. En Rust, la convención *para el constructor de un objeto es llamarlo `new`*.
 
 ```rust
 impl NaveEspacial {
@@ -193,6 +196,10 @@ impl NaveEspacial {
 fn main() {
   // Para llamar a una función asociada usamos los cuatro puntos (::)
   let nueva_nave = NaveEspacial::new("X-Wing");
+
+  // Si queremos que el programa funcione hay que copiar el método
+  // reportar_estado definido anteriormente y pegarlo fuera del main(),
+  // por ejemplo arriba del main()
   nueva_nave.reportar_estado();
 }
 ```
@@ -200,7 +207,8 @@ El constructor *new* que hemos definido crea un objeto de tipo *NaveEspacial* co
 
 ```rust
  NaveEspacial {
-    nombre: String::from(nombre_nave),
+    // nombre_nave se recibe en el parámetro de la función
+    nombre: String::from(nombre_nave), 
     escudo: 100,      // Todas las naves empiezan con escudo a tope
     municion: 50,     // Y munición cargada por defecto
 }
@@ -303,15 +311,15 @@ fn main() {
 
     // 4. Simulamos compras por parte de los clientes
     mi_tienda.vender_juego("Cyberpunk 2077"); // Quedará con stock 0
-    mi_tienda.vender_juego("Cyberpunk 2077"); // Debería dar error de falta de stock
+    mi_tienda.vender_juego("Cyberpunk 2077"); // Debería dar mensaje de falta de stock
     mi_tienda.vender_juego("Minecraft");      // No existe en la tienda
 
     // 5. Comprobamos cómo ha quedado el inventario final
     mi_tienda.mostrar_inventario();
 }
 ```
-```
 *La salida del programa*
+```
 📦 Añadiendo al almacén: Rust: Survival Evolved
 📦 Añadiendo al almacén: Cyberpunk 2077
 
@@ -336,7 +344,7 @@ Vamos a escribir una especie de resumen del programa.
 
 1) Tenemos dos estructuras en nuestro programa: *Videojuego* y *Tienda*.
 
-- La estructura Videojuego tiene solo un constructor new en su bloque impl:
+- La estructura Videojuego tiene solo un constructor *new* en su bloque impl:
  - fn new(titulo: &str, precio: f64, stock: u32) -> Videojuego 
 - La estructura Tienda tiene un constructor new y tres métodos:
  - fn new(nombre: &str) -> Tienda 
@@ -404,7 +412,7 @@ Utilización de los métodos en el main.
 Te queda un importante trabajo inspeccionando el interior de los métodos y observando:
 
 - Como devuelven los constructores *new* los respectivos objetos.
-- Como se utiliza el *operador punto* para acceder a las propiedades de un ojeto, por ejemplo *juego.titulo*.
+- Como se utiliza el *operador punto* para acceder a las propiedades de un objeto, por ejemplo *juego.titulo*.
 - Diferenciar entre métodos que solo leen las propiedades del objeto y reciben como argumento *&self* de los que también pueden modificar el objeto recibiendo *&mut self*.
 
 

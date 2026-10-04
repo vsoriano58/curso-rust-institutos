@@ -1,16 +1,16 @@
 #import "config.typ": *
 
 = Control de Flujo Avanzado: Coincidencia de Patrones (`match`)
-En el tema anterior descubrimos los enumerados (enum) y cómo pueden almacenar datos complejos en sus variantes. Pero nos quedamos con una duda: ¿cómo podemos "abrir" esas variantes de forma segura para extraer y utilizar los datos que contienen? 
+En el tema anterior descubrimos las enumeraciones (enum) y cómo pueden almacenar datos en sus variantes. Pero nos quedamos con una duda: ¿cómo podemos "abrir" esas variantes de forma segura para extraer y utilizar los datos que contienen? 
 
-#nota("Vimos un ejemplo sencillo con la variante Some de un dato Option que almacenaba un 1, Some(1).")
+#nota("En el capítulo anterior vimos un ejemplo sencillo de una variable de tipo Option que almacenaba Some(1) y pudimos extrer ese 1 mediante un match.")
 
-Para conseguirlo, Rust nos ofrece la estructura de control definitiva: match (*coincidencia de patrones*). Piensa en *`match`* como una aduana ultra-segura. El compilador inspecciona tu *variable enum* y te obliga a programar un camino específico para cada una de las posibilidades existentes.
+Para conseguirlo, Rust nos ofrece varias posibilidades pero la estructura de control definitiva es *match* (*coincidencia de patrones*). Piensa en *`match`* como un oboservador de tu variable *enum*. A través de match el compilador inspecciona tu *variable enum* y te obliga a programar un camino específico para cada una de las variantes posibles.
 
 == La potencia de `match`: Desestructuración exhaustiva de datos
-Una de las reglas de oro de Rust es la *exhaustividad*: un bloque *match* no compilará si dejas una sola variante del enumerado sin cubrir.
+Una de las reglas de oro de Rust es la *exhaustividad*: un bloque *match* no compilará si dejas una sola variante de la enumeración sin cubrir.
 
-Recuperemos el ejemplo de los hechizos del bloque anterior para ver cómo match abre el contenido y extrae las variables internas (proceso llamado desestructuración):
+Recuperemos el ejemplo de los hechizos del apartado anterior para ver cómo match abre el contenido y extrae las variables internas (proceso llamado desestructuración):
 
 💻 Copia el siguiente código en la Playground y ejecútalo con [RUN]
 
@@ -47,8 +47,37 @@ La ejecución del programa produce la siguiente salida:
 
 🔥 ¡BOOM! Una bola de fuego estalla haciendo 8 de daño en un radio de 20.7 metros.
 
-== El comodín de seguridad: El patrón por defecto `_`
-En este apartado consideramos a match como una instrucción de control de flujo, similar a if-else pero con más poder. A veces trabajamos con tipos de datos que tienen millones de posibilidades, como un número entero (`u32`) o un carácter (`char`). Sería imposible en un match, escribir un camino para cada número. Para solucionarlo, usamos el guion bajo (`_`), que actúa como un "comodín" o caso por defecto para atrapar todo lo que no hayamos atrapado explícitamente.
+*Explicación*
+
+Fijémonos en primer lugar en la función *lanzar_hechizo(hechizo: Hechizo)*. Recibe como argumento una variable de tipo *Hechizo*.
+
+A continuación y dentro de la función, mediante *match hechizo* averigua qué *variante* es la variable *hechizo* y para cada una de las tres posibilidades establece el código que se ejecutará.
+
+En el main() creamos la variable *hechizo = Hechizo::BolaFuego{daño: 8, radio: 20.7f32};* que le pasamos a la función.
+
+Es el segundo caso dentro de la función. El match hace que se ejecute el código entre llaves que reproducimos a continuación:
+
+```rust
+Hechizo::BolaFuego { daño, radio } => {
+    println!("🔥 ¡BOOM! Una bola de fuego estalla haciendo {} de daño en un radio de {} metros.", daño, radio);
+}
+```
+Observa que podríamos haber escrito el código de esta otra forma:
+```rust
+Hechizo::BolaFuego { variable1, variable2 } => {
+    println!("🔥 ¡BOOM! Una bola de fuego estalla haciendo {} de daño en un radio de {} metros.", variable1, variable2);
+}
+```
+Miremos de nuevo en el main() el valor de hechizo que le pasamos a la función:
+
+```rust
+let hechizo = Hechizo::BolaFuego{daño: 8, radio: 20.7f32};
+```
+Por tanto, la variable1 tomará el valor 8 y la variable2 20.7f32. Esto es independiente del nombre que le demos a esas variables, solo influye el orden al escribirlas.
+
+
+== El comodín de seguridad: El patrón por defecto o guión bajo `_`
+En este apartado consideramos a *match* como una instrucción de *control de flujo*, similar a if-else pero con más poder. A veces trabajamos con tipos de datos que tienen millones de posibilidades, como un número entero (`u32`) o un carácter (`char`). Sería imposible en un match, escribir un camino para cada número. Para solucionarlo, usamos el guion bajo (`_`), que actúa como un "comodín" o caso por defecto para atrapar todo lo que no hayamos atrapado explícitamente.
 
 La siguiente función *clasificar_puntuacion* tiene un parámetro *puntos* de tipo u32 (entero sin signo de 32 bits) y en función del argumento que se le pase a la función, ejecuta una u otra rama del match. Vemos que al principio hay tres caminos perfectamente definidos pero el cuarto camino se recoge con el patrón guión bajo `_` que atrapa cualquier valor que no se haya atrapado antes.
 
@@ -81,12 +110,16 @@ La ejecución del programa produce la siguiente salida:
 🥇 ¡Increíble! Eres un profesional.\
 🏆 ¡Récord legendario superado!\
 
-==  El atajo elegante: Control de flujo simplificado con `if let`
-¿Qué ocurre si solo nos interesa gestionar *una sola variante* de un *enumerado* y queremos ignorar el resto? Usar un match nos obligaría a poner el comodín `_` => {} al final de forma obligatoria. Para evitar ese código repetitivo, Rust inventó el atajo *if let*.
+Como ya dijimos al principio aquí no estamos utilizando match para desempaquetar una enumeración de tipo Optión sino simplemente para decidir que rama de código se va a ejecutar dependiendo del argumento pasado a una función.
 
-En el siguiente ejemplo, la variable *cofre_tesoro* está inicializada con la variante Some de un Option. En el programa suponemos que solo nos interesa saber lo que contiene la variable *cofre_tesoro* si es un Some y nos da igual en caso contrario.
+==  El atajo elegante: Control de flujo simplificado con `if let`
+¿Qué ocurre si solo nos interesa gestionar *una sola variante* de una *enumeracion* y queremos ignorar el resto? Usar un match nos obligaría a poner el comodín `_` => {} al final de forma obligatoria. Para evitar ese código repetitivo, Rust inventó el atajo *if let*.
+
+*if let* es útil cuando sabemos que una variable de tipo Option es la variante Some y sólo queremos averiguar el dato que encierra el Some. Entonces podemos hacerlo sin riesgo con una sola línea de codigo.
+
+En el siguiente ejemplo, la variable *cofre_tesoro* está inicializada con la variante Some de un Option`<String>`. En el programa suponemos que solo nos interesa saber lo que contiene la variable *cofre_tesoro* si es un Some y nos da igual en caso contrario.
   
-El *if let*, si la variable *cofre_tesoro* coincide exactamente con el patrón *Some*, extrae el texto en el argumento *arma* que se le pasa al Some. Es decir, *arma* pasará a valer `"`Espada Excalibur`"` y la podremos utilizar en el println!.
+El *if let*, si la variable *cofre_tesoro* coincide exactamente con el patrón *Some*, extrae el texto en el argumento *`arma`* que le pasamos al Some. Es decir, *`arma`* pasará a valer `"`Espada Excalibur`"` y la podremos utilizar en el println!.
 
 💻 Copia el siguiente código en la Playground y ejecútalo con [RUN]
 
@@ -95,21 +128,20 @@ Fichero: *cofre_tesoro.rs*
 ```rust
 fn main() {
     let cofre_tesoro: Option<String> = Option::Some(String::from("Espada Excalibur"));
-
     
     if let Option::Some(arma) = cofre_tesoro {
         println!("🎁 ¡Has abierto un cofre y has encontrado una {}!", arma);
-    } else {
-        println!("💨 El cofre estaba completamente vacío.");
-    }
+    } 
 }
 ```
 La salida del programa es:
 
 🎁 ¡Has abierto un cofre y has encontrado una Espada Excalibur!
 
+if let serviría igual para desempaquetar la variante None pero en este caso, si sabemos ya seguro que es None, no tenemos nada más que averiguar y el if let se hace innecesario.
+
 == Proyecto Práctico II: Mini-RPG de texto basado en turnos
-Vamos a unir todo lo aprendido en el Cuaderno 3 (estructuras, métodos impl, enumerados Option y control de flujo match) para crear un simulador de combate clásico por turnos entre un Héroe y un Monstruo.
+Vamos a unir todo lo aprendido en el Cuaderno 3 (estructuras, métodos impl, enumeraciones Option y control de flujo match) para crear un simulador de combate clásico por turnos entre un Héroe y un Monstruo.
 
 💻 Copia el siguiente código en la Playground y ejecútalo con [RUN]
 
@@ -234,7 +266,7 @@ La mejor forma de seguir este apartado es editando en la Playground el listado d
 
 - *struct Combatiente*: Tiene cuatro campos. Utilizaremos este struct para crear tanto el heroe como el monstruo.
 
-- *impl Combatiente*: Define el constructor *new*, y los métodos *recibir_daño*, *usar_pocion* y *esta_vivo* que pueden actuar sobre un objeto de tipo *Combatiente*. El constructor new simplemente lo crea.
+- *impl Combatiente*: Define el constructor *new()*, y los métodos *recibir_daño()*, *usar_pocion()* y *esta_vivo()* que pueden actuar sobre un objeto de tipo *Combatiente*. El constructor new() simplemente lo crea.
 
 *2. La función main*
 
@@ -248,9 +280,9 @@ let mut monstruo = Combatiente::new("Gólem de Roca", 100, 12);
 let turnos_jugador = [Accion::Atacar, Accion::Curar, Accion::Atacar, Accion::Huir];
 let mut numero_turno = 1;
 ```
-*turno_jugador* es un array con 4 acciones que luego recorreremos con un bucle for.
+*turnos_jugador* es un array con 4 acciones que luego recorreremos con un bucle for.
 
-La variable *numero_turno* se in icializa a 1 antes de entrar en el for y luego se aumenta en uno al final del for en cada pasada del mismo.
+La variable *numero_turno* se inicializa a 1 antes de entrar en el for y luego se aumenta en uno al final del for en cada pasada del mismo. Solo se utiliza para imprimir el número de turno del for e irá tomando los valores 1, 2, 3 y 4.
 
 *3. El bucle for*
 Se introduce con la siguiente línea:
@@ -280,7 +312,8 @@ match accion {
     }
 }
 ```
-*5. ¿El monstruo sigue vivo?*
+*5. ¿El monstruo sigue vivo?* (Al final del for)
+
 Si sigue vivo se le aplica:
 ```rust
 heroe.recibir_daño(monstruo.fuerza_ataque);
@@ -288,9 +321,39 @@ heroe.recibir_daño(monstruo.fuerza_ataque);
 ¿Cuanto vale *monstruo.fuerza_ataque*? Según hemos creado el monstruo con la instrucción new, fuerza_ataque es el tercer argumento, luego vale 12.
 
 *6. Evolución del for*
+
 El bucle for irá avanzando entre las cuatro acciones del array *turnos_jugador* y para cada una de ellas ejecutará todas las instrucciones existentes entre su llave de apertura y su llave de cierre.
 
 *7. Impresión de resultados*
+
 Después de que el for de sus cuatro vueltas, las últimas líneas imprimen el resultado del combate según como hayan quedado los estados del heroe y del monstruo.
+
+*8. Los resultados*
+
+Estos son lo resultados que debes obtener ejecutando el programa:
+
+🏰 BIENVENIDO A RUST-RPG 🏰
+
+--- ⏳ TURNO 1 ---\
+⚔️ Sir Isaac alza su espada contra el Gólem de Roca!\
+💥 Gólem de Roca recibe 18 puntos de daño. (Vida actual: 82/100)\
+👹 El Gólem de Roca ruge con furia y contraataca!\
+💥 Sir Isaac recibe 12 puntos de daño. (Vida actual: 68/80)\
+
+--- ⏳ TURNO 2 ---\
+💚 Sir Isaac bebe una poción y recupera 25 de vida. (Vida actual: 80/80)\
+👹 El Gólem de Roca ruge con furia y contraataca!\
+💥 Sir Isaac recibe 12 puntos de daño. (Vida actual: 68/80)\
+
+--- ⏳ TURNO 3 ---\
+⚔️ Sir Isaac alza su espada contra el Gólem de Roca!\
+💥 Gólem de Roca recibe 18 puntos de daño. (Vida actual: 64/100)\
+👹 El Gólem de Roca ruge con furia y contraataca!\
+💥 Sir Isaac recibe 12 puntos de daño. (Vida actual: 56/80)\
+
+--- ⏳ TURNO 4 ---\
+🏃 Sir Isaac ha decidido retirarse del combate de forma segura. ¡Fin de la partida!\
+
+
 
 #pagebreak()

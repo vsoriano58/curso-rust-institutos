@@ -3,7 +3,7 @@
 = Introducción: De variables sueltas a objetos con sentido
 Hasta este punto de tu aventura con *Rust*, has aprendido a manejar la información utilizando variables individuales. Si necesitabas almacenar la vida o salud de un jugador, creabas un *let salud = 100;*. Si querías su nombre, añadías un *let nombre = String::from(`"`Arturo`"`);*.
 
-Este enfoque funciona perfectamente para programas pequeños o filtros digitales matemáticos aislados. Sin embargo, el software del mundo real no funciona con datos desconectados; funciona con *conceptos integrados*.
+Este enfoque funciona perfectamente para programas pequeños o para programas matemáticos aislados. Sin embargo, el software del mundo real no funciona con datos desconectados; funciona con *conceptos integrados*.
 
 == El problema de los datos huérfanos
 Imagina que estás diseñando el código de un videojuego multijugador. Cada jugador en el mapa necesita un nombre, una posición en el eje X, una posición en el eje Y y un estado de energía. Usando únicamente lo aprendido en los cuadernos anteriores, tu código inicial se vería más o menos así:
@@ -30,18 +30,18 @@ Para nuestra mente humana, *j1_nombre* y *j1_energia* están íntimamente relaci
 
 Esto acarrea tres problemas graves a medida que el proyecto crece:
 
-+ *Fragilidad*: Si pasas la posición de un jugador a una función para calcular el movimiento, podrías equivocarte por accidente y pasar el eje X del Jugador 1 y el eje Y del Jugador 2. El compilador no protestará, porque ambos son números decimales, pero provocarás un bug (error) catastrófico en el juego.
++ *Fragilidad*: Si pasas la posición (x, y) de un jugador a una función para calcular el movimiento, podrías equivocarte por accidente y pasar la coordenada X del Jugador 1 y la coordenada Y del Jugador 2. El compilador no protestará, porque ambos son números decimales, pero provocarás un bug (error) catastrófico en el juego.
 
-+ *Falta de cohesión:* Las funciones que modifican al jugador (como recibir daño o teletransportarse) requieren que les pases una lista kilométrica de argumentos individuales en los parámetros de la función: todas las variables del jugador.
++ *Falta de cohesión:* Las funciones que modifican las propiedades del jugador requieren que les pases una lista kilométrica de argumentos individuales en los parámetros de la función: todas las variables del jugador.
 
 + *Escalabilidad imposible:* Crear dinámicamente nuevos jugadores o eliminarlos cuando se desconecten de la partida se vuelve una tarea titánica si sus propiedades (variables) están dispersas.
 
 == Pensar en "Objetos con Sentido"
-Modelar el mundo real significa dejar de pensar en bytes, enteros o cadenas de texto aisladas, y empezar a pensar en *entidades completas*.
+Modelar el mundo real significa dejar de pensar en variables aisladas, y empezar a pensar en *entidades completas*.
 
 En lugar de ver cuatro variables huérfanas, queremos que nuestro código entienda el concepto unificado de un *Jugador*. Queremos empaquetar esos datos dispersos dentro de un contenedor único. De esta forma, si movemos (eliminamos) al jugador, movemos el paquete completo; si el jugador se cura, alteramos una propiedad interna de ese paquete.
 
-En este cuaderno aprenderás a diseñar tus propios bloques de construcción para dotar a Rust de *tipos personalizados* que no existen en el lenguaje por defecto. Pasaremos de gestionar números y letras inconexos a modelar _*Inventarios, Héroes, Monstruos y Sistemas de Autenticación.*_
+En este cuaderno aprenderás a diseñar tus propios bloques de construcción para dotar a Rust de *tipos personalizados* que no existen en el lenguaje por defecto. Pasaremos de gestionar números y letras inconexos a modelar *Inventarios, Héroes, Monstruos, etc.*
 
 Damos la bienvenida a la programación estructurada. Es hora de levantar los planos de nuestro código. 
 
