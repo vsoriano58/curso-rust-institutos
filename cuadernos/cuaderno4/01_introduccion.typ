@@ -1,14 +1,16 @@
 #import "config.typ": *
 
 = Introducción
-¡Bienvenido al Cuaderno 4 de tu camino de aprendizaje en Rust! Hasta este momento, en los tres volúmenes anteriores has aprendido a comunicarte con el compilador, a estructurar datos en la memoria y a modelar el mundo real mediante objetos y colecciones. Sin embargo, todos tus programas anteriores asumían un entorno "perfecto": el usuario siempre introducía el dato correcto, los archivos siempre existían y los recursos nunca fallaban.
+¡Bienvenido al Cuaderno 4 de tu camino de aprendizaje en Rust! Hasta este momento, en los tres volúmenes anteriores has aprendido a comunicarte con el compilador, a estructurar datos en la memoria y a modelar el mundo real mediante objetos y colecciones. Has tenido también en cuenta que los programas no pueden asumir un entorno "perfecto" en el que el usuario siempre introduce el dato correcto, los archivos siempre existen y los recursos nunca fallaban.
 
-En el mundo del software profesional, el entorno ideal no existe. Los discos duros se llenan, las redes se caen, los archivos se corrompen y los usuarios cometen errores constantemente al introducir datos. Un programador amateur escribe código que funciona cuando todo va bien; un desarrollador profesional escribe software robusto que sabe qué hacer cuando todo o casi todo va mal.
+Una de las razones que llevaron a crear el lenguaje Rust fue proporcionar seguridad al código cuando se dan algunos o todos estos improvistos en el entorno de ejecución de un programa.
 
-== Qué vas a aprender en este volumen?
+No nos vamos a cansar de repetir: en el mundo del software profesional, el entorno ideal no existe. Los discos duros se llenan, las redes se caen, los archivos se corrompen y los usuarios cometen errores constantemente al introducir datos. Un programador amateur escribe código que funciona cuando todo va bien; un desarrollador profesional escribe software robusto que sabe qué hacer cuando todo o casi todo va mal.
+
+== Qué vas a recordar y aprender en este volumen?
 Este cuaderno está diseñado para transformar tu forma de programar mediante tres pilares fundamentales:
 
-- *Gestión Defensiva de Errores*: Descubrirás por qué Rust no utiliza el peligroso concepto de "valor nulo" (null) y aprenderás a usar las herramientas *Option`<T>`*y *Result`<T, E>`* para anticiparte y desactivar los fallos antes de que ocurran.
+- *Gestión Defensiva de Errores*: Volverás a descubrir por qué Rust no utiliza el peligroso concepto de "valor nulo" (null) y volverás a usar las herramientas *Option`<T>`*y *Result`<T, E>`* para anticiparte y desactivar los fallos antes de que ocurran.
 
 - *Persistencia en el Mundo Real*: Aprenderás a conectar tus programas con el sistema operativo. Tu código dejará de ser efímero: aprenderás a leer y escribir archivos de texto plano para guardar información de forma permanente en el disco.
 
@@ -17,7 +19,7 @@ Este cuaderno está diseñado para transformar tu forma de programar mediante tr
 Al terminar este cuaderno, habrás desarrollado tres proyectos clave (un gestor de tareas persistente, una herramienta de automatización para la terminal y un analizador estadístico). Estarás completamente preparado para enfrentarte al desarrollo de aplicaciones reales y conectadas. ¡Empecemos!
 
 == 🧩 Paréntesis Didáctico: Entendiendo los Tipos Genéricos (`<T>`, `<E>`)
-Al adentrarnos en las herramientas que describe este cuaderno, verás que aparecen expresiones extrañas como *Option`<T>`* o *Result`<T, E>`*. Option y Result son dos enumerados definidos en Rust y que estudiaremos luego, pero ¿qué significan esas letras mayúsculas entre símbolos de mayor y menor que? Se llaman *Tipos Genéricos*, y son una de las herramientas más potentes para ahorrar código.
+Al adentrarnos en las herramientas que describe este cuaderno, verás que aparecen expresiones extrañas como *Option`<T>`* o *Result`<T, E>`*. Option y Result son dos enumeraciones definidas en Rust y aunque ya las estudiamos en el Cuaderno 3 las volveremos a estudiar ahora con mayor detalle. Pero, ¿qué significan esas letras mayúsculas entre símbolos de mayor y menor que? Se llaman *Tipos Genéricos*, y son una de las herramientas más potentes para ahorrar código.
 
 === El problema: Repetir código para cada tipo de dato
 Imagina que queremos programar una función muy simple que sume dos números. Si no existieran los genéricos, nos veríamos obligados a escribir una función diferente para cada tipo de número que usemos en Rust:
@@ -52,21 +54,20 @@ fn mostrar_par<T, U>(identificador: T, valor: U) {
 }
 ```
 
-La teoría sobre datos genéricos la estudiaremos más adelante pero por ahora debe quedar claro que cuando veamos letras mayúsculas en la definición de estructuras, enumerados o funciones significan un tipo de dato cualquiera, genérico.
+La teoría sobre datos genéricos la estudiaremos más adelante pero por ahora debe quedar claro que cuando veamos letras mayúsculas en la definición de estructuras, enumeraciones o funciones significan un tipo de dato cualquiera, genérico.
 
-=== Cómo se aplica esto a los enumerados Option y Result que veremos luego?
+=== ¿Cómo se aplica esto a las enumeraciones Option y Result que veremos luego?
 Ahora ya estás preparado para entender las herramientas de Rust. Cuando veas: 
 
-- Option`<T>`: Significa que es una caja que puede contener un dato T (¡el que tú quieras!: un entero, un texto String, o una estructura personalizada).
+- Option`<T>`: Significa que es una caja que puede contener un dato de tipo T (¡el que tú quieras!: un entero, un texto String, una estructura personalizada, etc).
 
-- Result`<T, E>`: Significa que es una estructura que, si todo va bien, devuelve un dato exitoso de tipo *T*, y si falla, devuelve un error de tipo *E* (de Error).
+- Result`<T, E>`: Significa que es una enumeración que, si todo va bien, devuelve un dato exitoso de tipo *T*, y si falla, devuelve un error de tipo *E*.
 
 Los genéricos son simplemente eso: comodines que toman su valor real en el mismo instante en el que tú decides utilizarlos en tu programa.
 
-Estos dos enumerados están definidos por Rust y por tanto en nuestros programas podremos utilizarlos directamente sin definirlos. Son enumerados genéricos predefinidos.
+Estas dos enumeraciones están definidos por Rust y por tanto en nuestros programas podremos utilizarlos directamente sin definirlos. Son enumeraciones genéricas predefinidas.
 
 Ciertamente es un concepto bastante abstracto pero cuando lo veas aplicado en algunos ejemplos lo normalizarás rápidamente.
-
 
 
 #pagebreak()

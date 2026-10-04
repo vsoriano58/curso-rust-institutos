@@ -50,26 +50,27 @@ Abre una terminal integrada de VS Code en la carpeta del proyecto y ejecuta el p
 
 *Explicación*:
 
-La instrucción *use std::fs;* es necesaria para poder acceder a la función *read_to_string* que lee el fichero *config.txt*.
+La instrucción *use std::fs;* es necesaria para poder acceder a la función *read_to_string()* que lee el fichero *config.txt*.
 
-Como la operación de lecctura puede fallar si escribimos mal el nombre del fichero o si no existe, *read_to_string* devuelve un *Result* (está programada así en Rust) que es asignado a la variable *contenido*.
+Como la operación de lecctura puede fallar si escribimos mal el nombre del fichero o si no existe, *read_to_string()* devuelve un *Result* (la función está programada así en Rust) que es asignado a la variable *contenido*.
 
 A continuación, el *match* desempaqueta *contenido* teniendo en cuenta las dos variantes del *Result* que puede contener. 
 
-- Si contenido era *OK*, la variable *datos* contiene el fichero leido y se imprime con el println!. Podríamos poner a `datos` cualquier otro nombre siempre que utilicemos el mismo a la derecha.
+- Si contenido es *OK*, la variable *datos* contiene el fichero leido y se imprime con el println!. Podríamos poner a `datos` cualquier otro nombre siempre que utilicemos el mismo a la derecha.
 
-- Si contenido era *Err*, la variable *e* contiene el error y se imprime con println! Podríamos poner a `e` cualquier otro nombre siempre que utilicemos el mismo a la derecha.
+- Si contenido es *Err*, la variable *e* contiene el error y se imprime con println! Podríamos poner a *e* cualquier otro nombre siempre que utilicemos el mismo a la derecha.
 
-Tengamos en cuenta que en este ejemplo, nosotros no hemos escrito la función (read_to_string) que devuelve el Result, es una función de Rust y nosotros solo la utilizamos. En el tema anterior si que escribimos la función dividir:
+Tengamos en cuenta que en este ejemplo, nosotros no hemos escrito la función read_to_string() que devuelve el Result, es una función de Rust y nosotros solo la utilizamos. En el tema anterior si que escribimos la función dividir:
 
 ```rust
 fn dividir(dividendo: f64, divisor: f64) -> Result<f64, String> {...}
 ```
+y desempaquetamos de forma análoga el Ruslt con match.
 
 == Creación y escritura de datos en archivos
-Para escribir datos, podemos crear un archivo nuevo o sobrescribir uno existente mediante std::fs::File y std::io::Write.
+Para escribir datos, podemos crear un archivo nuevo o sobrescribir uno existente mediante el usos std::fs::File y std::io::Write.
 
-std::fs::File lo necesitamos para utilizar *File::create* y std::io::Write para utilizar *write_all* en archivo.write_all.
+std::fs::File lo necesitamos para utilizar la función *File::create()* y std::io::Write para utilizar *write_all()* en archivo.write_all.
 
 - Crea el proyecto de Rust *escribir_en_archivo* en la carpeta *proyectos-rust* igual que hemos hecho en el apartado anterior.
 
@@ -110,11 +111,11 @@ Abre una terminal integrada de VS Code en la carpeta del proyecto y ejecuta el p
 
 *Explicación*
 
-El contenido de la variable mensaje es lo que guardaremos en el fichero que crearemos.
+El contenido de la variable *mensaje* es lo que guardaremos en el fichero que crearemos.
 
-La orden *File::create("registro.log")* tiene dos posibles resultados proporcionados por la función de Rust *create*: *Ok* o *Err* ya que la función puede tener éxito o fallar. Esto forma parte del ecosistema de Rust y se obtiene de la documentación ya que nosotros no hemos programado esta función.
+La orden *File::create(`"`registro.log`"`)* tiene dos posibles resultados proporcionados por la función de Rust *create()*: *Ok* o *Err* ya que la función puede tener éxito o fallar. Esto forma parte del ecosistema de Rust y se obtiene de la documentación ya que nosotros no hemos programado esta función.
 
-El *File::create("registro.log")* contempla las dos opciones:
+El *match File::create(`"`registro.log`"`)* contempla las dos opciones:
 
 - Si el resultado es *Ok*, en el match desempaquetamos el Ok(mut *archivo*) y obtenemos el identificador mutable *archivo* con el que luego podremos crear y escribir en el fichero registro.log.
 
@@ -122,13 +123,15 @@ El *File::create("registro.log")* contempla las dos opciones:
 
 Si el primer match se resolvió con OK intentamos escribir en el archivo para lo cual utilizamos un segundo match:
 
-- match archivo.write_all(mensaje.as_bytes())
+- *match archivo.write_all(mensaje.as_bytes())*
 
 Aqui de nuevo tenemos las dos posibilidades. Si el *match* se resuelve en *Ok(`_`)*, con el guión bajo indicamos que no estamos interesados en desempaquetar ningún dato que pueda traer el Ok. Simplemente imprimimos el mensaje de que todo ha salido bien. Si se resuelve en *Err(e)* aquí si que desempaquetamos *Err*, obtenemos el valor de *e* y lo utilizamos en el mensaje de consola.
 
-#nota("El programa anterior puede simplificarse utilizando una función que acepta el mensaje a guardar en el fichero y el operador ?")
+El programa anterior puede simplificarse utilizando una función que acepta el mensaje a guardar en el fichero y el operador ?. Puedes consultarlo en:
 
-El listado sería el siguiente:
+💻 Proyecto: *escribir_en_archivo_2*
+
+El listado es el siguiente:
 
 ```rust
 use std::fs::File;
@@ -156,16 +159,14 @@ Al ejecutar la primera orden del main:
 ```rust
  if let Err(e) = guardar_registro("LOG: El sistema se inició correctamente.")
 ```
-Si las dos líneas a las que aplicamos el operador ?
+Si las dos líneas a las que aplicamos el operador ? en la función guardar_registro():
 
 ```rust
 let mut archivo = File::create("registro.log")?;
-    archivo.write_all(mensaje.as_bytes())?;
+archivo.write_all(mensaje.as_bytes())?;
 ```
-Se ejecutan sin problemas, se crea el fichero con el mensaje especificado y se ejecuta el else del main.
+se ejecutan sin problemas, se crea el fichero con el contenido especificado y se ejecuta el else del main porque no se generó Err.
 
-Si alguna de las dos funciones (*create* o *write_all*) se resuelve en *Err*, el error se propaga a quien la llamó, que es el main. En el main desempaquetamos con *if let Err(e)* el error imprimimos un mensaje por la consola.
-
-
+Si alguna de las dos funciones *create()* o *write_all()* se resuelve en *Err*, el error se propaga a quien la llamó, que es el main. En el main desempaquetamos con *if let Err(e)* el error imprimimos un mensaje por la consola.
 
 #pagebreak()

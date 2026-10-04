@@ -30,7 +30,7 @@
 
 - 🧪 Prueba de fuego: Al probar con "12345", el programa no debe cerrarse con pánico; debe imprimir limpiamente el texto del error devuelto por la función.
 
-== *Ejercicio 3: El Lector Defensivo de Archivos (Manejo de archivos y ?)*
+== Ejercicio 3: El Lector Defensivo de Archivos (Manejo de archivos y ?)
 
 - *Objetivo:* Aprender a capturar los errores del sistema operativo de manera controlada sin que el programa colapse (panic).
 

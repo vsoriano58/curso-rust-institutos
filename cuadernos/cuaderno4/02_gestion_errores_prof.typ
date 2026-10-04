@@ -14,31 +14,32 @@ En la programación real, las cosas fallan: un archivo que intentamos abrir resu
 - *Errores recuperables*: Situaciones que podemos anticipar y solucionar (ej. si intentamos abrir un archivo y resulta que no existe, podemos pedirle al usuario que introduzca otra ruta o incluso, crear el archivo si eso elimina el error).
 
 == El tipo Option`<T>`
-Rust no tiene el valor *null* presente en otros lenguajes, evitando así los famosos errores de "puntero nulo". Cuando un valor puede estar presente o ausente, lo representamos con la enumeración *Option`<T>`*, que tiene dos variantes:
+Rust no tiene el valor *null* presente en otros lenguajes, evitando así los famosos errores de "puntero nulo". Cuando un dato puede estar presente o ausente, lo representamos con la enumeración *Option`<T>`*, que tiene dos variantes:
 
-- Some(valor): Contiene el dato y es valor.
-- None: Indica la ausencia de valor.
+- Some(valor): Contiene el dato. Es valor.
+- None: Indica la ausencia del dato.
 
-Para ir fijando las ideas podemos suponer que ese valor que decimos que puede estar presente o ausente, es el valor devuelto por una función y que se asigna a una variable. 
+Para ir fijando las ideas podemos suponer que ese valor que decimos que puede estar presente o ausente, es normalmente el valor devuelto por una función y que se asigna a una variable. 
 
-En lenguaje simbólico podríamos reflejar la situación de la siguiente forma:
+Supongamos que estamos trabajando con Option`<f64>`. En lenguaje simbólico podríamos reflejar la situación de la siguiente forma:
 
 ```rust
-fn mi_funcion(parametros)-> Option<T> {instrucciones} 
+fn mi_funcion(parametros)-> Option<f64> {instrucciones} 
 
 let mi_variable = funcion(argumentos);
 ```
-Según el esquema anterior, *mi_variable* será de tipo *Option`<T>`*. Este enumerado tiene como hemos mencionado antes dos variantes y *mi_funcion* asignará una de las dos a *mi_variable*. Si le asigna  *Some*, dentro del Some está el valor que buscamos y si es *None*, sencillamente el valor no existe. En cada caso, T será un tipo de dato que se ajuste a nuestras necesidades.
+Según el esquema anterior, *mi_variable* será de tipo *Option`<f64>`*. Esta enumeración tiene como hemos mencionado antes dos variantes y *mi_funcion* asignará una de las dos a *mi_variable*. Si le asigna  *Some*, dentro del Some está el valor *f64* que buscamos y si es *None*, sencillamente el valor no existe. En este caso, *f64* es el tipo de dato que se ajusta a nuestras necesidades pero la enumeración *Option`<T>`* está definida para cualquier tipo de dato usando el genérico *T*. Es el compilador el que genera una función diferente para cada tipo de dato cuando lo utilizamos.
 
-En el siguiente ejemplo ---ver código completo más abajo---, la función *buscar_usuario(id: u32)* simula buscar un usuario a partir del *id* del mismo. Hemos simplificado para que solo exista un usuario que se obtiene con el id = 10. La función devuelve un *`Option<String>`*. Veamos los dos casos posibles:
+En el siguiente ejemplo ---ver código completo más abajo---, la función *buscar_usuario(id: u32)* simula buscar un usuario a partir de su *id*. Hemos simplificado para que solo exista un usuario que se obtiene con el *id = 10*. La función devuelve un *`Option<String>`*. Veamos los dos casos posibles:
 
-- Si le proporcionamoes un id = 10 ---ver listado del programa---, la función devuelve *Some(String::from("Alicia"))*, es decir, devuelve un String con el resultado correcto envuelto en un Some. Luego aprenderemos a desempaquetar el resultado del Some en la función main.
+- Si le proporcionamos un id = 10 (ver más abajo listado del programa *buscar_usuario.rs*), la función devuelve *Some(String::from("Alicia"))*, es decir, devuelve un String con el resultado correcto envuelto en un Some. Ya aprendimos a desempaquetar el resultado del Some en la función main pero lo volveremos a hacer.
 
 - Si le proporcionamos cualquier otro id devuelve *None* que interpretamos como ausencia de valor. Esta ausencia de valor no genera ningún problema con las sentencias println! que muestran el resultado.
 
 - Observa la instrucción *match* del main:
 
 ```rust
+let usuario_id = 10;
 match buscar_usuario(usuario_id) {
         Some(nombre) => println!("Usuario encontrado: {}", nombre),
         None => println!("Error: El usuario no existe en la base de datos."),
@@ -79,8 +80,8 @@ fn main() {
 ```
 Cambia el valor de la variable *let usuario_id = 10;* y observa los mensajes de salida.
 
-== El tipo *Result`<T, E>`*
-Para operaciones que pueden fallar por factores externos en las que podemos capturar el error, Rust utiliza *Result`<T, E>`*. 
+== El tipo Result*`<T, E>`*
+*Result* es otra enumeración definida en Rust para tratar con operaciones que pueden fallar por factores externos y en las que podemos capturar el error. 
 
 Sus variantes son:
 
@@ -169,13 +170,17 @@ fn dividir(dividendo: f64, divisor: f64) -> Result<f64, String> {
 }
 
 fn main() -> Result<(), String>{
-   let resultado = dividir(10.0, 10.0)?;
+   let resultado = dividir(10.0, 0.0)?;
    println!("El resultado es: {resultado}");
    Ok(())
 }
 ```
-Introduce en el código un valor 0.0 como divisor para obtener el error en la terminal.
+Salida del programa:
 
+```
+Error: "No se puede dividir por cero."
+```
+La primera parte *Error:* la imprime Rust y el mensaje *`"`No se puede dividir por cero.`"`* es el que mandamos desde la función dividir al utilizar *?*.
 
 
 

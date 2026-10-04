@@ -206,7 +206,7 @@ El match desempaqueta las dos variantes de Result que puede devolver *read_to_st
 -  En el interior del bucle, llama al empezar a la función mostrar_tareas()y a continuación pide al usuario que elija una opción introduciendo un 1 o un 2. La elección del usuario se coloca en la variable *opcion*.
 - Con *match opcion.trim()* desempaqueta el valor de opcion después de quitarle los posibles espacios que tenga al principio y al final.
 - Si el valor de opcion es *1*, pide al usuario que escriba el nombre de la nueva tarea y lo coloca en la variable nueva_tarea.
-- Con la instrucción if let Err(e) a verigua si en *agregar_tarea(nueva_tarea.trim())* se ha producido un error. Si es así lo imprime y sale. Si nu hubo error, la nueva_tarea se ha agredado al fichero *tareas.txt*.
+- Con la instrucción if let Err(e) a verigua si en *agregar_tarea(nueva_tarea.trim())* se ha producido un error. Si es así lo imprime y sale. Si no hubo error, la nueva_tarea se ha agredado al fichero *tareas.txt*.
 - Si el valor de la opción es *2* sale del programa.
 - Con el guión bajo *`_`* se recoge cualquier otro valor de opcion y se presenta el mensaje de opcion no válida.
 - Ver *listado_comentado.rs* para comentarios más detallados.
@@ -273,13 +273,13 @@ Al igual que en el proyecto anterior, antes de empezar a investigar cómo funcio
 
 Abre una terminal integrada en la carpeta del proyecto (*herramientas_cli*) y en lugar de ejeutar la orden `cargo run.` como hacemos siempre, ejecuta la siguiente orden:
 
-*cargo run -- crear ejemplo.txt*
+*cargo run `--` crear ejemplo.txt*
 
 Al pulsar return el programa crea el fichero ejemplo.txt al mismo nivel del fichero Cargo.toml.
 
 Ahora podemos ejecutar la orden:
 
-*cargo run -- eliminar ejemplo.txt*
+*cargo run `--` eliminar ejemplo.txt*
 
 Y borraremos el fichero creado anteriormente. Por tanto, a través de comandos de texto entregados a nuestro programa, estamos ejecutando órdenes sobre nuestro directorio de ficheros como podríamos hacer directamente desde el sistema operaticvo.
 
@@ -290,7 +290,9 @@ Y borraremos el fichero creado anteriormente. Por tanto, a través de comandos d
 ```rust
 let argumentos: Vec<String> = env::args().collect();
 ```
-Captura las distintos parámetros entregados a la orden cargo run. La primera orden que hemos ejecutado ha sido: *cargo run -- crear ejemplo.txt* y al imprimir el vector *argumentos* obtenemos:
+*.collect()* es necesario para construir el vector a partir de env::args() que es un iterador.
+
+Captura las distintos parámetros entregados a la orden cargo run. La primera orden que hemos ejecutado ha sido: *cargo run `--` crear ejemplo.txt* y al imprimir el vector *argumentos* obtenemos:
 
 [`"`target/debug/herramientas_cli`"`, `"`crear`"`, `"`ejemplo.txt`"`] (compruébalo en tu terminal)
 
@@ -306,7 +308,7 @@ Por tanto, las variables que nos interesan son:
 - En la opción *eliminar* se procede analogamente con el resultado de la función *remove_file*.
 
 == Atrapar varios tipos de errores en un único Result
-Vamos a explicar por qué a veces una función devuelve u Result de la forma:
+Vamos a explicar por qué a veces una función devuelve un Result de la forma:
 
 Result`<f64, Box<dyn Error>>` 
 
@@ -361,6 +363,7 @@ cargo new datos_csv
 
 - Edita el fichero Cargo.toml de forma que la sección [dependencies] quede como se muestra abajo:
 
+```
 [package]
 name = "datos_csv"
 version = "0.1.0"
@@ -368,8 +371,8 @@ edition = "2024"
 
 [dependencies]
 csv = "1.3"
-
-- Crea un fichero *datos.csv* con el contenido que se muestra al principio y colócalo en el mimo nivel que Cargo.toml.
+```
+- Crea un fichero *datos.csv* con el contenido que se muestra al principio y colócalo en el mismo nivel que Cargo.toml.
 
 💻 Copia el siguiente código y pégalo en el fichero *main.rs* del proyecto creado, borrando previamente todo lo que hubiera escrito en ese fichero.
 

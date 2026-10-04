@@ -61,7 +61,7 @@
     if here().page() > 2 [
       #align(right)[
         #text(size: 9pt, fill: luma(120), font: "Liberation Sans")[
-          Cuaderno 1 de Rust (#edad_alumno) | Prototipo Editorial
+          Cuaderno 2 de Rust (#edad_alumno) | Prototipo Editorial
         ]
       ]
     ]
