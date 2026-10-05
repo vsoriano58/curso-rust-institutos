@@ -15,11 +15,11 @@ El objetivo principal de este material no es formar ingenieros de inmediato, sin
 ---
 
 ## COLECCIÓN RUST PÍXEL A PÍXEL
-### Cuaderno 1: Descubriendo la programación y Filtros digitales
-### Cuaderno 2: Estructura, Memoria y Colecciones en Rust
-### Cuaderno 3: Modelando el Mundo Real
-### Cuaderno 4: Rust Robusto y Conectado
-### Cuaderno 5: Web, Concurrencia y Juegos
+* **Cuaderno 1: Descubriendo la programación y Filtros digitales**
+* **Cuaderno 2: Estructura, Memoria y Colecciones en Rust**
+* **Cuaderno 3: Modelando el Mundo Real**
+* **Cuaderno 4: Rust Robusto y Conectado**
+* **Cuaderno 5: Web, Concurrencia y Juegos**
 
 ---
 
