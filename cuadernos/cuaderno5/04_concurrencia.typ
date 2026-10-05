@@ -15,7 +15,9 @@ use std::time::Duration;
 
 fn descargar_archivo_pesado() {
     println!("[Hilo Principal] Iniciando descarga de 3 segundos...");
-    // Esto congela el hilo actual por completo simulando una espera de red o disco
+
+    // Esto congela el hilo actual por completo simulando una 
+    // espera de red o disco
     thread::sleep(Duration::from_secs(3)); 
     println!("[Hilo Principal] ¡Descarga completada!");
 }
@@ -31,7 +33,7 @@ fn main() {
     println!("[Hilo Principal] El usuario ya puede mover el ratón y ver animaciones.");
 }
 ```
-La instrucción `thread::sleep(Duration::from_secs(3));` impone un tiempo de espera de 3 segundos al hilo actual, el hilo main, y la función `descargar_archivo_pesado()` simula el tiempo invertido en la descarga de un archivo desde la red o el disco.
+La instrucción *`thread::sleep(Duration::from_secs(3));`* impone un tiempo de espera de 3 segundos al hilo actual, el hilo main, y la función *`descargar_archivo_pesado()`* simula el tiempo invertido en la descarga de un archivo desde la red o el disco.
 
 Si ejecutas el programa comprobarás que tarda tres segundos en imprimir el mensaje final. Durante esos tres segundos no se han procesado instrucciones del programa. El hilo principal ha estado parado o dormido. El programa no pudo atender al ratón ni al teclado en caso de que lo hubiera necesitado..
 
@@ -61,8 +63,8 @@ La closure "atrapa" una variable externa (curso) sin necesidad de recibirla por 
 
 ```rust
 let curso = "Rust";
-let info = || println!("Curso: {}", curso); // Curso: Rust
-info();
+let info = || println!("Curso: {}", curso); 
+info();  // Curso: Rust
 ```
 
 *3. Modificando el entorno (Paso previo a los hilos):*
@@ -98,9 +100,11 @@ fn main() {
 ```
 
 *¿Por qué falla?* 
-Por defecto, la closure intenta tomar "prestada" (mediante una referencia) la variable `saludo`. Sin embargo, como el hilo secundario se ejecuta en paralelo de forma independiente, el hilo principal (`main`) podría terminar antes de tiempo, limpiar la memoria y destruir la variable. Si eso ocurriera, el hilo secundario intentaría leer un espacio de memoria vacío o corrupto.
+
+Por defecto, la closure intenta tomar "prestada" (mediante una referencia) la variable `saludo`. Sin embargo, como el hilo secundario se ejecuta en paralelo de forma independiente, el hilo principal (`main`) podría terminar antes de tiempo, limpiar la memoria y destruir la variable `saludo`. Si eso ocurriera, el hilo secundario intentaría leer un espacio de memoria vacío o corrupto.
 
 *El trabajo de la palabra clave `move`*
+
 Para solucionar este dilema, anteponemos la palabra clave `move` antes de las barras de la closure. 
 
 ```rust
@@ -166,7 +170,7 @@ fn main() {
 }
 ```
 
-#nota[Las instruccion *thread::sleep(Duration::from_secs(3));* produce una espera en el hilo que se ejecute de 3 segundos. En este caso en el hilo secundario.]
+#nota[La instruccion *thread::sleep(Duration::from_secs(3));* produce una espera en el hilo que se ejecute de 3 segundos. En este caso en el hilo secundario.]
 
 La ejecución del programa debe producir la siguiente salida:
 
@@ -186,9 +190,9 @@ La ejecución del programa debe producir la siguiente salida:
 -  La instrucción *manejador.join().unwrap();* es la que hace esperar al hilo prncipal. El *.unwrap()* desempaqueta de forma bligatoria lo que tenemos a la izquierda. En este caso lo suponemos seguro aunque bajo ciertas condiciones muy poco probables podría fallar. Evitamos el tratamiento de errores para simplificar el código. 
 
 === B: Hilos con Ámbito o Concurrencia Estructurada (thread::scope)
-Esta forma se añadió en versiones más recientes de Rust y es maravillosa para la enseñanza. Te permite crear hilos que garantizan que terminarán antes de que acabe el bloque de código (ver listado), lo que te permite compartir variables locales del hilo principal sin usar trucos raros.
+Esta forma se añadió en versiones más recientes de Rust. Te permite crear hilos que garantizan que terminarán antes de que acabe el bloque de código (ver listado), lo que te permite compartir variables locales del hilo principal sin usar trucos raros.
 
-La closure toma "prestada" (mediante una referencia) la variable del main que va a utilizar. Si el hilo principal (`main`) pudiera terminar antes que el secundario, podría limpiar la memoria y destruir la variable. Si eso ocurriera, el hilo secundario intentaría leer un espacio de memoria vacío o corrupto.
+La closure toma "prestada" (mediante una referencia) la variable del main que va a utilizar. Si el hilo principal (`main`) pudiera terminar antes que el secundario, podría limpiar la memoria y destruir la variable como ya hemos mencionado antes. Si eso ocurriera, el hilo secundario intentaría leer un espacio de memoria vacío o corrupto. Con *thread::scope* se garantiza que los hilos secundarios creados terminarán antes que el main.
 
 💻 Copia el siguiente código y ejecútalo en la Playground
 
@@ -225,6 +229,7 @@ fn main() {
     println!("[Hilo Principal] Fuera del scope. Todos los hilos han muerto con certeza.");
 }
 ```
+*datos_compartidos* permanece en todo momento propiedad del hilo principal main.
 
 La salida del programa debe ser la siguiente:
 
@@ -236,7 +241,7 @@ La salida del programa debe ser la siguiente:
 [Hilo Principal] Fuera del scope. Todos los hilos han muerto con certeza.
 ```
 
-El hilo con scope (ámbito) se crea co la sintaxis: * thread::scope(|scope| {...*
+El scope (ámbito) se crea co la sintaxis: * thread::scope(|scope| {...*
 
 *Observaciones*
 
@@ -244,7 +249,7 @@ El hilo con scope (ámbito) se crea co la sintaxis: * thread::scope(|scope| {...
 
 Recordemos la: 💡 Regla de oro de Rust: Puedes tener infinitas referencias de solo lectura (&T) a un dato al mismo tiempo, O puedes tener una única referencia mutable (&mut T), pero nunca ambas cosas a la vez.
 
-En el código, cuando hacemos *println!("{:?}", datos_compartidos)* dentro de los hilos, el compilador detecta que los hilos solo necesitan leer el vector. Por lo tanto, el scope les permite hacer un préstamo de solo lectura (&datos_compartidos).
+En el código, cuando hacemos *println!(`"`{:?}`"`, datos_compartidos)* dentro de los hilos, el compilador detecta que los hilos solo necesitan leer el vector. Por lo tanto, el scope les permite hacer un préstamo de solo lectura (&datos_compartidos).
 
 *Y si modificamos la variable, podríamos hacerlo desde los dos hilos?*
 
@@ -322,7 +327,8 @@ use std::thread;
 use std::time::Duration;
 
 fn main() {
-    // 1. Creamos el dato original (un número 0) protegido por el Mutex y compartido por el Arc
+    // 1. Creamos el dato original (un número 0) protegido por el Mutex
+    // y compartido por el Arc
     // T en este caso resulta ser un entero 'i32'
     let contador_compartido = Arc::new(Mutex::new(0));
 
@@ -333,15 +339,16 @@ fn main() {
 
     for id_hilo in 1..=3 {
         // 2. ¡EL PASO CLAVE! Clonamos el 'Arc'. 
-        // Esto NO duplica el número 0 de la memoria. Crea un "acceso numerado" nuevo
-        // hacia la misma caja fuerte original.
+        // Esto NO duplica el número 0 de la memoria. Crea un "acceso 
+        // numerado" nuevo hacia la misma caja fuerte original.
         let contador_clon = Arc::clone(&contador_compartido);
 
         let manejador = thread::spawn(move || {
             // ---- CÓDIGO DENTRO DEL HILO SECUNDARIO ----
             println!("[Hilo {}] Esperando mi turno para abrir la caja...", id_hilo);
             
-            // 3. Abrimos el cerrojo. Si otro hilo lo está usando, este hilo se detiene a esperar.
+            // 3. Abrimos el cerrojo. Si otro hilo lo está usando, 
+            // este hilo se detiene a esperar.
             // '.unwrap()' se usa por si la caja se rompe (pánico en otro hilo).
             let mut dato_interno = contador_clon.lock().unwrap();	// lock() devuelve Result
             
@@ -361,12 +368,12 @@ fn main() {
         manejadores.push(manejador);
     }
 
-    // El hilo principal espera a que los 3 terminen
+    // 6. El hilo principal espera a que los 3 terminen
     for manejador in manejadores {
         manejador.join().unwrap();
     }
 
-    // 6. El hilo principal pide la llave por última vez para ver el resultado final
+    // 7. El hilo principal pide la llave por última vez para ver el resultado final
     let resultado_final = contador_compartido.lock().unwrap();
     println!("[Hilo Principal] Todos terminaron. El valor final es: {}", *resultado_final);
 }
@@ -407,7 +414,7 @@ Para muchos programadores la utilización de canales MPSC es la forma más elega
 
 *¿Qué significa MPSC?*
 
-Las siglas MPSC significan Multi-Producer, Single-Consumer (Múltiples Productores, Un solo Consumidor).La analogía perfecta es un Río donde confluyen varios arroyos, o un Buzón de correos de una oficina:
+Las siglas MPSC significan Multi-Producer, Single-Consumer (Múltiples Productores, Un solo Consumidor). La analogía perfecta es un Río donde confluyen varios arroyos, o un Buzón de correos de una oficina:
 
 - Varios hilos obreros (los "Productores") pueden escribir mensajes y lanzarlos por el canal.
 
@@ -433,13 +440,15 @@ fn main() {
     println!("[Hilo Principal] Creando hilos obreros...");
 
     for id_obrero in 1..=3 {
-        // 2. Como MPSC permite MÚLTIPLES productores, clonamos el transmisor 'tx' 
-        // para darle una copia a cada hilo nuevo que creamos.
+        // 2. Como MPSC permite MÚLTIPLES productores, clonamos el 
+        // transmisor 'tx' para darle una copia a cada hilo nuevo que creamos.
         let tx_clonado = tx.clone();
 
         thread::spawn(move || {
             // ---- CÓDIGO DENTRO DEL HILO OBRERO ----
-            thread::sleep(Duration::from_millis(id_obrero * 100)); // Esperas escalonadas
+
+            // Esperas escalonadas
+            thread::sleep(Duration::from_millis(id_obrero * 100)); 
             
             let mensaje = format!("Hola desde el obrero {}", id_obrero);
             
@@ -451,17 +460,21 @@ fn main() {
     }
 
     // 4. ¡TRUCO CRUCIAL DE RUST! 
-    // El 'tx' original que creamos en la línea 8 sigue vivo en el hilo principal.
-    // Si no lo destruimos o dejamos caer, el Receptor se quedará esperando eternamente 
-    // pensando que el hilo principal aún podría enviar algo. Al soltarlo, el canal sabe 
-    // que solo quedan vivos los transmisores clonados de los hilos obreros.
+    // El 'tx' original que creamos en la línea 8 sigue vivo
+    // en el hilo principal.
+
+    // Si no lo destruimos o dejamos caer, el Receptor se quedará 
+    // esperando eternamente pensando que el hilo principal aún podría
+    // enviar algo. Al soltarlo, el canal sabe que solo quedan vivos los 
+    // transmisores clonados de los hilos obreros.
     drop(tx);
 
     println!("[Hilo Principal] Sentado a esperar mensajes en el receptor...");
 
     // 5. El hilo principal se queda leyendo el receptor 'rx' en un bucle.
     // Este bucle 'for' se bloquea pacientemente esperando paquetes.
-    // Cuando todos los hilos obreros mueren y sus transmisiones se cierran, el bucle termina solo.
+    // Cuando todos los hilos obreros mueren y sus transmisiones se cierran, 
+    // el bucle termina solo.
     for mensaje_recibido in rx {
         println!("[Hilo Principal] He recibido: '{}'", mensaje_recibido);
     }
@@ -480,8 +493,8 @@ La salida del programa debe ser la siguiente:
 [Hilo Principal] He recibido: 'Hola desde el obrero 3'
 [Hilo Principal] Canal cerrado. Todas las tareas terminaron.
 ```
-La Magia de la Propiedad en los Canales*
-*
+*La Magia de la Propiedad en los Canales*
+
 Presta mucha atención a lo que ocurre en la línea `tx_clonado.send(mensaje)`:
 
 - En otros lenguajes, enviar un objeto por un canal puede provocar que dos hilos lean el mismo objeto a la vez, corrompiendo la memoria.
@@ -496,141 +509,6 @@ La regla de oro es la siguiente:
 
 - Si los hilos solo hacen un trabajo independiente en segundo plano y te quieren mandar el resultado final cuando terminen: Usa Canales mpsc.
 
-== Hilos con Alcance (Scoped Threads): Concurrencia sin Arc
 
-En el apartado anterior aprendimos que para compartir datos mutables entre hilos necesitábamos emparejar un `Mutex` con un `Arc`. El `Arc` era obligatorio porque `thread::spawn` crea hilos "independientes" que el compilador teme que sobrevivan a la función `main`.
-
-Sin embargo, a partir de Rust 1.63, existe una alternativa mucho más elegante y eficiente cuando los hilos solo necesitan realizar tareas temporales: los *Scoped Threads* (Hilos con Alcance).
-
-=== ¿Cómo funcionan?
-Mediante la función `thread::scope`, creamos un bloque o "entorno seguro". La clave de este entorno es la llave de cierre `}` del bloque: actúa como una *barrera automática e infranqueable*. El hilo principal se congelará en esa llave y esperará a que todos los hilos creados dentro terminen, haciendo el `join()` de forma automática e implícita.
-
-Gracias a que el compilador garantiza que ningún hilo escapará vivo de ese bloque, se produce la magia: *ya no necesitamos clonar punteros `Arc`*. Los hilos secundarios pueden acceder a las variables de `main` usando referencias locales normales (`&`).
-
-=== El Código: Paralelismo Limpio
-
-Mira cómo se simplifica el ejemplo de los 3 hilos paralelos si usamos `thread::scope`. Nota que seguimos usando `Mutex` porque los hilos modifican el vector a la vez, pero el `Arc` ha desaparecido por completo:
-
-```rust
-use std::thread;
-use std::time::Duration;
-use std::sync::Mutex;
-
-fn main() {
-    // Un Mutex normal y corriente, sin Arc
-    let datos = Mutex::new(vec![]);
-
-    println!("Iniciando el alcance (scope)...");
-
-    // 1. Creamos el entorno seguro. 's' representa nuestro gestor del scope
-    thread::scope(|s| {
-        for i in 0..3 {
-            // 2. Creamos una referencia local al Mutex
-            let datos_ref = &datos; 
-            
-            // 3. Lanzamos el hilo usando 's.spawn' en lugar de 'thread::spawn'
-            s.spawn(move || {
-                thread::sleep(Duration::from_millis(100));
-                
-                let mut lista_bloqueada = datos_ref.lock().unwrap();
-                lista_bloqueada.push(i);
-            }); 
-        }
-        println!("El hilo principal hace tareas dentro del scope...");
-    }); 
-    // <--- ¡BARRERA AUTOMÁTICA AQUÍ! 
-    // El hilo principal espera aquí a que los 3 hilos terminen. No necesitas llamar a join() manualmente.
-
-    println!("El scope ha cerrado de forma segura.");
-
-    // 4. Accedemos al resultado final directamente
-    let resultado = datos.lock().unwrap();
-    println!("Datos finales procesados: {:?}", *resultado);
-}
-```
-
-=== ¿Por qué es necesario el `let datos_ref = &datos;` y el `move`?
-Este es un sutil detalle de protección de Rust que suele causar tropiezos:
-- Necesitamos el `move` para que cada hilo *tome posesión de su propio número `i`* del bucle. Sin `move`, el hilo intentaría tomar prestado un `i` que cambia en cada vuelta.
-- Pero al poner `move`, la closure intentaría secuestrar el `Mutex` completo (`datos`), impidiendo que la siguiente vuelta del bucle lo use.
-- Al crear `let datos_ref = &datos;` justo antes, el `move` solo se lleva una *copia de la referencia (el puntero)*, dejando el `Mutex` original intacto en el hilo principal.
-
-#align(center)[
-  #block(fill: rgb("f0fdf4"), inset: 10pt, radius: 4pt, stroke: 0.5pt + rgb("bbf7d0"))[
-    *Ventajas de los Scoped Threads:* \
-    1. *Código más limpio:* Evitas el ruido visual de escribir `Arc::clone` y múltiples `join()`. \
-    2. *Mayor rendimiento:* Al usar referencias normales (`&`), la CPU no pierde tiempo actualizando contadores atómicos en la memoria RAM. \
-    3. *Seguridad garantizada:* Es imposible olvidarse de esperar a un hilo; el propio lenguaje te obliga a hacerlo al cerrar el bloque.
-  ]
-]
-
-== Canales de Comunicación (Channels): Pasar Mensajes en lugar de Compartir Memoria
-
-Hasta ahora hemos aprendido a coordinar hilos mediante *memoria compartida*: metemos los datos dentro de un cofre (`Mutex`) y hacemos que los hilos se peleen por el cerrojo. Aunque es un sistema robusto, puede volverse complejo y provocar atascos si muchos hilos compiten a la vez.
-
-Existe una filosofía alternativa y sumamente elegante: *la transferencia de mensajes*. En lugar de que los hilos compartan una carretilla de datos, los hilos trabajan de forma aislada y se envían los resultados a través de un *Canal*.
-
-=== El Canal MPSC (Múltiples Productores, Un Consumidor)
-La librería estándar de Rust proporciona el canal *MPSC* (*Multiple Producer, Single Consumer*). Imagínalo como un tubo neumático unidireccional:
-- Puedes clonar el extremo de envío (*Transmitter* o `tx`) para que *muchos hilos* metan mensajes por el tubo.
-- Sin embargo, solo existe un único extremo de recogida (*Receiver* o `rx`). *Un solo hilo* (normalmente el hilo principal `main`) se encarga de recibir y procesar los mensajes.
-
-=== El Código: Enviar Mensajes desde Múltiples Hilos
-
-Veamos cómo tres hilos independientes realizan un cálculo (en este caso, generar un texto) y le envían el resultado al hilo principal sin usar un solo `Mutex`:
-
-```rust
-use std::thread;
-use std::sync::mpsc; // Importamos el módulo de canales
-use std::time::Duration;
-
-fn main() {
-    // 1. Creamos el canal. Rust nos devuelve el Transmisor (tx) y el Receptor (rx)
-    let (tx, rx) = mpsc::channel();
-
-    // 2. Lanzamos 3 hilos en un bucle
-    for i in 0..3 {
-        // Clonamos el transmisor para que cada hilo tenga su propio "tubo" de envío
-        let tx_hilo = tx.clone();
-        
-        thread::spawn(move || {
-            thread::sleep(Duration::from_millis(100));
-            
-            let mensaje = format!("Resultado del hilo número {}", i);
-            
-            // 3. Enviamos el mensaje por el canal. 
-            // El 'move' le transfiere la propiedad del String al canal de forma segura.
-            tx_hilo.send(mensaje).unwrap();
-        });
-    }
-
-    // 4. ¡TRUCO CRÍTICO! Debemos soltar el transmisor original de main.
-    // Si no lo destruimos, el receptor 'rx' se quedará esperando eternamente 
-    // pensando que 'main' aún podría enviar algo.
-    drop(tx);
-
-    // 5. El hilo principal se queda escuchando el canal.
-    // El bucle 'for' leerá los mensajes a medida que vayan llegando 
-    // y terminará automáticamente cuando todos los transmisores mueran.
-    for mensaje_recibido in rx {
-        println!("[Main] He recibido: {}", mensaje_recibido);
-    }
-    
-    println!("Canal cerrado de forma segura y programa terminado.");
-}
-```
-
-=== La Magia de la Propiedad en los Canales
-Presta mucha atención a lo que ocurre en la línea `tx_hilo.send(mensaje)`:
-- En otros lenguajes, enviar un objeto por un canal puede provocar que dos hilos lean el mismo objeto a la vez, corrompiendo la memoria.
-- En Rust, la función `.send()` *toma la propiedad (`ownership`)* de la variable. En cuanto el hilo secundario envía el `String`, ese hilo ya no puede volver a usarlo. El dato viaja flotando por el canal de manera 100% segura hasta que `main` lo recibe y se adueña de él. ¡No hay posibilidad de conflictos en la memoria!
-
-#align(center)[
-  #block(fill: rgb("faf5ff"), inset: 10pt, radius: 4pt, stroke: 0.5pt + rgb("e9d5ff"))[
-    *¿Cuándo usar Canales en lugar de Mutex?* \
-    Usa *Mutex* cuando tengas una estructura de datos central (como una base de datos en caché) que muchos hilos necesiten modificar constantemente en el sitio. \
-    Usa *Canales* cuando tengas hilos que actúan como "generadores de datos" o "trabajadores" independientes que solo necesitan escupir sus resultados finales hacia un hilo central.
-  ]
-]
 
 #pagebreak()

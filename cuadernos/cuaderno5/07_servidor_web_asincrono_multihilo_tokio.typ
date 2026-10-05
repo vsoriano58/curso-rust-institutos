@@ -1,9 +1,9 @@
 #import "config.typ": *
 
 = Servidor web asíncrono multihilo con Tokio
-El ejemplo que hemos elegido une de forma muy visual el mundo de la red, la asincronía y las tareas en segundo plano.
+El ejemplo de servidor web multihilo que hemos elegido une de forma muy visual el mundo de la red, la asincronía y las tareas en segundo plano.
 
-El código que proponemsa utiliza un *modelo asíncrono multihilo* (work-stealing) gracias al *runtime de Tokio*.
+El código que proponemos más abajo utiliza un *modelo asíncrono multihilo* (work-stealing) gracias al *runtime de Tokio*.
 
 💻 Abre una terminal integrada de VS Code en el directorio *proyectos-rust* creado al principio o en cualquier otro y crea un proyecto Rust con la orden: *cargo new servidor_web_multihilo*.
 
@@ -32,11 +32,11 @@ async fn main() {
     let app = Router::new().route("/", get(leer_sensor));
 
     // 2. Configuramos la dirección de red
-    let direccion = SocketAddr::from(([0, 0, 0, 0], 3000));
+    let direccion = SocketAddr::from(([127, 0, 0, 1], 3000));
     println!("--- Servidor del Sensor Activo ---");
     println!("Pruébalo en este ordenador abriendo: http://localhost:3000");
 
-    // [NUEVO] Lanzamos la tarea cíclica de fondo (conteo 1 al 10)
+    // Lanzamos la tarea cíclica de fondo (conteo 1 al 10)
     // Tokio se encarga de ejecutar esto de manera asíncrona en paralelo
     tokio::spawn(async {
         let mut contador = 1;
@@ -51,8 +51,9 @@ async fn main() {
         }
     });
 
-    // 3. Encendemos el servidor y lo dejamos escuchando
-    // Nota: Esta línea bloquea el final de main, si no, el programa se cerraría
+    // 3. Encendemos el servidor y lo dejamos escuchando.
+    // Nota: la última línea bloquea el final de main.
+    // Si no estuviera esa línea el programa se cerraría
     let listener = tokio::net::TcpListener::bind(direccion).await.unwrap();
     axum::serve(listener, app).await.unwrap();
 }
@@ -68,14 +69,17 @@ async fn leer_sensor() -> String {
 ```
 - Ejecuta el programa mediante la orden *cargo run*.
 
-- Dar una explicación de lo que hace el programa desde que se accede a la url localhost:3000.
-- Dar una explicación línea por línea
+El programa en su conjunto realiza varias tareas de forma asíncrona:
+
+- El servidor está permanentemente escuchando en 127.0.0.1:3000
+- Mediante tokio::spawn(async { ... }) lanza el bloque asíncrono del contador que manda mensajes de forma contínua a la pantalla.
+- Cuando un cliente visita la ruta raiz('/') se ejecuta la función asíncrona leer_sensor() que devuelve información sobre temperatura.
 
 == Mecanismos clave que intervienen en el programa
 
 *1. El motor del sistema: tokio y #[tokio::main]*
 
-La macro *`#[tokio::main]`* transforma la función main en una función asíncrona y, tras bambalinas, levanta el runtime (entorno de ejecución) de *Tokio*.
+La macro *`#[tokio::main]`* transforma la función main en una función asíncrona y levanta el runtime (entorno de ejecución) de *Tokio*.
 
 Por defecto, Tokio configura un grupo de hilos nativos (Thread Pool) del sistema operativo igual al número de núcleos de la CPU.
 
@@ -85,7 +89,7 @@ El planificador (scheduler) se encarga de repartir las tareas de forma eficiente
 
 - *Router::new().route("/", get(leer_sensor))*: Axum aprovecha el ecosistema asíncrono para gestionar las peticiones HTTP. Cuando llega una solicitud a la raíz (/), Axum no bloquea un hilo esperando a que se procese; simplemente genera una tarea asíncrona (Future).
 
-- Al usar *axum::serve*, el servidor se queda escuchando de forma no bloqueante. Puede recibir miles de conexiones simultáneas en un solo hilo del sistema porque la espera se gestiona a nivel de eventos de red (gracias a abstracciones como `mio` bajo el capó de Tokio).
+- Al usar *axum::serve*, el servidor se queda escuchando de forma no bloqueante. Puede recibir miles de conexiones simultáneas en un solo hilo del sistema porque la espera se gestiona a nivel de eventos de red.
 
 *3. La creación del "hilo de fondo": tokio::spawn*
 
@@ -95,27 +99,25 @@ El planificador (scheduler) se encarga de repartir las tareas de forma eficiente
 
 - Tokio toma ese bloque *async { ... }* y lo pone en la cola del planificador. Este contador cíclico se ejecutará en paralelo con el servidor web, saltando de un hilo a otro del pool de Tokio según haga falta, de forma transparente para el desarrollador.
 
-
 *4. La magia del no-bloqueo: tokio::time::sleep(...).await*
 
 - En el bucle del contador usamos *tokio::time::sleep*, y en la función del sensor hacemos lo mismo. La palabra clave *.await* es el "punto de rendimiento" voluntario.
 
-- Cuando el programa llega a esa línea, la tarea le dice al planificador de Tokio: "Voy a estar libre 1 o 2 segundos. Retírame de la CPU y aprovecha este hilo para atender peticiones web o avanzar con otra tarea".
+- Cuando el programa llega a esa línea, la tarea le dice al planificador de Tokio: "Voy a estar esperando 1 o 2 segundos. Retírame de la CPU y aprovecha este hilo para atender peticiones web o avanzar con otra tarea".
 
 - Una vez cumplido el tiempo, Tokio despierta la tarea y la vuelve a poner en la cola para continuar justo donde se quedó. Si usaras *std::thread::sleep*, congelarías el hilo entero del sistema operativo, impidiendo que otras tareas avancen.
 
-=== ¿Cómo reparte Tokio las tareas entre los hilos? (El Planificador)
+== ¿Cómo reparte Tokio las tareas entre los hilos? (El Planificador)
 El planificador de Tokio de tipo Work-Stealing (Robo de Trabajo) funciona como un director de orquesta ultraeficiente. Imagina un procesador con 4 núcleos (Hilo 1 al Hilo 4).Cuando arrancas el servidor, Tokio asigna una cola local de tareas a cada hilo del sistema operativo. El reparto visual se comporta así:
 
-```
-[ HILO 1 del Sistema ] ──> [ Cola Local ] ──> 📋 Tarea: Servidor Axum (Escuchando)
- [ HILO 2 del Sistema ] ──> [ Cola Local ] ──> 📋 Tarea: Contador Cíclico (tokio::spawn)
- [ HILO 3 del Sistema ] ──> [ Cola Local ] ──> (Vacía - Buscando trabajo)
- [ HILO 4 del Sistema ] ──> [ Cola Local ] ──> (Vacía - Buscando trabajo)
+```rust
+HILO 1 del Sistema ──> Cola Local ──> 📋 Tarea: Servidor Axum (Escuchando)
+HILO 2 del Sistema ──> Cola Local ──> 📋 Tarea: Contador Cíclico (tokio::spawn)
+HILO 3 del Sistema ──> Cola Local ──> (Vacía - Buscando trabajo)
+HILO 4 del Sistema ──> Cola Local ──> (Vacía - Buscando trabajo)
 ```
 
-*
-El flujo de ejecución paso a paso:*
+*El flujo de ejecución paso a paso:*
 
 1. Lanzamiento: Al ejecutar tokio::spawn, el Contador Cíclico se envía al planificador. Este lo coloca en la cola de uno de los hilos libres (por ejemplo, el Hilo 2).
 
@@ -172,7 +174,11 @@ En cambio, *tokio::spawn* no pide memoria fija al sistema operativo. En Rust, un
 
 Hemos preparado dos retos finales para animar a arremangarte y modificar el programa anterior.
 
-=== 🏆 Reto Final A: El Panel de Control del Operador
+= Los retos propuestos
+
+A continuación de proponemos dos retos que hemos denominado *Reto Final A* y *Reto Final B*. Para llevarlos a cabo necesitarás información que no está recogida en el cuaderno. Te daremos pistas pero el objetivo es que consigas lo necesario a través de la web, peguntando a Google o directamente a una IA para completar los retos.
+
+== 🏆 Reto Final A: El Panel de Control del Operador
 ¡Ha llegado el momento de poner a prueba tus nuevos superpoderes asíncronos!
 Actualmente, nuestro servidor web lee un sensor simulado estático y, por otro lado, un contador cíclico imprime números en la consola de forma independiente. Tu misión, si decides aceptarla, es unirlos.
 
@@ -184,7 +190,7 @@ Modifica el código para que el contador cíclico actúe como un "generador de t
 
 Para lograr que la tarea de fondo (tokio::spawn) y la función del servidor web (leer_sensor) compartan datos de forma segura en un entorno multihilo, necesitarás usar las herramientas de sincronización que nos da Rust:
 
-1. El Estado Compartido (Arc + Mutex o RwLock): No puedes usar variables globales normales porque Rust te protegerá de carreras de datos (data races). Envuelve el contador en un Arc::new(Mutex::new(0)) para poder compartirlo de forma segura entre hilos.
+1. El Estado Compartido (Arc + Mutex): No puedes usar variables globales normales porque Rust te protegerá de carreras de datos (data races). Envuelve el contador en un Arc::new(Mutex::new(0)) para poder compartirlo de forma segura entre hilos.
 
 2. Pasar el Estado a Axum: Axum permite pasar datos a las rutas usando .with_state(). Investiga cómo recibir ese estado en la función leer_sensor usando el extractor State.
 
@@ -197,7 +203,7 @@ Al abrir tu navegador y refrescar la página varias veces, verás cómo la tempe
 - Intento 1: Temperatura actual del sensor: 24.1 °C
 - Intento 2 (un segundo después): Temperatura actual del sensor: 24.2 °C
 
-=== 🏆 Reto Final B: El Sistema de Alertas Inteligente
+== 🏆 Reto Final B: El Sistema de Alertas Inteligente
 Ahora que entiendes cómo Tokio reparte el trabajo y cómo Axum atiende a tus usuarios, es hora de poner a prueba tus habilidades. Vamos a transformar nuestro servidor estático en un sistema de monitoreo en tiempo real.
 
 🎯 *El Objetivo*
@@ -245,8 +251,3 @@ async fn main() {
 }
 ```
 
-
-
-
-
-#pagebreak()

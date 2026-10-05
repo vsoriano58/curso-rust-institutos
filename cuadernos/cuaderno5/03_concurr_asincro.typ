@@ -15,22 +15,27 @@ Para entender los conceptos fundamentales de la concurrencia y la asincronía, h
 Imagina que tu programa es una empresa que tiene que procesar millones de paquetes (instrucciones del código).
 
 *1. Los Hilos de Hardware (Capa 1) = Las Cintas Transportadoras Físicas*
+
 En el sótano de la oficina hay 8 cintas transportadoras físicas instaladas en el suelo. No puedes pulsar un botón mágico y hacer que aparezca una novena cinta de la nada; el edificio se construyó con ocho y punto.
 - Esto representa el silicio de tu procesador (los núcleos o hilos de hardware). Es el único lugar donde físicamente se puede procesar una instrucción.
 
 *2. Los Hilos del Sistema Operativo (Capa 2) = Los Operarios con Carretilla*
+
 Para mover los paquetes hacia las 8 cintas, contratas a Operarios. Cada operario viene con una carretilla enorme, un uniforme pesado, un protocolo estricto y un salario alto fijo (un consumo de memoria de 1 a 8 MB por hilo). Puedes contratar a 100 operarios si quieres, pero recuerda: solo hay 8 cintas físicas disponibles en el hardware.
-- *La Conmutación (Context Switch):* Como hay 100 operarios (Hilos del SO) pero solo 8 cintas (Hardware), el Jefe de Planta (el Sistema Operativo) hace sonar un silbato cada pocos milisegundos. Cuando suena, el operario que está en la cinta debe frenar en seco, apuntar exactamente en su libreta por dónde iba, apartar su pesada carretilla y dejar que entre otro operario a la cinta con sus paquetes. Este proceso de intercambio es lento y consume energía de la planta (pérdida de rendimiento en la CPU).
+
+- *La Conmutación (Context Switch):* Como hay 100 operarios (Hilos del Sistema Operativo) pero solo 8 cintas (Hardware), el Jefe de Planta (el Sistema Operativo) hace sonar un silbato cada pocos milisegundos. Cuando suena, el operario que está en la cinta debe frenar en seco, apuntar exactamente en su libreta por dónde iba, apartar su pesada carretilla y dejar que entre otro operario a la cinta con sus paquetes. Este proceso de intercambio es lento y consume energía de la planta (pérdida de rendimiento en la CPU).
 
 *3. Los Hilos de Software o Asincronía (Capa 3) = Los Mensajeros en Patinete*
+
 Un buen día, te das cuenta de que la mayoría de tus operarios pesados pierden el tiempo parados en la cinta esperando a que el camión de reparto traiga nuevos paquetes de la calle (esperas de red o lecturas de disco duro). Así que decides cambiar de estrategia: te quedas solo con 8 operarios eficientes (uno fijo en cada cinta de hardware) y, para alimentarlos, contratas a 10.000 Mensajeros en Patinete (Tareas virtuales o Corrutinas). Son ligeros, no ocupan espacio y llevan los paquetes en una mochila pequeña (unos pocos Kilobytes).
+
 - *La magia de la Asincronía:* Si el Mensajero A llega a la cinta y ve que su paquete necesita una firma que tardará en llegar, simplemente da un paso al lado y le dice al Mensajero B: "Oye, pasa tú mientras yo espero". Como son ligeros y no llevan carretilla, cambiar de un mensajero a otro es instantáneo. Los 8 operarios fijos de las cintas nunca paran, y el Jefe de Planta ya no tiene que tocar el silbato. Todo fluye desde dentro del propio programa.
 
 #align(center)[
   #block(fill: luma(245), inset: 12pt, radius: 4pt, stroke: 0.5pt + luma(200))[
     *Resumen de Aplicación:* \
     Si tu tarea requiere *fuerza bruta* (cálculo matemático pesado): Necesitas *Operarios con Carretilla* (Concurrencia basada en hilos del SO). \
-    Si tu tarea requiere *gestionar esperas* (consultas web o bases de datos): Necesitas *Mensajeros en Patinete* (Asincronía basada en hilos de software).
+    Si tu tarea requiere *gestionar esperas* (consultas web o bases de datos): Necesitas *Mensajeros en Patinete* (Asincronía basada en tareas virtuales o corrutinas).
   ]
 ]
 
@@ -38,9 +43,9 @@ Un buen día, te das cuenta de que la mayoría de tus operarios pesados pierden 
 
 En el ecosistema de Rust, la concurrencia y la asincronía operan bajo filosofías y costes radicalmente diferentes:
 
-- *Concurrencia (Orientada a la CPU):* El programa levanta hilos nativos del sistema operativo mediante `std::thread::spawn`. Es la herramienta ideal para dividir el trabajo pesado de cálculo. Cada hilo es independiente, síncrono en su interior, y si se queda esperando a que el disco duro lea un archivo, todo ese hilo del sistema operativo se congela por completo en ese instante. Su coste de conmutación es alto y lo gestiona el S.O.
+- *Concurrencia (Orientada a la CPU):* El programa levanta hilos nativos del sistema operativo mediante *std::thread::spawn*. Es la herramienta ideal para dividir el trabajo pesado de cálculo. Cada hilo es independiente, síncrono en su interior, y si se queda esperando a que el disco duro lea un archivo, todo ese hilo del sistema operativo se congela por completo en ese instante. Su coste de conmutación es alto y lo gestiona el S.O.
 
-- *Asincronía (Orientada a Entrada/Salida - I/O):* Basada en tareas virtuales (`Futures`). En lugar de bloquear un hilo entero del sistema operativo mientras esperas que internet o la base de datos respondan, el hilo real "suelta" la tarea bloqueada y se dedica a procesar otra inmediatamente, manteniéndose siempre activo al 100% de su eficiencia.
+- *Asincronía (Orientada a Entrada/Salida - I/O):* Basada en tareas virtuales (*Futures*). En lugar de bloquear un hilo entero del sistema operativo mientras esperas que internet o la base de datos respondan, el hilo del sistema operativo "suelta" la tarea bloqueada y se dedica a procesar otra inmediatamente, manteniéndose siempre activo al 100% de su eficiencia.
 
 == La conexión entre Concurrencia y Asincronía: Múltiples tareas sobre pocos hilos
 
@@ -73,7 +78,7 @@ Sí depende de la tarea, pero la diferencia radical está en el peaje de entrada
 
 - *Concurrencia Clásica (std::thread):* Cuando le pides al sistema operativo que cree un hilo nativo, este tiene que reservarle obligatoriamente un bloque de memoria fijo llamado Stack (Pila). En la mayoría de sistemas operativos (como Linux o Windows), este tamaño por defecto suele ser de 2 Megabytes. Da igual si tu hilo solo va a sumar 2 + 2 (que ocupa unos pocos bytes); el sistema operativo ya le ha amputado 2 MB a la memoria RAM de tu ordenador solo para gestionar ese hilo. Si intentas crear 10.000 hilos a la vez, tu servidor colapsará porque necesitará unos 20 GB de RAM solo en "peajes de existencia".
 
-- *Asincronía (async/await):* Las "tareas" asíncronas no son hilos del sistema operativo; son gestionadas por Rust como pequeñas estructuras de datos (máquinas de estados, como vimos antes). El peaje de entrada aquí es de unos pocos Bytes o Kilobytes (el espacio justo para guardar las variables locales de esa función asíncrona). Si la tarea necesita calcular algo muy grande en el Heap, gastará más, pero si la tarea es pequeña, ocupa casi nada. Por eso un solo hilo de ejecución asíncrono puede gestionar 100.000 tareas web simultáneas en una Raspberry Pi sin despeinarse.
+- *Asincronía (async/await):* Las "tareas" asíncronas no son hilos del sistema operativo; son gestionadas por Rust como pequeñas estructuras de datos (máquinas de estados). El peaje de entrada aquí es de unos pocos Bytes o Kilobytes (el espacio justo para guardar las variables locales de esa función asíncrona). Si la tarea necesita calcular algo muy grande en el Heap, gastará más, pero si la tarea es pequeña, ocupa casi nada. Por eso un solo hilo de ejecución síncrono (del S. O.) puede gestionar 100.000 tareas web simultáneas en una Raspberry Pi sin despeinarse.
 
 2. *¿Qué significa `"`en espacio de usuario`"`?*
 

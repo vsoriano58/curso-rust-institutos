@@ -1,10 +1,10 @@
-# 🦀 Curso de Rust para Institutos (15-16 años, 3º/4º ESO)
+# 🦀 Curso de Rust para alumnos entre 15 a 20 años
 
 ![En Construcción](https://img.shields.io/badge/Estado-En_Construcción-orange?style=for-the-badge&logo=rust)
 
 ¡Te damos la bienvenida al repositorio oficial del proyecto!
 
-Contiene el material didáctico de Rust adaptado para alumnos de 16 y 17 años. 
+Contiene el material didáctico de Rust distribuido en 5 Cuadernos, adaptado para alumnos de entre 15 a 20 años. 
 
 ⚠️ **Nota:** Este proyecto se encuentra actualmente **en construcción**. Estamos redactando y puliendo los cuadernos activamente, por lo que el código y las explicaciones pueden cambiar en los próximos días.
 
@@ -14,10 +14,21 @@ El objetivo principal de este material no es formar ingenieros de inmediato, sin
 
 ---
 
+## COLECCIÓN RUST PÍXEL A PÍXEL
+### Cuaderno 1: Descubriendo la programación y Filtros digitales
+### Cuaderno 2: Estructura, Memoria y Colecciones en Rust
+### Cuaderno 3: Modelando el Mundo Real
+### Cuaderno 4: Rust Robusto y Conectado
+### Cuaderno 5: Web, Concurrencia y Juegos
+
+---
+
 ## 🚀 Filosofía del Proyecto y Entorno Web
-Para eliminar cualquier fricción inicial, el curso está diseñado para realizarse al 100% en la **[Rust Playground](https://rust-lang.org)**. 
+Para eliminar cualquier fricción inicial, el curso está diseñado para realizarse en su mayoria con la **[Rust Playground](https://rust-lang.org)**. 
+
 * **Sin instalaciones:** Los alumnos no necesitan instalar nada en los ordenadores del instituto ni en sus equipos personales.
 * **Seguro e idéntico:** Todos los alumnos trabajan exactamente en las mismas condiciones directamente desde su navegador web.
+* **Opcional:** Se indicará cómo instalar un entorno profesional de desarrollo para el lenguaje Rust y se programarán en él algunas aplicaciones.
 
 ---
 
@@ -43,3 +54,11 @@ El material está protegido bajo la licencia **Creative Commons Atribución-NoCo
 
 ## 👋 Comunidad de Rust y Colaboradores
 Si formas parte de la Comunidad de Rust y quieres proponer mejoras pedagógicas, revisar el código de los ejemplos o sugerir nuevas imágenes para las prácticas, ¡las contribuciones son más que bienvenidas! El objetivo es crear un estándar abierto y amigable para los futuros programadores.
+
+---
+
+## ✍️ Autor
+Halcón68
+
+## 📝 Última revisión
+5 de Octubre de 2026

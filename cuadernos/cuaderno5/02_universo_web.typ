@@ -6,7 +6,7 @@ El desarrollo moderno de software no se puede entender sin su conexión con la r
 == ¿Cómo funciona la Web? El protocolo HTTP
 Estamos acostumbrados a viajar por la web de forma intuitiva colocando una dirección en el campo de URL del navegador o haciendo clic en los enlaces de las páginas web. Sin embargo, cada vez que entras en una página web, tu navegador (cliente) envía una Petición (Request) a un ordenador remoto (servidor). El servidor lee esa petición y devuelve una Respuesta (Response) que suele contener texto en formato HTML, imágenes o datos.
 
-El protocolo HTTP es el idioma estándar en el que se comunican cliente y servidor. Una petición básica le dice al servidor: "Quiero obtener (GET) el archivo principal (https://www.google.com/)". El servidor responde con un código de estado ---como 200 OK si todo fue bien, o el famoso 404 Not Found si no existe el archivo--- seguido del contenido de la página.
+El protocolo HTTP es el idioma estándar en el que se comunican cliente y servidor. Una petición básica le dice al servidor: "Quiero obtener (GET) el archivo principal (https://www.google.com/)". El servidor responde con un código de estado ---como 200 OK si todo fue bien, o el famoso 404 Not Found si no existe el archivo--- seguido del contenido de la página solicitada.
 
 == El Protocolo HTTP y Tu Primer Servidor
 El protocolo HTTP (Hypertext Transfer Protocol) es la base de la comunicación en la World Wide Web, permitiendo que un cliente (como un navegador) y un servidor intercambien datos de forma estructurada. En el ecosistema de Rust, crear un primer servidor web implica *abrir un puerto TCP* para escuchar conexiones entrantes, *procesar los bytes recibidos* según las reglas de HTTP y *devolver una respuesta* adecuada. Para proyectos iniciales, esto se puede lograr utilizando la biblioteca estándar (*std::net::TcpListener*), lo que permite entender los fundamentos de la red antes de dar el salto a frameworks (marcos de trabajo) más avanzados del ecosistema como *Axum* o *Actix-web*.
@@ -58,15 +58,15 @@ Connection: close
 - Bloque final: El cuerpo (Body). El código HTML puro que el navegador interpretará para pintarlo de forma visual en la pantalla del usuario.
 
 == Proyecto Práctico: Creando un Mini-Servidor Web desde cero en Rust
-Para construir un mini-servidor web nativo en Rust sin dependencias externas (crates), lo que llamamos de forma nativa, se utiliza el módulo *std::net::TcpListener* para escuchar conexiones en nuestra máquina y responder con una página web real. También nos permitirá enlazar el programa a una dirección de nuestra máquina local y un puerto, como por ejemplo *127.0.0.1:8080* que también puede escribirsecomo *localhost:8080*. 
+Para construir un mini-servidor web nativo en Rust sin dependencias externas (crates), lo que llamamos de forma nativa, se utiliza el módulo *std::net::TcpListener* para escuchar conexiones en nuestra máquina y responder con una página web real. También nos permitirá enlazar el programa a una dirección de nuestra máquina local y un puerto, como por ejemplo *127.0.0.1:8080* que también puede escribirse como *localhost:8080*. 
 
 El servidor se diseña mediante un bucle continuo que acepta *el flujo de datos entrante* (*TcpStream*), lee los bytes de la petición que llegan en ese flujo mediante un *buffer* de memoria y los procesa para identificar la ruta solicitada, es decir, el recurso solicitado en la petición.
 
 #nota[Un *stream* es una secuencia de datos que van llegando uno a uno a lo largo del tiempo. Por ejemplo, cuando visualizamos una película en YouTube recibimos los datos mediante stream.
 
-Un *buffer* de memoria es un espacio de almacenamiento temporal donde se guardan datos de forma provisional mientras se transfieren de un lugar a otro. Funciona como una sala de espera o `una caja de cartón` donde el programa va acumulando los bytes que llegan desde el exterior (como una petición web) hasta que tiene la cantidad suficiente para procesarlos todos juntos de forma eficiente."]
+Un *buffer* de memoria es un espacio de almacenamiento temporal donde se guardan datos de forma provisional mientras se transfieren de un lugar a otro. Funciona como una sala de espera o `una caja de cartón` donde el programa va acumulando los bytes que llegan desde el exterior (como una petición web) hasta que tiene la cantidad suficiente para procesarlos todos juntos de forma eficiente.]
 
-Finalmente, el programa evalúa la solicitud y utiliza el método *stream.write_all* para enviar de vuelta una cadena de texto con formato analizable por el navegador, completando así el ciclo de vida de una transacción web con la máxima eficiencia y seguridad de memoria que caracteriza a Rust.
+Finalmente, el programa evalúa la solicitud y utiliza el método *stream.write_al()l* para enviar de vuelta una cadena de texto con formato analizable por el navegador, completando así el ciclo de vida de una transacción web con la máxima eficiencia y seguridad de memoria que caracteriza a Rust.
 
 *Código de ejemplo*
 
@@ -78,7 +78,9 @@ cargo new servidor_web
 
 💻 Copia el siguiente código y pégalo en el fichero *main.rs* del proyecto creado, borrando previamente todo lo que hubiera escrito en ese fichero.
 
-*Proyecto: servidor_web*
+(Después del listado hay una explicación del código)
+
+Proyecto: *servidor_web*
 
 *src/main.rs*
 
@@ -193,11 +195,11 @@ Los tres puntos claves de la analogía:
 
 *2.3 Las sentencias unwrap()*
 
-1) ¿En qué se traduce `let stream = stream.unwrap()` en nuestro programa?
+1) ¿En qué se traduce *let stream = stream.unwrap()* en nuestro programa?
 
 Esta línea realiza dos acciones fundamentales de Rust: desempaquetar el resultado ---que aquí suponemos seguro--- y redefinir la variable.
 
-*A. El desempaquetado con `.unwrap()`*
+*A. El desempaquetado con `stream.unwrap()`*
 
 En Rust, una conexión de red puede fallar en el último milisegundo (por ejemplo, si el cliente pierde la conexión justo cuando el servidor la estaba aceptando debido a un fallo de cable o caída de red). Por eso, el iterador no te da la conexión directamente, sino que te da un envoltorio de seguridad llamado *Result`<TcpStream, Error>`*.
 
@@ -207,17 +209,17 @@ Es decir, si realmente ha habido un error en la conexión, tal como lo tenemos p
 
 Lo hacemos así porque sabemos que tenemos una altísima probabibilidad de que no haya fallos, de hecho, tanto nuestra petición como respuesta solo viajan por el interior de nuestra máquina, sin salir a la red. Esto nos permite simplificar mucho el programa al suponer que las cosas irán bien ahorrándonos todo el tratamiento de errores que si veremos en la siguiente versión de servidor web.
 
-*B. La redefinición (let stream = ...)*
+*B. La redefinición: let stream = stream.unwrap()*
 
 Esto se conoce en Rust como Variable Shadowing (Sombreado de variables). Permite reutilizar el mismo nombre (stream) de una variable para crear otra nueva variable.
 
 - *El primer stream* (el del for) es el envoltorio con el posible error que hemos supuesto que no se va a producir.
 
-- *El segundo stream* (el del let) es la conexión limpia, extraída y lista para usar en la función *`gestionar_conexion()`*.
+- *El segundo stream* (el del let) es la conexión limpia, extraída con el unwrap() y lista para usar en la función *`gestionar_conexion()`*.
 
-2)  la línea `stream.write_all(respuesta.as_bytes()).unwrap();`
+2)  la línea *stream.write_all(respuesta.as_bytes()).unwrap();*
 
-Aquí, nada puede fallar en la conversión a bytes. Si el unwrap() salta y el programa explota, la culpa es única y exclusivamente de la tarjeta de red (de write_all), jamás de .as_bytes().
+Aquí, nada puede fallar en la conversión a bytes. Si el unwrap() salta y el programa se congela, la culpa es única y exclusivamente de la tarjeta de red (de write_all), jamás de .as_bytes().
 
 *¿Por qué .as_bytes() nunca puede fallar?*
 
@@ -239,7 +241,8 @@ La función *`gestionar_conexion()`* es el cerebro operativo de nuestro servidor
 Aquí tienes el código típico de esta función en Rust explicado paso a paso:
 
 ```rust
-use std::io::prelude::*; // Importa los traits Read y Write (deben ir arriba del todo en el archivo)
+// Importa los traits Read y Write (deben ir arriba del todo en el archivo)
+use std::io::prelude::*;
 use std::net::TcpStream;
 
 fn gestionar_conexion(mut stream: TcpStream) {
@@ -263,13 +266,14 @@ fn gestionar_conexion(mut stream: TcpStream) {
     
     // 5. Aseguramos que todos los bytes salgan de la memoria hacia la red
     stream.flush().unwrap();
-} // <-- Aquí la variable 'stream' se destruye automáticamente y la conexión se cierra de forma segura
+} // <-- Aquí la variable 'stream' se destruye automáticamente y la conexión 
+  // se cierra de forma segura
 
 ```
 
 Explicación del paso a paso para la clase:
 
-+ Uso de *`unwrap()`*: Utilizamos varias veces `unwrap(`) en la función porque suponemos que las expresiones que la preceden se van a resolver exitosamente. De nuevo, evitamos de momento el tratamiento de errores pesado para poder razonar sobre un código limpio y directo.
++ Uso de *`unwrap()`*: Utilizamos varias veces `unwrap(`) en la función porque suponemos que las expresiones que la preceden se van a resolver exitosamente. De nuevo, evitamos de momento el tratamiento de errores pesado para poder razonar sobre un código más limpio y directo.
 
 + *mut stream: TcpStream:* La variable debe ser mutable (mut) porque leer y escribir datos altera el estado interno de la tubería (los bytes entran y salen, modificando los punteros de posición internos).
 
@@ -277,28 +281,19 @@ Explicación del paso a paso para la clase:
 
 + stream.read(&mut buffer): El servidor mete la mano en la tubería, extrae los bytes que envió el navegador y los deposita en nuestro buffer para que podamos inspeccionarlos.
 
-+ *La construcción de la respuesta:* Creamos un String con la estructura exacta que exige el protocolo HTTP. Usamos los caracteres \r\n\r\n (las dos líneas en blanco obligatorias) para separar los metadatos de control del código HTML real que verá el usuario.
++ *La construcción de la respuesta:* Creamos un String mediante format! con la estructura exacta que exige el protocolo HTTP. Usamos los caracteres `\r\n\r\n` (las dos líneas en blanco obligatorias) para separar los metadatos de control del código HTML real que verá el usuario.
 
 + *`stream.write_all(...)`*: Transforma nuestro texto a bytes binarios (.as_bytes()) y los empuja a través de la tubería de regreso al navegador del usuario.
 
 + *`stream.flush()`*: Fuerza al sistema operativo a vaciar los componentes de memoria intermedia interconectados, garantizando que hasta el último byte rezagado sea enviado inmediatamente a la red física.
 
-Al llegar al cierre de la llave }, se aplica la magia del Ownership (Propiedad) de Rust: la *variable stream sale de su ámbito* de existencia (scope), por lo que el compilador inyecta automáticamente la función de liberación de recursos (drop) y destruye la variable stream. La conexión de red se clausura físicamente en ese instante sin ningún riesgo de fugas de memoria en el servidor.
+Al llegar al cierre de la llave }, se aplica la magia del Ownership (Propiedad) de Rust: la *variable stream* que fue movida a la función gestionar_conexion(), *sale de su ámbito* de existencia (scope), por lo que el compilador inyecta automáticamente la función de liberación de recursos (drop) y destruye la variable stream. La conexión de red se clausura físicamente en ese instante sin ningún riesgo de fugas de memoria en el servidor.
 
 Al ejecutar este programa y abrir http://127.0.0.1:8080 en cualquier navegador, verás tu página web. El servidor lee la petición, monta el mensaje HTTP correcto y lo envía de vuelta.
 
 == Servidor web real con control de errores
 
-Aquí hay que poner el proyecto *servidor_web_real* que lo tengo programado y funcionando en el VS Code.
-
-Hay que ver si vale la pena intercalar un Caderno antes que éste que sea tratamento de errores Con match, if left y ? porque eso está esparcido por los cuadernos y lo necesito para que entiendan el esrvidor_web_real.
-
-O se podría poner aquí solo lo que neceitamos antes del servidor.
-
-Hemos tratado el control de erroes en:
-Cuaderno 3, aparado 6. El mapa definitivo de la seguridad: Option y Resul
-
-Cuaderno 4, Apartado 2. Gestión de Errores Profesional en Rust
+En el repositorio de GitHub, carpeta *codigo > cuaderno5 > servidor_web_real* hay un proyecto sobre un servidor web real en el que hemos hecho un tratamiento completo de errores. El programa está explicado sobre el mismo listado y pensamos que puede ser interesante estudiarlo. En esencia es el mismo programa que acabamos de analizar pero quitando los unwrap() y realizando un debido tratamiento de errores.
 
 
 #pagebreak()

@@ -1,8 +1,8 @@
 #import "config.typ": *
 
-// ============================================================================
+// ================================================
 // 1. REGLAS ESTÉTICAS GLOBALES (Afectan a todo el libro)
-// ============================================================================
+// ================================================
 
 // 1. CONFIGURACIÓN GENERAL DEL CUADERNO (Texto normal)
 #set text(font: "Liberation Sans", size: 11pt, lang: "es")
@@ -29,7 +29,7 @@
 // 4.2. Apagamos la justificación en los elementos específicos que has pedido:
 #show heading: set par(justify: false)     // Títulos y subtítulos (=, ==, etc.)
 #show table.cell: set par(justify: false)  // Celdas de las tablas
-#show raw: set par(justify: false)         // Bloques de código (```rust ... ```)
+#show raw.where(block: true): set par(justify: false)
 #show list.item: set par(justify: false)   // Listas con viñetas (- )
 #show enum.item: set par(justify: false)   // Listas numeradas (1. )
 
@@ -51,7 +51,6 @@
   #line(length: 100%, stroke: 1.5pt + rgb("#007acc"))
 ]
 
-
 // CONFIGURACIÓN DE PÁGINA DEFINITIVA: 
 // Oculta cabeceras y pies en la portada (folio 1) y en el índice (folio 2)
 #set page(
@@ -69,7 +68,7 @@
   },
   footer: context {
     // El número de página aparecerá a partir del folio físico 3 (donde empieza el contenido)
-    if here().page() > 2 [
+    if here().page() > 3 [
       #align(center)[
         #text(size: 10pt, fill: luma(100), font: "Liberation Sans")[
           — #counter(page).display() —
@@ -170,8 +169,5 @@
 #include "05_asincronía: async-await.typ"
 #include "06_desarrollo_videojuego_con_Macroquad.typ"
 #include "07_servidor_web_asincrono_multihilo_tokio.typ"
-#include "08_ejercicios_propuestos.typ"
-#include "09_pruebas.typ"
-#include "PENDIENTE.typ"
 
 
